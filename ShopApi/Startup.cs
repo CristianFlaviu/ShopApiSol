@@ -13,6 +13,7 @@ using ShopApi.Data;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using ShopApi.Email;
 
 namespace ShopApi
 {
@@ -98,6 +99,8 @@ namespace ShopApi
             });
 
 
+            services.AddTransient<EmailSender, EmailSender>();
+
             services.AddLogging(config =>
             {
                 config.AddDebug();
@@ -108,6 +111,8 @@ namespace ShopApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopApi", Version = "v1" });
             });
+
+            services.Configure<EmailCredentials>(Configuration.GetSection("EmailCredentials"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
