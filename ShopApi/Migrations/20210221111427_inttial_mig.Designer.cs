@@ -10,8 +10,8 @@ using ShopApi.Data;
 namespace ShopApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210217204538_Added_Discrimator")]
-    partial class Added_Discrimator
+    [Migration("20210221111427_inttial_mig")]
+    partial class inttial_mig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

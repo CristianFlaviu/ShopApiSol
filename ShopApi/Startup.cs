@@ -13,6 +13,7 @@ using ShopApi.Data;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using ShopApi.Config;
 using ShopApi.Email;
 
 namespace ShopApi
@@ -29,6 +30,7 @@ namespace ShopApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
 
             services.AddDbContext<DataContext>(optionsBuilder =>
@@ -58,9 +60,9 @@ namespace ShopApi
                     cfg.SaveToken = true;
                     cfg.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = Configuration["JwtIssuer"],
-                        ValidAudience = Configuration["JwtIssuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                        ValidIssuer = Configuration.GetSection("JwtConfig")["Issuer"],
+                        ValidAudience = Configuration.GetSection("JwtConfig")["Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("JwtConfig")["key"])),
                         ClockSkew = TimeSpan.Zero
                     };
                 });
@@ -112,7 +114,8 @@ namespace ShopApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopApi", Version = "v1" });
             });
 
-            services.Configure<EmailCredentials>(Configuration.GetSection("EmailCredentials"));
+            services.Configure<EmailConfig>(Configuration.GetSection("EmailCredentials"));
+            services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
