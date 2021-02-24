@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using ShopApi.Config;
 using ShopApi.Email;
+using ShopApi.RabbitMQ;
 
 namespace ShopApi
 {
@@ -40,6 +41,8 @@ namespace ShopApi
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddHostedService<ConsumerService>();
 
             services.AddAuthentication();
             services.AddAuthorization();
