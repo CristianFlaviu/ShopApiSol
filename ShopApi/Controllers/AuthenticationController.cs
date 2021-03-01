@@ -42,22 +42,24 @@ namespace ShopApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
         {
 
-            if (_userManager.FindByEmailAsync(loginDto.Email).Result is BaseUser user)
+      
+
+            if (_userManager.FindByNameAsync(loginDto.Username).Result is BaseUser user)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
 
                 if (result.Succeeded)
                 {
-                    var loggedInUser = await _userManager.FindByEmailAsync(loginDto.Email);
+                    var loggedInUser = await _userManager.FindByNameAsync(loginDto.Username);
 
                     var claims = await _userManager.GetClaimsAsync(loggedInUser);
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                    var expires = DateTime.Now.AddDays(Convert.ToDouble(_jwtConfig.ExpireDays));
+                    var expires = DateTime.Now.AddSeconds(Convert.ToDouble(20));
 
 
                     var token = new JwtSecurityToken(
@@ -69,7 +71,7 @@ namespace ShopApi.Controllers
                     );
 
                     var finalToken = new JwtSecurityTokenHandler().WriteToken(token);
-                    return Ok(new { token = finalToken });
+                    return Ok(new { access_token = finalToken, refresh_token = "ceva", some = "some" });
                 }
 
                 return BadRequest("Invalid login attempt!");

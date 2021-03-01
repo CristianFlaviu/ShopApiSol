@@ -9,6 +9,8 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using ShopApi.SignalR;
 
 namespace ShopApi.RabbitMQ
 {
@@ -22,12 +24,15 @@ namespace ShopApi.RabbitMQ
         private IConnection _connection;
         private IModel _channel;
         private const string QueueName = "barcode_queue";
+        private IHubContext<MessageHub> _messageHub;
 
         public ConsumerService(IServiceProvider provider,
-            ILogger<ConsumerService> logger)
+            ILogger<ConsumerService> logger,
+            IHubContext<MessageHub> messageHub)
         {
             _provider = provider;
             _logger = logger;
+            _messageHub = messageHub;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -61,32 +66,33 @@ namespace ShopApi.RabbitMQ
             stoppingToken.ThrowIfCancellationRequested();
 
             var consumer = new AsyncEventingBasicConsumer(_channel);
-            consumer.Received +=  async (bc, ea) =>
-            {
+            consumer.Received += async (bc, ea) =>
+           {
 
-                var message = Encoding.UTF8.GetString(ea.Body.ToArray());
+               var message = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                _logger.LogInformation($"Processing msg: {message}.");
+               _logger.LogInformation($"Processing msg: {message}.");
+               await _messageHub.Clients.All.SendAsync("transferData", message, stoppingToken);
 
-                try
-                {
-                    
-                    _channel.BasicAck(ea.DeliveryTag, false);
-                }
-                catch (JsonException)
-                {
-                    _logger.LogError($"JSON Parse Error: .");
-                    _channel.BasicNack(ea.DeliveryTag, false, false);
-                }
-                catch (AlreadyClosedException)
-                {
-                    _logger.LogInformation("RabbitMQ is closed!");
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(default, e, e.Message);
-                }
-            };
+               try
+               {
+
+                   _channel.BasicAck(ea.DeliveryTag, false);
+               }
+               catch (JsonException)
+               {
+                   _logger.LogError($"JSON Parse Error: .");
+                   _channel.BasicNack(ea.DeliveryTag, false, false);
+               }
+               catch (AlreadyClosedException)
+               {
+                   _logger.LogInformation("RabbitMQ is closed!");
+               }
+               catch (Exception e)
+               {
+                   _logger.LogError(default, e, e.Message);
+               }
+           };
 
             _channel.BasicConsume(queue: QueueName, autoAck: false, consumer: consumer);
 

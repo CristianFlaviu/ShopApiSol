@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using ShopApi.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopApi.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
@@ -17,15 +20,17 @@ namespace ShopApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly IHubContext<MessageHub> _messageHub;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IHubContext<MessageHub> messageHub)
         {
             _logger = logger;
+            _messageHub = messageHub;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            _messageHub.Clients.All.SendAsync("transferData", "hei");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

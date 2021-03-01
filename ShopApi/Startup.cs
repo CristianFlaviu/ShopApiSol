@@ -9,13 +9,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ShopApi.Config;
 using ShopApi.Data;
+using ShopApi.Email;
+using ShopApi.RabbitMQ;
+using ShopApi.SignalR;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using ShopApi.Config;
-using ShopApi.Email;
-using ShopApi.RabbitMQ;
 
 namespace ShopApi
 {
@@ -31,11 +32,12 @@ namespace ShopApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSignalR();
             services.AddControllers();
 
             services.AddDbContext<DataContext>(optionsBuilder =>
                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("LocalDatabaseConnection")));
+
             services.AddCors();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -43,6 +45,7 @@ namespace ShopApi
                 .AddDefaultTokenProviders();
 
             services.AddHostedService<ConsumerService>();
+            services.AddSingleton<MessageHub>();
 
             services.AddAuthentication();
             services.AddAuthorization();
@@ -117,6 +120,18 @@ namespace ShopApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopApi", Version = "v1" });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4203")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+
             services.Configure<EmailConfig>(Configuration.GetSection("EmailCredentials"));
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
         }
@@ -135,16 +150,14 @@ namespace ShopApi
 
             app.UseRouting();
 
-            app.UseCors(x => x
-               .AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<MessageHub>("/chathub");
                 endpoints.MapControllers();
             });
 
