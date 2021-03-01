@@ -83,6 +83,7 @@ namespace ShopApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterCaregiver([FromBody] UserRegisterDto model)
         {
+            string defaultRole = "BasicUSer";
 
             //await   _roleManager.CreateAsync(new IdentityRole("Admin"));
             if (!ModelState.IsValid)
@@ -103,27 +104,24 @@ namespace ShopApi.Controllers
                 return BadRequest("Email Already Exists");
             }
 
-            if (await _roleManager.RoleExistsAsync(model.Role) == false)
-            {
-                return BadRequest("Invalid Role");
-            }
+          
 
-            var user = new BasicUser
+            var user = new BaseUser()
             {
                 Id = Guid.NewGuid().ToString(),
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 UserName = model.UserName,
                 Email = model.Email,
-                Gender = model.Gender,
-                Address = model.Address,
+                PhoneNumber = model.PhoneNumber,
+                Birthdate = model.Birthdate
             };
 
             var resultAddUSer = await _userManager.CreateAsync(user, model.Password);
 
             if (resultAddUSer.Succeeded)
             {
-                var resultAddUserToRole = await _userManager.AddToRoleAsync(user, model.Role);
+                var resultAddUserToRole = await _userManager.AddToRoleAsync(user, defaultRole);
 
                 if (resultAddUserToRole.Succeeded == false)
                 {
@@ -138,7 +136,7 @@ namespace ShopApi.Controllers
                     new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                     new Claim(JwtRegisteredClaimNames.NameId, user.Id),
                     new Claim(JwtRegisteredClaimNames.Email, model.Email),
-                    new Claim(JwtRegisteredClaimNames.Typ, model.Role),
+                    new Claim(JwtRegisteredClaimNames.Typ, defaultRole),
                 };
                 await _userManager.AddClaimsAsync(user, claims);
 

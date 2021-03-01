@@ -219,23 +219,20 @@ namespace ShopApi.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ShopApi.Models.BasicUser", b =>
+            modelBuilder.Entity("ShopApi.Models.BaseUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
+                    b.Property<DateTime>("Birthdate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Gender")
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
-                    b.HasDiscriminator().HasValue("BasicUser");
+                    b.HasDiscriminator().HasValue("BaseUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

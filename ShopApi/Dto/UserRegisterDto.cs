@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShopApi.Dto
 {
@@ -14,11 +15,10 @@ namespace ShopApi.Dto
         [Required]
         public string LastName { get; set; }
         [Required]
-        public string Role { get; set; }
+        public string PhoneNumber { get; set; }
         [Required]
-        public string Gender { get; set; }
-        [Required]
-        public string Address { get; set; }
+        public DateTime Birthdate { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
         [DataType(DataType.Password)]

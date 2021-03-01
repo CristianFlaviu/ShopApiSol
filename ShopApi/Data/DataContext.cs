@@ -16,7 +16,7 @@ namespace ShopApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<BasicUser>();
+            modelBuilder.Entity<BaseUser>();
         }
     }
 }
