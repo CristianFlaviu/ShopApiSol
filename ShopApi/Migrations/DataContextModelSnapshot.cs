@@ -223,9 +223,6 @@ namespace ShopApi.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<DateTime>("Birthdate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 

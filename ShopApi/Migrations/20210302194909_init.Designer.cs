@@ -10,7 +10,7 @@ using ShopApi.Data;
 namespace ShopApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210301220809_init")]
+    [Migration("20210302194909_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,9 +224,6 @@ namespace ShopApi.Migrations
             modelBuilder.Entity("ShopApi.Models.BaseUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<DateTime>("Birthdate")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");

@@ -19,7 +19,7 @@ using ShopApi.Config;
 namespace ShopApi.Controllers
 {
     [AllowAnonymous]
-    [Route("api/auth")]
+    [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -44,8 +44,6 @@ namespace ShopApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
         {
-
-      
 
             if (_userManager.FindByNameAsync(loginDto.Username).Result is BaseUser user)
             {
@@ -83,38 +81,31 @@ namespace ShopApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterCaregiver([FromBody] UserRegisterDto model)
         {
-            string defaultRole = "BasicUSer";
-
-            //await   _roleManager.CreateAsync(new IdentityRole("Admin"));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user1 = await _userManager.FindByNameAsync(model.UserName);
-            if (await _userManager.FindByEmailAsync(model.UserName) != null)
+            string defaultRole = "defaultRole";
+
+            if ((!await _roleManager.RoleExistsAsync(defaultRole)))
             {
-                return BadRequest("Username Already Exists");
+                await _roleManager.CreateAsync(new IdentityRole(defaultRole));
 
             }
-
-            var user2 = await _userManager.FindByEmailAsync(model.Email);
             if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
                 return BadRequest("Email Already Exists");
             }
 
-          
-
             var user = new BaseUser()
             {
                 Id = Guid.NewGuid().ToString(),
+                UserName = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                UserName = model.UserName,
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
-                Birthdate = model.Birthdate
             };
 
             var resultAddUSer = await _userManager.CreateAsync(user, model.Password);
@@ -131,7 +122,6 @@ namespace ShopApi.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, model.UserName),
                     new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                     new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                     new Claim(JwtRegisteredClaimNames.NameId, user.Id),
@@ -141,35 +131,51 @@ namespace ShopApi.Controllers
                 await _userManager.AddClaimsAsync(user, claims);
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var codeEncoded = code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var codeEncoded = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 ;
 
-                var bodyMessage = string.Format(StringFormatTemplates.EmailMessageBody, $"{model.LastName} {model.FirstName}", model.UserName, codeEncoded);
-                var mailSentResult = await _emailSender.SendMailAsync(bodyMessage, "Confirm Email ShopOnline", model.UserName, model.Email);
+                var bodyMessage = string.Format(StringFormatTemplates.EmailMessageBody, $"{model.LastName} {model.FirstName}", model.Email, codeEncoded);
+                var mailSentResult = await _emailSender.SendMailAsync(bodyMessage, "Confirm Email ShopOnline", model.Email, model.Email);
 
-                return Ok("Successfully Registered");
+                return Ok(new { messae = "Succesfully Registered" });
             }
 
             return BadRequest(resultAddUSer.Errors);
         }
 
-        [HttpGet("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] string token, [FromQuery] string username)
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmationEmailDto modelDto)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            var tokenDecodedByte = WebEncoders.Base64UrlDecode(token);
+            var user = await _userManager.FindByEmailAsync(modelDto.Email);
+            var tokenDecodedByte = WebEncoders.Base64UrlDecode(modelDto.Token);
             var tokenDecoded = System.Text.Encoding.UTF8.GetString(tokenDecodedByte);
 
             var result = await _userManager.ConfirmEmailAsync(user, tokenDecoded);
 
             if (result.Succeeded)
             {
-                return Ok($"Email Confirmed successfully for user {username}");
+                return Ok(new { message = $"Email Confirmed successfully" });
             }
 
             return BadRequest(result.Errors);
 
         }
+
+        [HttpGet("delete-user/{id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+
+                return Ok();
+            }
+
+            return BadRequest(new { message = "bad user Id" });
+        }
+
 
 
     }
