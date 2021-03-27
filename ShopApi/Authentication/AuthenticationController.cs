@@ -9,12 +9,15 @@ using ShopApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ShopApi.Authentication.Validators;
 using ShopApi.Config;
+using ShopApi.Core;
 
 namespace ShopApi.Controllers
 {
@@ -57,7 +60,7 @@ namespace ShopApi.Controllers
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                    var expires = DateTime.Now.AddSeconds(Convert.ToDouble(20));
+                    var expires = DateTime.Now.AddMinutes(Convert.ToDouble(20));
 
 
                     var token = new JwtSecurityToken(
@@ -69,35 +72,37 @@ namespace ShopApi.Controllers
                     );
 
                     var finalToken = new JwtSecurityTokenHandler().WriteToken(token);
-                    return Ok(new { access_token = finalToken, refresh_token = "ceva", some = "some" });
+                    return Ok(new { access_token = finalToken, refresh_token = "ceva" });
                 }
 
-                return BadRequest("Invalid login attempt!");
+                return Unauthorized("Wrong Credentials!");
             }
 
-            return NotFound("No such user could be found!");
+            return Unauthorized("This email is not registered to the application");
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterCaregiver([FromBody] UserRegisterDto model)
+        public async Task<CommandResult<bool>> RegisterCaregiver([FromBody] UserRegisterDto model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             string defaultRole = "defaultRole";
+
+
+            if (await _userManager.FindByEmailAsync(model.Email) != null)
+            {
+                return CommandResult<bool>.Fail("Email already exists");
+            }
+            var validateUser = await new UserRegisterValidator().ValidateAsync(model);
+
+            if (!validateUser.IsValid)
+            {
+                return CommandResult<bool>.Fail(validateUser.Errors.Select(e => e.ErrorMessage).ToArray());
+            }
 
             if ((!await _roleManager.RoleExistsAsync(defaultRole)))
             {
                 await _roleManager.CreateAsync(new IdentityRole(defaultRole));
 
             }
-            if (await _userManager.FindByEmailAsync(model.Email) != null)
-            {
-                return BadRequest("Email Already Exists");
-            }
-
             var user = new BaseUser()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -117,7 +122,7 @@ namespace ShopApi.Controllers
                 if (resultAddUserToRole.Succeeded == false)
                 {
                     await _userManager.DeleteAsync(user);
-                    return BadRequest(resultAddUserToRole.Errors);
+                    return CommandResult<bool>.Fail("An error occurred while inserting the user, please try again");
                 }
 
                 var claims = new List<Claim>
@@ -137,10 +142,10 @@ namespace ShopApi.Controllers
                 var bodyMessage = string.Format(StringFormatTemplates.EmailMessageBody, $"{model.LastName} {model.FirstName}", model.Email, codeEncoded);
                 var mailSentResult = await _emailSender.SendMailAsync(bodyMessage, "Confirm Email ShopOnline", model.Email, model.Email);
 
-                return Ok(new { messae = "Succesfully Registered" });
+                return CommandResult<bool>.Success(true);
             }
 
-            return BadRequest(resultAddUSer.Errors);
+            return CommandResult<bool>.Success(true);
         }
 
         [HttpPost("confirm-email")]
@@ -165,7 +170,7 @@ namespace ShopApi.Controllers
         public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
 
-           await _emailSender.SendMailAsync("default message","I just wanna say hi", "Ioana", "buda_ioana2002@yahoo.com");
+            await _emailSender.SendMailAsync("default message", "I just wanna say hi", "Ioana", "buda_ioana2002@yahoo.com");
             return Ok();
 
             //var user = await _userManager.FindByIdAsync(id);
