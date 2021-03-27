@@ -164,16 +164,20 @@ namespace ShopApi.Controllers
         [HttpGet("delete-user/{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
 
-            if (user != null)
-            {
-                await _userManager.DeleteAsync(user);
+           await _emailSender.SendMailAsync("default message","I just wanna say hi", "Ioana", "buda_ioana2002@yahoo.com");
+            return Ok();
 
-                return Ok();
-            }
+            //var user = await _userManager.FindByIdAsync(id);
 
-            return BadRequest(new { message = "bad user Id" });
+            //if (user != null)
+            //{
+            //    await _userManager.DeleteAsync(user);
+
+            //    return Ok();
+            //}
+
+            //return BadRequest(new { message = "bad user Id" });
         }
 
 
