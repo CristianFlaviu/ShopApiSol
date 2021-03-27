@@ -18,8 +18,9 @@ using Microsoft.IdentityModel.Tokens;
 using ShopApi.Authentication.Validators;
 using ShopApi.Config;
 using ShopApi.Core;
+using ShopApi.Core.Email;
 
-namespace ShopApi.Controllers
+namespace ShopApi.Authentication
 {
     [AllowAnonymous]
     [Route("auth")]

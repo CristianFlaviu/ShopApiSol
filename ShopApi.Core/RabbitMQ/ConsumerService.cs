@@ -1,30 +1,28 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
+using ShopApi.Core.SignalR;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
-using ShopApi.SignalR;
 
-namespace ShopApi.RabbitMQ
+namespace ShopApi.Core.RabbitMQ
 {
     public class ConsumerService : BackgroundService
     {
         private readonly IServiceProvider _provider;
-
 
         private readonly ILogger<ConsumerService> _logger;
         private ConnectionFactory _connectionFactory;
         private IConnection _connection;
         private IModel _channel;
         private const string QueueName = "barcode_queue";
-        private IHubContext<MessageHub> _messageHub;
+        private readonly IHubContext<MessageHub> _messageHub;
 
         public ConsumerService(IServiceProvider provider,
             ILogger<ConsumerService> logger,

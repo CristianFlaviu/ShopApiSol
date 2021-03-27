@@ -6,18 +6,24 @@
 
   <ItemGroup>
     <Compile Remove="Authentication\NewFolder\**" />
+    <Compile Remove="Email\**" />
     <Compile Remove="Migrations\**" />
+    <Compile Remove="SignalR\**" />
     <Content Remove="Authentication\NewFolder\**" />
+    <Content Remove="Email\**" />
     <Content Remove="Migrations\**" />
+    <Content Remove="SignalR\**" />
     <EmbeddedResource Remove="Authentication\NewFolder\**" />
+    <EmbeddedResource Remove="Email\**" />
     <EmbeddedResource Remove="Migrations\**" />
+    <EmbeddedResource Remove="SignalR\**" />
     <None Remove="Authentication\NewFolder\**" />
+    <None Remove="Email\**" />
     <None Remove="Migrations\**" />
+    <None Remove="SignalR\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Email\AuthMessageSenderOptions.cs" />
-    <Compile Remove="Email\IEmailSender.cs" />
     <Compile Remove="Models\BasicUser.cs" />
   </ItemGroup>
 
