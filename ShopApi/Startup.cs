@@ -13,11 +13,11 @@ using ShopApi.Config;
 using ShopApi.Core.Email;
 using ShopApi.Core.RabbitMQ;
 using ShopApi.Core.SignalR;
-using ShopApi.Data;
 using ShopApi.Email;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using ShopApi.Database.Data;
 
 namespace ShopApi
 {

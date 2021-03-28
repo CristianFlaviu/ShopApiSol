@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ShopApi.Models;
+using ShopApi.Database.Models;
 
-namespace ShopApi.Data
+namespace ShopApi.Database.Data
 {
     public class DataContext : IdentityDbContext<IdentityUser>
     {

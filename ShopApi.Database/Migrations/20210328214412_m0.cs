@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace ShopApi.Migrations
+namespace ShopApi.Database.Migrations
 {
-    public partial class init : Migration
+    public partial class m0 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

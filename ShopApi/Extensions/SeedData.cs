@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopApi.Data
+namespace ShopApi.Database.Data
 {
     public static class SeedData
     {
@@ -34,7 +34,7 @@ namespace ShopApi.Data
         {
             var roleManager = services
                 .GetRequiredService<RoleManager<IdentityRole>>();
-            await EnsureRolesAsync(roleManager);
+          
 
             var userManager = services
                 .GetRequiredService<UserManager<IdentityUser>>();
@@ -49,9 +49,9 @@ namespace ShopApi.Data
 
         }
 
-        private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
-        {
+        //private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
+        //{
 
-        }
+        //}
     }
 }

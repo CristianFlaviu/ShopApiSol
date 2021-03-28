@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApi", "ShopApi\ShopApi.csproj", "{0812EF26-23BA-4D37-98AF-24502F38E381}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApi.Core", "ShopApi.Core\ShopApi.Core.csproj", "{415D426E-8E25-4432-BDD9-58C8B34D612F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApi.Core", "ShopApi.Core\ShopApi.Core.csproj", "{415D426E-8E25-4432-BDD9-58C8B34D612F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApi.Database", "ShopApi.Database\ShopApi.Database.csproj", "{ECD592F6-A1EE-4536-AB8D-33A12C8FEBE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{415D426E-8E25-4432-BDD9-58C8B34D612F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{415D426E-8E25-4432-BDD9-58C8B34D612F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{415D426E-8E25-4432-BDD9-58C8B34D612F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECD592F6-A1EE-4536-AB8D-33A12C8FEBE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECD592F6-A1EE-4536-AB8D-33A12C8FEBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECD592F6-A1EE-4536-AB8D-33A12C8FEBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECD592F6-A1EE-4536-AB8D-33A12C8FEBE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace ShopApi.Models
+namespace ShopApi.Database.Models
 {
     public class BaseUser : IdentityUser
     {

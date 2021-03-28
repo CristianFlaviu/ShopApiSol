@@ -7,30 +7,20 @@
   <ItemGroup>
     <Compile Remove="Authentication\NewFolder\**" />
     <Compile Remove="Email\**" />
-    <Compile Remove="Migrations\**" />
+    <Compile Remove="Models\**" />
     <Compile Remove="SignalR\**" />
     <Content Remove="Authentication\NewFolder\**" />
     <Content Remove="Email\**" />
-    <Content Remove="Migrations\**" />
+    <Content Remove="Models\**" />
     <Content Remove="SignalR\**" />
     <EmbeddedResource Remove="Authentication\NewFolder\**" />
     <EmbeddedResource Remove="Email\**" />
-    <EmbeddedResource Remove="Migrations\**" />
+    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="SignalR\**" />
     <None Remove="Authentication\NewFolder\**" />
     <None Remove="Email\**" />
-    <None Remove="Migrations\**" />
+    <None Remove="Models\**" />
     <None Remove="SignalR\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Models\BasicUser.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Migrations\20210302194909_init.cs" />
-    <Compile Include="Migrations\20210302194909_init.Designer.cs" />
-    <Compile Include="Migrations\DataContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +43,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopApi.Core\ShopApi.Core.csproj" />
+    <ProjectReference Include="..\ShopApi.Database\ShopApi.Database.csproj" />
   </ItemGroup>
 
 

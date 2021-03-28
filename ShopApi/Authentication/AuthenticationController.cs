@@ -2,10 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using ShopApi.Authentication.Validators;
+using ShopApi.Config;
 using ShopApi.Constants;
+using ShopApi.Core;
+using ShopApi.Core.Email;
 using ShopApi.Dto;
-using ShopApi.Email;
-using ShopApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,12 +17,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using ShopApi.Authentication.Validators;
-using ShopApi.Config;
-using ShopApi.Core;
-using ShopApi.Core.Email;
+using ShopApi.Database.Models;
 
 namespace ShopApi.Authentication
 {
