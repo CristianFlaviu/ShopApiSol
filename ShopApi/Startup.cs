@@ -13,11 +13,13 @@ using ShopApi.Config;
 using ShopApi.Core.Email;
 using ShopApi.Core.RabbitMQ;
 using ShopApi.Core.SignalR;
+using ShopApi.Database.Data;
 using ShopApi.Email;
+using ShopApi.Extensions;
+using ShopApi.Repository;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using ShopApi.Database.Data;
 
 namespace ShopApi
 {
@@ -135,6 +137,11 @@ namespace ShopApi
 
             services.Configure<EmailConfig>(Configuration.GetSection("EmailCredentials"));
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
+
+            services.AddScoped<ProductRepo>();
+            services.AddScoped<CategoryRepo>();
+            services.AddScoped<ProductCategoryRepo>();
+            services.AddScoped<BrandRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -162,17 +169,14 @@ namespace ShopApi
                 endpoints.MapControllers();
             });
 
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                InitializeDatabase(scope);
-            }
+            using var serviceScope = app.ApplicationServices.CreateScope();
 
+            InitializeDatabase(serviceScope);
         }
 
         private static void InitializeDatabase(IServiceScope serviceScope)
         {
             var services = serviceScope.ServiceProvider;
-
             try
             {
                 SeedData.InitializeAsync(services).Wait();

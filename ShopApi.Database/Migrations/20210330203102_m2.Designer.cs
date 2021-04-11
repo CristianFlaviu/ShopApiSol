@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShopApi.Database.Data;
@@ -9,45 +10,16 @@ using ShopApi.Database.Data;
 namespace ShopApi.Database.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210330203102_m2")]
+    partial class m2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-            modelBuilder.Entity("BaseUserProduct", b =>
-                {
-                    b.Property<string>("FavoriteUsersId")
-                        .HasColumnType("text");
-
-                    b.Property<int>("FavoritesProductsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("FavoriteUsersId", "FavoritesProductsId");
-
-                    b.HasIndex("FavoritesProductsId");
-
-                    b.ToTable("BaseUserProduct");
-                });
-
-            modelBuilder.Entity("BaseUserProduct1", b =>
-                {
-                    b.Property<int>("ShoppingCartProductsId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ShoppingCartUsersId")
-                        .HasColumnType("text");
-
-                    b.HasKey("ShoppingCartProductsId", "ShoppingCartUsersId");
-
-                    b.HasIndex("ShoppingCartUsersId");
-
-                    b.ToTable("BaseUserProduct1");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -249,29 +221,14 @@ namespace ShopApi.Database.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Brand", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.ProductManagement.Brand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<string>("City")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -279,7 +236,7 @@ namespace ShopApi.Database.Migrations
                     b.ToTable("Brands");
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Category", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.ProductManagement.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -299,42 +256,18 @@ namespace ShopApi.Database.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Product", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.ProductManagement.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("Availability")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Barcode")
-                        .HasColumnType("text");
-
                     b.Property<int?>("BrandId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Discount")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("NewPrice")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("OldPrice")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("PathToImage")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
-
-                    b.Property<double>("Score")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("text");
-
-                    b.Property<int>("UnitsAvailable")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -343,7 +276,7 @@ namespace ShopApi.Database.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductCategory", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.ProductManagement.ProductCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -368,7 +301,7 @@ namespace ShopApi.Database.Migrations
                     b.ToTable("ProductCategory");
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.BaseUser", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.BaseUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -379,36 +312,6 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("BaseUser");
-                });
-
-            modelBuilder.Entity("BaseUserProduct", b =>
-                {
-                    b.HasOne("ShopApi.Database.Entities.BaseUser", null)
-                        .WithMany()
-                        .HasForeignKey("FavoriteUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", null)
-                        .WithMany()
-                        .HasForeignKey("FavoritesProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BaseUserProduct1", b =>
-                {
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ShoppingCartProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShopApi.Database.Entities.BaseUser", null)
-                        .WithMany()
-                        .HasForeignKey("ShoppingCartUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -462,31 +365,31 @@ namespace ShopApi.Database.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Category", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.ProductManagement.Category", b =>
                 {
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Category", "ParentCategory")
+                    b.HasOne("ShopApi.Database.Models.ProductManagement.Category", "ParentCategory")
                         .WithMany()
                         .HasForeignKey("ParentCategoryId");
 
                     b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Product", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.ProductManagement.Product", b =>
                 {
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Brand", "Brand")
+                    b.HasOne("ShopApi.Database.Models.ProductManagement.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId");
 
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductCategory", b =>
+            modelBuilder.Entity("ShopApi.Database.Models.ProductManagement.ProductCategory", b =>
                 {
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Category", "Category")
+                    b.HasOne("ShopApi.Database.Models.ProductManagement.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", "Product")
+                    b.HasOne("ShopApi.Database.Models.ProductManagement.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
 

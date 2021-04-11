@@ -69,12 +69,11 @@ namespace ShopApi.Core.RabbitMQ
 
                var message = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-               _logger.LogInformation($"Processing msg: {message}.");
-               await _messageHub.Clients.All.SendAsync("transferData", message, stoppingToken);
+               _logger.LogInformation($"{DateTime.Now}  -  {message}");
 
+               await _messageHub.Clients.All.SendAsync("transferData", message, stoppingToken);
                try
                {
-
                    _channel.BasicAck(ea.DeliveryTag, false);
                }
                catch (JsonException)
