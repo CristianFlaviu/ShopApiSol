@@ -24,8 +24,9 @@ namespace ShopApi.Database.Entities.ProductManagement
 
         [Column(TypeName = "jsonb")]
         public string Attributes { get; set; }
-        public List<BaseUser> FavoriteUsers { get; set; }
-        public List<BaseUser> ShoppingCartUsers { get; set; }
+        [JsonIgnore]
+        public List<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
+  
 
 
     }

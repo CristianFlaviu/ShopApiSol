@@ -14,6 +14,7 @@ namespace ShopApi.Database.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Category { get; set; }
+        public DbSet<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
@@ -22,11 +23,9 @@ namespace ShopApi.Database.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<BaseUser>().HasMany<Product>(u => u.FavoritesProducts)
-                .WithMany(p => p.FavoriteUsers);
+            //modelBuilder.Entity<BaseUser>().HasMany<ProductsUsersShoppingCart>(u => u.ProductsUsersShopping)
+            //    .WithOne(p => p.User);
 
-            modelBuilder.Entity<BaseUser>().HasMany<Product>(u => u.ShoppingCartProducts)
-                .WithMany(p => p.ShoppingCartUsers);
 
 
 

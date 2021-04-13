@@ -102,7 +102,7 @@ namespace ShopApi
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
 
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -118,9 +118,30 @@ namespace ShopApi
                 config.AddConsole();
             });
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(config =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopApi", Version = "v1" });
+                config.SwaggerDoc("v1", new OpenApiInfo() { Title = "WebAPI", Version = "v1" });
+                config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                config.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             });
 
             services.AddCors(options =>
@@ -141,6 +162,9 @@ namespace ShopApi
             services.AddScoped<ProductRepo>();
             services.AddScoped<CategoryRepo>();
             services.AddScoped<BrandRepo>();
+            services.AddScoped<UserRepo>();
+
+            services.AddScoped<ProductUserShoppingCartRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

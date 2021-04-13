@@ -16,7 +16,6 @@ namespace ShopApi.Repository
         private readonly DataContext _dataContext;
         private readonly IHttpContextAccessor _httpContextAccess;
 
-
         public ProductRepo(DataContext dataContext, IHttpContextAccessor httpContextAccess)
         {
             _dataContext = dataContext;
@@ -32,8 +31,7 @@ namespace ShopApi.Repository
         public async Task<List<Product>> GetAll()
         {
             return await _dataContext.Products.Include(x => x.Brand)
-                                              .Include(x => x.FavoriteUsers)
-                                              .Include(x => x.ShoppingCartUsers)
+                                              .Include(x => x.ProductsUsersShopping)
                                               .AsSplitQuery()
                                               .ToListAsync();
         }
@@ -41,28 +39,10 @@ namespace ShopApi.Repository
         public async Task<Product> GetByBarcode(string barcode)
         {
             return await _dataContext.Products.Include(x => x.Brand)
-                .Include(x => x.FavoriteUsers)
-                .Include(x => x.ShoppingCartUsers)
+                .Include(x => x.ProductsUsersShopping)
                 .SingleOrDefaultAsync(x => x.Barcode.Equals(barcode));
         }
 
-        public async Task AddProductToFavorites(string barcode)
-        {
-            var httpContext = _httpContextAccess.HttpContext;
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = httpContext.Request.Headers["Authorization"].ToString().Substring("Bearer ".Length);
-            var claims = handler.ReadJwtToken(jwt).Claims;
-            var email = claims.FirstOrDefault(x => x.Type.Equals("email"))?.Value;
-
-            var user = (BaseUser)await _dataContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
-            var product = await GetByBarcode(barcode);
-
-            product.FavoriteUsers.Add(user);
-
-
-
-
-            await _dataContext.SaveChangesAsync();
-        }
+       
     }
 }
