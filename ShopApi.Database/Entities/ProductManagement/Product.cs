@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ShopApi.Database.Entities.ProductManagement
 
@@ -17,6 +19,11 @@ namespace ShopApi.Database.Entities.ProductManagement
         public int UnitsAvailable { get; set; }
         public string PathToImage { get; set; }
         public Brand Brand { get; set; }
+        [JsonIgnore]
+        public Category Category { get; set; }
+
+        [Column(TypeName = "jsonb")]
+        public string Attributes { get; set; }
         public List<BaseUser> FavoriteUsers { get; set; }
         public List<BaseUser> ShoppingCartUsers { get; set; }
 

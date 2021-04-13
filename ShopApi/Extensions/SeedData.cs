@@ -46,28 +46,23 @@ namespace ShopApi.Extensions
 
         public static async Task InitializeAsync(IServiceProvider services)
         {
-            var roleManager = services
-                .GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            var userManager = services
-                .GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
             var brandRepo = services.GetService<BrandRepo>();
             var categoryRepo = services.GetService<CategoryRepo>();
             var productRepo = services.GetService<ProductRepo>();
-            var productCategoryRepo = services.GetService<ProductCategoryRepo>();
 
             var logger = services.GetRequiredService<ILogger<Startup>>();
 
             await AddDefaultUser(userManager, roleManager, logger);
 
-            var defaultBrand = await AddDefaultBrand(brandRepo, logger);
+            await AddDefaultCategory(categoryRepo, logger);
 
-            var defaultProduct = await AddDefaultProduct(productRepo, logger, defaultBrand,userManager);
+            await AddDefaultBrand(brandRepo, logger);
 
-            var defaultCategory = await AddDefaultCategory(categoryRepo, logger);
-
-            await AddDefaultProductCategory(productCategoryRepo, logger, defaultCategory, productRepo);
+            await AddDefaultProduct(productRepo, brandRepo, categoryRepo, logger);
 
 
         }
@@ -116,7 +111,7 @@ namespace ShopApi.Extensions
             }
         }
 
-        public static async Task<Brand> AddDefaultBrand(BrandRepo brandRepo, ILogger<Startup> logger)
+        public static async Task AddDefaultBrand(BrandRepo brandRepo, ILogger<Startup> logger)
         {
             if ((await brandRepo.GetByName("ProduseLucacesti")) == null)
             {
@@ -133,8 +128,6 @@ namespace ShopApi.Extensions
 
                 logger.LogInformation("Default Brand Added");
             }
-
-            return await brandRepo.GetByName("ProduseLucacesti");
         }
 
         public static async Task<Category> AddDefaultCategory(CategoryRepo categoryRepo, ILogger<Startup> logger)
@@ -154,48 +147,11 @@ namespace ShopApi.Extensions
             return await categoryRepo.GetByName("defaultCategory");
         }
 
-        public static async Task<Product> AddDefaultProduct(ProductRepo productRepo, ILogger<Startup> logger, Brand brand, UserManager<IdentityUser> userManager)
+        public static async Task AddDefaultProduct(ProductRepo productRepo, BrandRepo brandRepo, CategoryRepo categoryRepo, ILogger<Startup> logger)
         {
-            int count = 0;
-
-            var list = new List<BaseUser>();
-            
-
-            var defaultUser = await userManager.Users.SingleOrDefaultAsync(x => x.Email.Equals("flaviu_remus@yahoo.com"));
-            list.Add((BaseUser) defaultUser);
-
-            foreach (var productName in SeedData.ProductNames)
-            {
-
-                var newProd = new Product
-                {
-                    Title = productName,
-                    Barcode = SeedData.DefaultBarcode + count++,
-                    Brand = brand,
-                    PathToImage = SeedData.PathsToImage[count],
-                    Score = new Random().Next(1, 5),
-                    UnitsAvailable = new Random().Next(1, 20),
-                    Availability = DateTime.Today,
-                    OldPrice = new Random().Next(10, 15),
-                    NewPrice = new Random().Next(5, 10),
-                    Discount = new Random().Next(10, 25)
-                   
-
-                };
-                await productRepo.SaveAsync(newProd);
-            }
-
-            
-
-            logger.LogInformation("Default Products Added");
-
-
-            return await productRepo.GetByBarcodeAsync(SeedData.DefaultBarcode + "0");
-        }
-
-        public static async Task AddDefaultProductCategory(ProductCategoryRepo productCategoryRepo, ILogger<Startup> logger, Category category, ProductRepo productRepo)
-        {
+            var count = 0;
             var attributes = new List<MyField>();
+            var category = await categoryRepo.GetByName("defaultCategory");
 
             attributes.Add(new MyField { Name = "Grasimi", Value = "186", InfoCategory = "NutritionInfo", IsImportant = true });
             attributes.Add(new MyField { Name = "Glucide ", Value = "4.7", InfoCategory = "NutritionInfo", IsImportant = true });
@@ -203,23 +159,34 @@ namespace ShopApi.Extensions
             attributes.Add(new MyField { Name = "Greutate", Value = "1kg", InfoCategory = "Size", IsImportant = true });
             attributes.Add(new MyField { Name = "Ingrediente", Value = "Lapte", InfoCategory = "IngredientsAndAllergens", IsImportant = false });
 
+            var brand = await brandRepo.GetByName("ProduseLucacesti");
 
-            foreach (var product in await productRepo.GetAll())
+            foreach (var productName in SeedData.ProductNames)
             {
-                var defaultProductCategory = new ProductCategory
+                var newProd = new Product
                 {
+                    Title = productName,
+
+                    Barcode = SeedData.DefaultBarcode + count++,
+                    Brand = brand,
                     Category = category,
-                    Product = product,
+                    PathToImage = SeedData.PathsToImage[count],
+                    Score = new Random().Next(1, 5),
+                    UnitsAvailable = new Random().Next(1, 20),
+                    Availability = DateTime.Today,
+                    OldPrice = new Random().Next(10, 15),
+                    NewPrice = new Random().Next(5, 10),
+                    Discount = new Random().Next(10, 25),
                     Attributes = JsonConvert.SerializeObject(attributes)
 
+
                 };
-                await productCategoryRepo.SaveAsync(defaultProductCategory);
+                await productRepo.SaveAsync(newProd);
             }
-
-            logger.LogInformation("Default ProductsCategory Added");
-
-
+            logger.LogInformation("Default Products Added");
         }
+
+
 
 
         public class MyField

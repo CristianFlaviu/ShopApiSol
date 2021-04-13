@@ -140,7 +140,6 @@ namespace ShopApi
 
             services.AddScoped<ProductRepo>();
             services.AddScoped<CategoryRepo>();
-            services.AddScoped<ProductCategoryRepo>();
             services.AddScoped<BrandRepo>();
         }
 

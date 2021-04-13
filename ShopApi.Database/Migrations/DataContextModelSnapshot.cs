@@ -306,6 +306,9 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Attributes")
+                        .HasColumnType("jsonb");
+
                     b.Property<DateTime>("Availability")
                         .HasColumnType("timestamp without time zone");
 
@@ -313,6 +316,9 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("text");
 
                     b.Property<int?>("BrandId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Discount")
@@ -340,32 +346,9 @@ namespace ShopApi.Database.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Attributes")
-                        .HasColumnType("jsonb");
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductCategory");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ShopApi.Database.Entities.BaseUser", b =>
@@ -477,22 +460,18 @@ namespace ShopApi.Database.Migrations
                         .WithMany()
                         .HasForeignKey("BrandId");
 
-                    b.Navigation("Brand");
-                });
-
-            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductCategory", b =>
-                {
                     b.HasOne("ShopApi.Database.Entities.ProductManagement.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
+                    b.Navigation("Brand");
 
                     b.Navigation("Category");
+                });
 
-                    b.Navigation("Product");
+            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

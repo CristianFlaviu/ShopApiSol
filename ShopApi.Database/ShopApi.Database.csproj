@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Entities\ProductManagement\ProductCategory.cs" />
 	  <Compile Remove="Program.cs" />
 	</ItemGroup>
 

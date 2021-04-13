@@ -16,42 +16,29 @@ namespace ShopApi.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ProductRepo _productRepo;
-        private readonly ProductCategoryRepo _productCategoryRepo;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly CategoryRepo _categoryRepo;
 
-
-        public ProductsController(ProductRepo productRepo, ProductCategoryRepo productCategoryRepo, IHttpContextAccessor httpContextAccessor)
+        public ProductsController(ProductRepo productRepo, CategoryRepo categoryRepo)
         {
             _productRepo = productRepo;
-            _productCategoryRepo = productCategoryRepo;
-            _httpContextAccessor = httpContextAccessor;
+            _categoryRepo = categoryRepo;
         }
 
         [HttpGet("get-products")]
-        public async Task<CommandResult<List<ProductCategory>>> GetProducts()
-            => CommandResult<List<ProductCategory>>.Success(await _productCategoryRepo.GetAll());
-
+        public async Task<CommandResult<List<Product>>> GetProducts()
+            => CommandResult<List<Product>>.Success(await _productRepo.GetAll());
         [HttpGet("get-product-by-barcode/{barcode}")]
-        public async Task<CommandResult<ProductCategory>> GetProductByBarcode([FromRoute] string barcode)
-            => CommandResult<ProductCategory>.Success(await _productCategoryRepo.GetByBarcode(barcode));
+        public async Task<CommandResult<Product>> GetProductByBarcode([FromRoute] string barcode)
+            => CommandResult<Product>.Success(await _productRepo.GetByBarcode(barcode));
 
         [HttpGet("get-products-by-category/{category}")]
-        public async Task<CommandResult<List<ProductCategory>>> GetProductsFromCategory([FromRoute] string category)
-            => CommandResult<List<ProductCategory>>.Success(await _productCategoryRepo.GetProductsFromCategory(category));
+        public async Task<CommandResult<List<Product>>> GetProductsFromCategory([FromRoute] string category)
+            => CommandResult<List<Product>>.Success(await _categoryRepo.GetAllFromCategory(category));
 
         [HttpGet("add-products-to-favorite/{barcode}")]
         public async Task<CommandResult<bool>> AddProductToFavorite([FromRoute] string barcode)
         {
-            var httpContext = _httpContextAccessor.HttpContext;
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = httpContext.Request.Headers["Authorization"].ToString().Substring("Bearer ".Length);
-            var claims = handler.ReadJwtToken(jwt).Claims;
-            var email = claims.FirstOrDefault(x => x.Type.Equals("email"))?.Value;
-
-            await _productCategoryRepo.AddProductToFavorite(barcode, email);
-
-
-
+            await _productRepo.AddProductToFavorites(barcode);
 
             return CommandResult<bool>.Success(true);
         }

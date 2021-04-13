@@ -14,7 +14,6 @@ namespace ShopApi.Database.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<ProductCategory> ProductCategory { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
