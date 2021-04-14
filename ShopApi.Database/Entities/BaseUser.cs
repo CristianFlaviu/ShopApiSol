@@ -11,7 +11,9 @@ namespace ShopApi.Database.Entities
         public string LastName { get; set; }
         [JsonIgnore]
         public List<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
-    
-      
+        [JsonIgnore]
+        public List<ProductsUserFavorite> ProductUserFavorites { get; set; }
+
+
     }
 }

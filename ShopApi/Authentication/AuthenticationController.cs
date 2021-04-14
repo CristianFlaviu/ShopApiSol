@@ -60,7 +60,7 @@ namespace ShopApi.Authentication
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                    var expires = DateTime.Now.AddMinutes(Convert.ToDouble(20));
+                    var expires = DateTime.Now.AddHours(Convert.ToDouble(20));
 
 
                     var token = new JwtSecurityToken(

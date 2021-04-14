@@ -26,7 +26,9 @@ namespace ShopApi.Database.Entities.ProductManagement
         public string Attributes { get; set; }
         [JsonIgnore]
         public List<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
-  
+        [JsonIgnore]
+        public List<ProductsUserFavorite> ProductUserFavorites { get; set; }
+
 
 
     }

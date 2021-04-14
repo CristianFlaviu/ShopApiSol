@@ -98,18 +98,6 @@ namespace ShopApi
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromDays(1);
-
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-                options.SlidingExpiration = true;
-            });
-
-
             services.AddTransient<EmailSender, EmailSender>();
 
             services.AddLogging(config =>
@@ -165,6 +153,7 @@ namespace ShopApi
             services.AddScoped<UserRepo>();
 
             services.AddScoped<ProductUserShoppingCartRepo>();
+            services.AddScoped<ProductsUsersFavoriteRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
