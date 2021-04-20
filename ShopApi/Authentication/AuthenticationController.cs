@@ -62,7 +62,6 @@ namespace ShopApi.Authentication
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
                     var expires = DateTime.Now.AddHours(Convert.ToDouble(20));
 
-
                     var token = new JwtSecurityToken(
                         _jwtConfig.Issuer,
                         _jwtConfig.Audience,

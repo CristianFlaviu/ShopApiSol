@@ -38,8 +38,12 @@ namespace ShopApi
             services.AddSignalR();
             services.AddControllers();
 
+            //services.AddDbContext<DataContext>(optionsBuilder =>
+            //    optionsBuilder.UseNpgsql(Configuration.GetConnectionString("LocalDatabaseConnection")));
+
+
             services.AddDbContext<DataContext>(optionsBuilder =>
-               optionsBuilder.UseNpgsql(Configuration.GetConnectionString("LocalDatabaseConnection")));
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionStringLocal")));
 
             services.AddCors();
 
@@ -137,7 +141,7 @@ namespace ShopApi
                 options.AddPolicy("CorsPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200")
+                        builder.WithOrigins("http://localhost:4200", "http://192.168.0.111:4200")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();

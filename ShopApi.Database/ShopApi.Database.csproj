@@ -6,15 +6,31 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Migrations\**" />
+	  <EmbeddedResource Remove="Migrations\**" />
+	  <None Remove="Migrations\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Remove="Entities\ProductManagement\ProductCategory.cs" />
 	  <Compile Remove="Program.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Include="Migrations\20210420194611_m1.cs" />
+	  <Compile Include="Migrations\20210420194611_m1.Designer.cs" />
+	  <Compile Include="Migrations\DataContextModelSnapshot.cs" />
 	</ItemGroup>
 
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.14">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
 	</ItemGroup>
 </Project>

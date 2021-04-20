@@ -22,7 +22,6 @@ namespace ShopApi.Database.Entities.ProductManagement
         [JsonIgnore]
         public Category Category { get; set; }
 
-        [Column(TypeName = "jsonb")]
         public string Attributes { get; set; }
         [JsonIgnore]
         public List<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }

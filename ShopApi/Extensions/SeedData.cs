@@ -64,7 +64,6 @@ namespace ShopApi.Extensions
 
             await AddDefaultProduct(productRepo, brandRepo, categoryRepo, logger);
 
-
         }
 
         private static async Task AddDefaultUser(UserManager<IdentityUser> userManager,
