@@ -43,7 +43,7 @@ namespace ShopApi
 
 
             services.AddDbContext<DataContext>(optionsBuilder =>
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionStringLocal")));
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionString")));
 
             services.AddCors();
 
@@ -68,7 +68,7 @@ namespace ShopApi
 
                 })
                 .AddJwtBearer(cfg =>
-                {
+                {   
                     cfg.RequireHttpsMetadata = false;
                     cfg.SaveToken = true;
                     cfg.TokenValidationParameters = new TokenValidationParameters
@@ -94,7 +94,6 @@ namespace ShopApi
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
-
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
@@ -141,7 +140,7 @@ namespace ShopApi
                 options.AddPolicy("CorsPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200", "http://192.168.0.111:4200")
+                        builder.WithOrigins("http://localhost:4200")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();
