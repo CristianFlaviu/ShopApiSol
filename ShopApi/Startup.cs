@@ -14,7 +14,6 @@ using ShopApi.Core.Email;
 using ShopApi.Core.RabbitMQ;
 using ShopApi.Core.SignalR;
 using ShopApi.Database.Data;
-using ShopApi.Email;
 using ShopApi.Extensions;
 using ShopApi.Repository;
 using System;
@@ -140,7 +139,7 @@ namespace ShopApi
                 options.AddPolicy("CorsPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200")
+                        builder.WithOrigins("http://localhost:4200", "http://192.168.43.184:4200")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();

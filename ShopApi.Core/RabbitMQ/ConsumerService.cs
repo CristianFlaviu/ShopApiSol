@@ -69,9 +69,12 @@ namespace ShopApi.Core.RabbitMQ
 
                var message = Encoding.UTF8.GetString(ea.Body.ToArray());
 
+               var decodedMessage = JsonConvert.DeserializeObject<RaspberryInfo>(message);
+
+
                _logger.LogInformation($"{DateTime.Now}  -  {message}");
 
-               await _messageHub.Clients.All.SendAsync("transferData", message, stoppingToken);
+               await _messageHub.Clients.All.SendAsync("transferData/" + decodedMessage.Socket, decodedMessage.Barcode, stoppingToken);
                try
                {
                    _channel.BasicAck(ea.DeliveryTag, false);
@@ -95,6 +98,12 @@ namespace ShopApi.Core.RabbitMQ
 
             await Task.CompletedTask;
         }
+    }
+
+    public class RaspberryInfo
+    {
+        public string Socket { get; set; }
+        public string Barcode { get; set; }
     }
 
 }

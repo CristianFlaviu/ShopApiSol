@@ -1,4 +1,4 @@
-﻿namespace ShopApi.Email
+﻿namespace ShopApi.Core.Email
 {
     public class EmailConfig
     {

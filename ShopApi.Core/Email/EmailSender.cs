@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Utils;
 using ShopApi.Constants;
-using ShopApi.Email;
 using System;
 using System.Threading.Tasks;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
@@ -36,7 +35,7 @@ namespace ShopApi.Core.Email
 
                 builder.TextBody = bodyMessage;
 
-                var image = builder.LinkedResources.Add(@"Email/cat.jpg");
+                var image = builder.LinkedResources.Add(@"..\ShopApi.Core\Email\cat.jpg");
 
                 image.ContentId = MimeUtils.GenerateMessageId();
 
