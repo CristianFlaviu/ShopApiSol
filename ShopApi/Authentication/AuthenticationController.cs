@@ -139,7 +139,8 @@ namespace ShopApi.Authentication
                 ;
 
                 var bodyMessage = string.Format(StringFormatTemplates.EmailMessageBody, $"{model.LastName} {model.FirstName}", model.Email, codeEncoded);
-                var mailSentResult = await _emailSender.SendMailAsync(bodyMessage, "Confirm Email ShopOnline", model.Email, model.Email);
+
+                var mailSentResult = await _emailSender.SendRegistrationMailAsync(codeEncoded, model.FirstName, model.Email, model.Email);
 
                 return CommandResult<bool>.Success(true);
             }

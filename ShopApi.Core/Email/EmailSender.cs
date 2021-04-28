@@ -67,5 +67,46 @@ namespace ShopApi.Core.Email
                 throw;
             }
         }
+        public async Task<IdentityResult> SendRegistrationMailAsync(string token, string userFullName, string sendToUsername, string sendToEmail)
+        {
+            try
+            {
+                using var client = new SmtpClient();
+
+                var builder = new BodyBuilder();
+
+
+                //  var image = builder.LinkedResources.Add(@"..\ShopApi.Core\Email\register.jpg");
+
+                //image.ContentId = MimeUtils.GenerateMessageId();
+
+                //builder.HtmlBody = $@"<p style=""color: red;"">Hello , <br> <b> {userFullName} </b> </p>
+
+                // <center><img src=""cid:{image.ContentId}""></center>
+                //Please click on the link below for confirming your email http://localhost:4200/confirm-email?email={sendToEmail}&token={token} 
+                //<p> Best Regards,<br>
+                //ShopOnlineApp2021 </p> ";
+
+                builder.HtmlBody = String.Format(EmailTemplates.RegisterTemplate, userFullName);
+                var emailInfo = new MimeMessage { Subject = "Confirm Email Shop Assistant", Body = builder.ToMessageBody() };
+
+                emailInfo.From.Add(new MailboxAddress(_emailConfig.Username, _emailConfig.Email));
+                emailInfo.To.Add(new MailboxAddress(sendToUsername, sendToEmail));
+
+                await client.ConnectAsync(_emailConfig.Host, 587);
+                await client.AuthenticateAsync(_emailConfig.Username, _emailConfig.Password);
+                await client.SendAsync(emailInfo);
+                await client.DisconnectAsync(true);
+
+                _logger.LogInformation(string.Format(StringFormatTemplates.EmailSentSuccessfully, sendToEmail));
+
+                return IdentityResult.Success;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(string.Format(StringFormatTemplates.EmailFailedToSend, sendToEmail) + e.Message);
+                throw;
+            }
+        }
     }
 }
