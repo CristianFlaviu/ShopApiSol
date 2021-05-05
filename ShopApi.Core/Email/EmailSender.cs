@@ -6,6 +6,7 @@ using MimeKit.Utils;
 using ShopApi.Constants;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace ShopApi.Core.Email
@@ -14,11 +15,13 @@ namespace ShopApi.Core.Email
     {
         private readonly EmailConfig _emailConfig;
         private readonly ILogger<EmailSender> _logger;
+        private readonly IConfiguration _configuration;
 
-        public EmailSender(IOptions<EmailConfig> emailConfig, ILogger<EmailSender> logger)
+        public EmailSender(IOptions<EmailConfig> emailConfig, ILogger<EmailSender> logger, IConfiguration configuration)
         {
             _emailConfig = emailConfig.Value;
             _logger = logger;
+            _configuration = configuration;
         }
 
         public async Task<IdentityResult> SendMailAsync(string bodyMessage, string subject, string sendToUsername, string sendToEmail)
@@ -72,22 +75,11 @@ namespace ShopApi.Core.Email
             try
             {
                 using var client = new SmtpClient();
-
                 var builder = new BodyBuilder();
 
-
-                //  var image = builder.LinkedResources.Add(@"..\ShopApi.Core\Email\register.jpg");
-
-                //image.ContentId = MimeUtils.GenerateMessageId();
-
-                //builder.HtmlBody = $@"<p style=""color: red;"">Hello , <br> <b> {userFullName} </b> </p>
-
-                // <center><img src=""cid:{image.ContentId}""></center>
-                //Please click on the link below for confirming your email http://localhost:4200/confirm-email?email={sendToEmail}&token={token} 
-                //<p> Best Regards,<br>
-                //ShopOnlineApp2021 </p> ";
-
-                builder.HtmlBody = String.Format(EmailTemplates.RegisterTemplate, userFullName);
+                var webUrl = _configuration.GetSection("WebUrl").Value;
+                var registerUrl = $"{webUrl}/confirm-email?email={sendToEmail}&token={token}";
+                builder.HtmlBody = String.Format(EmailTemplates.RegisterTemplate, userFullName, registerUrl);
                 var emailInfo = new MimeMessage { Subject = "Confirm Email Shop Assistant", Body = builder.ToMessageBody() };
 
                 emailInfo.From.Add(new MailboxAddress(_emailConfig.Username, _emailConfig.Email));

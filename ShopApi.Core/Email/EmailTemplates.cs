@@ -65,14 +65,9 @@ namespace ShopApi.Core.Email
                       <div style=""Margin-left:20px;Margin-right:20px;"">
                         <div
                           style=""font-size:12px;font-style:normal;font-weight:normal;line-height:19px;Margin-bottom:20px;"">
-
-                          <a style=""text-decoration:underline;
-                                transition:opacity 0.1s ease-in;
-                                color:#7856ff;"" href=""https://www.youtube.com/watch?v=eEa3vDXatXg&ab_channel=Seitrand"">
-
-                            <img style=""border:0;display:block;height:auto;width:100%;max-width:200px;""
-                              alt=""Campaign Monitor logo"" width=""200""
-                              src=""https://i.ibb.co/zm96b3s/gay.jpg""></a>
+                            <img style=""height:200px""border:0;display:block;height:auto;width:100%;max-width:200px;height:200px""
+                              alt=""Shop Assistant logo""
+                              src=""https://i.ibb.co/DKBjmqr/register.jpg""></a>
                         </div>
                       </div>
 
@@ -116,7 +111,7 @@ namespace ShopApi.Core.Email
 
                         <h1
                           style=""Margin-top:0;Margin-bottom:20px;font-style:normal;font-weight:normal;color:#111324;font-size:22px;line-height:31px;text-align:left;"">
-                          Thanks for joining Gay Assistant!</h1>
+                          Thanks for joining Shop Assistant!</h1>
 
                       </div>
 
@@ -140,7 +135,7 @@ namespace ShopApi.Core.Email
                                     transition:opacity 0.1s ease-in;
                                     color:#ffffff !important;
                                     background-color:#7856ff;
-                                    font-family:sans-serif;"" href=""https://www.youtube.com/watch?v=eEa3vDXatXg&ab_channel=Seitrand"">Confirm
+                                    font-family:sans-serif;"" href={1}>Confirm
                             my address</a>
                         </div>
                       </div>
@@ -148,7 +143,7 @@ namespace ShopApi.Core.Email
                       <div style=""Margin-left:20px;Margin-right:20px;"">
 
                         <p style=""Margin-top:0;Margin-bottom:20px;font-size:12px;line-height:19px;"">If you didn't sign
-                          up to Gay Assistant, please ignore this email. It's likely someone else accidentally
+                          up to Shop Assistant, please ignore this email. It's likely someone else accidentally
                           entered your address or made a typo.</p>
 
                       </div>
@@ -190,15 +185,15 @@ namespace ShopApi.Core.Email
                                   Margin-bottom:10px;"">
 
                         <div style=""font-size:12px;line-height:19px;"">
-                          <div>We're Gay Monitor<br>
-                            9 Lea Ave. Nashville, TN 37210</div>
+                          <div>	&#169; Shop Assistant<br>
+                           Maramures,Lucacesti, Somensului nr 8</div>
                         </div>
                         <div style=""font-size:12px;line-height:19px;Margin-top:18px;"">
                         </div>
                       </div>
                     </div>
 
-                    <div   style=""text-align:left;
+                    <div  style=""height:50px;""text-align:left;
                     font-size:12px;
                     line-height:19px;
                     color:#717a8a;
@@ -228,7 +223,6 @@ namespace ShopApi.Core.Email
                   </div>
                 </div>
               </div>
-              <div style=""line-height:40px;font-size:40px;"">&nbsp;</div>
             </div>
           </td>
         </tr>
