@@ -19,6 +19,8 @@
 	<ItemGroup>
 	  <Compile Include="Migrations\20210420194611_m1.cs" />
 	  <Compile Include="Migrations\20210420194611_m1.Designer.cs" />
+	  <Compile Include="Migrations\20210506163533_m2.cs" />
+	  <Compile Include="Migrations\20210506163533_m2.Designer.cs" />
 	  <Compile Include="Migrations\DataContextModelSnapshot.cs" />
 	</ItemGroup>
 

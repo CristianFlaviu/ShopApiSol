@@ -6,9 +6,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ShopApi.Authentication.Validators;
 using ShopApi.Config;
-using ShopApi.Constants;
 using ShopApi.Core;
 using ShopApi.Core.Email;
+using ShopApi.Database.Entities;
 using ShopApi.Dto;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using ShopApi.Database.Entities;
 
 namespace ShopApi.Authentication
 {
@@ -136,11 +135,8 @@ namespace ShopApi.Authentication
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var codeEncoded = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                ;
 
-                var bodyMessage = string.Format(StringFormatTemplates.EmailMessageBody, $"{model.LastName} {model.FirstName}", model.Email, codeEncoded);
-
-                var mailSentResult = await _emailSender.SendRegistrationMailAsync(codeEncoded, model.FirstName, model.Email, model.Email);
+                await _emailSender.SendRegistrationMailAsync(codeEncoded, model.FirstName, model.Email, model.Email);
 
                 return CommandResult<bool>.Success(true);
             }
@@ -153,7 +149,7 @@ namespace ShopApi.Authentication
         {
             var user = await _userManager.FindByEmailAsync(modelDto.Email);
             var tokenDecodedByte = WebEncoders.Base64UrlDecode(modelDto.Token);
-            var tokenDecoded = System.Text.Encoding.UTF8.GetString(tokenDecodedByte);
+            var tokenDecoded = Encoding.UTF8.GetString(tokenDecodedByte);
 
             var result = await _userManager.ConfirmEmailAsync(user, tokenDecoded);
 
@@ -165,26 +161,6 @@ namespace ShopApi.Authentication
             return BadRequest(result.Errors);
 
         }
-
-        [HttpGet("delete-user/{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] string id)
-        {
-
-            await _emailSender.SendMailAsync("default message", "I just wanna say hi", "Ioana", "buda_ioana2002@yahoo.com");
-            return Ok();
-
-            //var user = await _userManager.FindByIdAsync(id);
-
-            //if (user != null)
-            //{
-            //    await _userManager.DeleteAsync(user);
-
-            //    return Ok();
-            //}
-
-            //return BadRequest(new { message = "bad user Id" });
-        }
-
 
 
     }

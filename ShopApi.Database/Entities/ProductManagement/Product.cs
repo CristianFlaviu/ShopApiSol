@@ -10,6 +10,7 @@ namespace ShopApi.Database.Entities.ProductManagement
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string ShortTitle { get; set; }
         public double Score { get; set; }
         public double NewPrice { get; set; }
         public double OldPrice { get; set; }

@@ -18,14 +18,23 @@ namespace ShopApi.Extensions
     public static class SeedData
     {
         public static string DefaultBarcode = "076575693118";
-        public static string[] ProductNames = { "Lapte integral Zuzu 3.5% grasime, 1L",
-                                                "Lapte de consum Zuzu 1.8L, 3.5% grasime",
-                                                "Lapte de consum Auchan 1 l",
-                                                "Lapte batut Auchan 2% grasime, 330 g",
-                                                "Lapte integral Zuzu 3.5% grasime, 1L",
+        public static string[] ProductNames = { "Lapte integral Zuzu ",
+                                                "Lapte de consum Zuzu",
+                                                "Lapte de consum Auchan ",
+                                                "Lapte batut Auchan",
+                                                "Lapte integral Zuzu",
                                                 "Lapte de consum Zuzu 1.8L, 3.5% grasime",
                                                 "Lapte de consum Auchan 1 l",
                                                 "Lapte batut Auchan 2% grasime, 330 g" };
+        public static string[] ShortProductNames = { "Lapte integral",
+                                                "Lapte de consum ",
+                                                "Lapte de consum ",
+                                                "Lapte batut ",
+                                                "Lapte integral ",
+                                                "Lapte de consum ",
+                                                "Lapte de consum",
+                                                "Lapte batut Auchan" };
+
 
         public static string[] PathsToImage =
         {
@@ -87,7 +96,7 @@ namespace ShopApi.Extensions
                     PhoneNumber = "0744594966",
                 };
 
-                var resultAddUSer = await userManager.CreateAsync(defaultBaseUser, password);
+                await userManager.CreateAsync(defaultBaseUser, password);
 
                 if ((!await roleManager.RoleExistsAsync(defaultRole)))
                 {
@@ -165,7 +174,7 @@ namespace ShopApi.Extensions
                 var newProd = new Product
                 {
                     Title = productName,
-
+                    ShortTitle = ShortProductNames[new Random().Next(0, 5)],
                     Barcode = SeedData.DefaultBarcode + count++,
                     Brand = brand,
                     Category = category,
