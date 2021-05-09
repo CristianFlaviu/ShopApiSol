@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ namespace ShopApi.Repository
     {
         private readonly DataContext _dataContext;
 
-
         public ProductRepo(DataContext dataContext)
         {
             _dataContext = dataContext;
@@ -21,30 +21,22 @@ namespace ShopApi.Repository
             await _dataContext.Products.AddAsync(product);
             await _dataContext.SaveChangesAsync();
         }
-        public async Task<Product> GetByNameAsync(string name)
-        {
-            return await _dataContext.Products.SingleOrDefaultAsync(x => x.Title.Equals(name));
-        }
 
         public async Task<List<Product>> GetAll()
         {
-            return await _dataContext.Products.Include(x => x.Brand).ToListAsync();
+            return await _dataContext.Products.Include(x => x.Brand)
+                                              .Include(x => x.ProductsUsersShopping)
+                                              .AsSplitQuery()
+                                              .ToListAsync();
         }
 
-        public async Task<Product> GetByBarcodeAsync(string barcode)
+        public async Task<Product> GetByBarcode(string barcode)
         {
-            return await _dataContext.Products.Include(x => x.Brand).
-                         SingleOrDefaultAsync(x => x.Barcode.Equals(barcode));
+            return await _dataContext.Products.Include(x => x.Brand)
+                .Include(x => x.ProductsUsersShopping)
+                .SingleOrDefaultAsync(x => x.Barcode.Equals(barcode));
         }
 
-        public async Task UpdateProductAsync(Product product)
-        {
-
-            var productUpdate = await _dataContext.Products.SingleOrDefaultAsync(x => x.Id == product.Id);
-            productUpdate.Barcode = product.Barcode;
-            await _dataContext.SaveChangesAsync();
-
-        }
 
     }
 }

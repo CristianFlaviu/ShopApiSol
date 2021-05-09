@@ -10,11 +10,13 @@ namespace ShopApi.Database.Data
     public class DataContext : IdentityDbContext<IdentityUser>
     {
         public override DbSet<IdentityUser> Users { get; set; }
-
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<ProductCategory> ProductCategory { get; set; }
+        public DbSet<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
+        public DbSet<ProductsUserFavorite> ProductsUserFavorites { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
@@ -22,17 +24,6 @@ namespace ShopApi.Database.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<BaseUser>().HasMany<Product>(u => u.FavoritesProducts)
-                .WithMany(p => p.FavoriteUsers);
-
-            modelBuilder.Entity<BaseUser>().HasMany<Product>(u => u.ShoppingCartProducts)
-                .WithMany(p => p.ShoppingCartUsers);
-
-
-
-
-
         }
     }
 }

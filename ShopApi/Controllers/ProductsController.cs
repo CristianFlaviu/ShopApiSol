@@ -1,62 +1,99 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApi.Core;
 using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Repository;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ShopApi.Dto;
 
 namespace ShopApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("products")]
     public class ProductsController : ControllerBase
     {
         private readonly ProductRepo _productRepo;
-        private readonly ProductCategoryRepo _productCategoryRepo;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly CategoryRepo _categoryRepo;
+        private readonly ProductUserShoppingCartRepo _productUserShoppingCartRepo;
+        private readonly ProductsUsersFavoriteRepo _productsUsersFavoriteRepo;
+        private readonly OrderRepo _orderRepo;
 
 
-        public ProductsController(ProductRepo productRepo, ProductCategoryRepo productCategoryRepo, IHttpContextAccessor httpContextAccessor)
+        public ProductsController(ProductRepo productRepo, CategoryRepo categoryRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, ProductsUsersFavoriteRepo productsUsersFavoriteRepo, OrderRepo orderRepo)
         {
             _productRepo = productRepo;
-            _productCategoryRepo = productCategoryRepo;
-            _httpContextAccessor = httpContextAccessor;
+            _categoryRepo = categoryRepo;
+            _productUserShoppingCartRepo = productUserShoppingCartRepo;
+            _productsUsersFavoriteRepo = productsUsersFavoriteRepo;
+            _orderRepo = orderRepo;
         }
 
         [HttpGet("get-products")]
-        public async Task<CommandResult<List<ProductCategory>>> GetProducts()
-            => CommandResult<List<ProductCategory>>.Success(await _productCategoryRepo.GetAll());
-
+        public async Task<CommandResult<List<Product>>> GetProducts()
+            => CommandResult<List<Product>>.Success(await _productRepo.GetAll());
         [HttpGet("get-product-by-barcode/{barcode}")]
-        public async Task<CommandResult<ProductCategory>> GetProductByBarcode([FromRoute] string barcode)
-            => CommandResult<ProductCategory>.Success(await _productCategoryRepo.GetByBarcode(barcode));
+        public async Task<CommandResult<Product>> GetProductByBarcode([FromRoute] string barcode)
+            => CommandResult<Product>.Success(await _productRepo.GetByBarcode(barcode));
 
-        [HttpGet("get-products-by-category/{category}")]
-        public async Task<CommandResult<List<ProductCategory>>> GetProductsFromCategory([FromRoute] string category)
-            => CommandResult<List<ProductCategory>>.Success(await _productCategoryRepo.GetProductsFromCategory(category));
+        [HttpGet("get-products-category/{category}")]
+        public async Task<CommandResult<List<Product>>> GetProductsFromCategory([FromRoute] string category)
+            => CommandResult<List<Product>>.Success(await _categoryRepo.GetAllFromCategory(category));
 
-        [HttpGet("add-products-to-favorite/{barcode}")]
-        public async Task<CommandResult<bool>> AddProductToFavorite([FromRoute] string barcode)
+        #region ShoppingCart
+
+        [HttpGet("get-shopping-cart-products")]
+        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetShoppingCartProduct()
+            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsShoppingCartUser());
+
+        [HttpGet("add-product-shopping-cart/{barcode}")]
+        public async Task<CommandResult<bool>> AddProductToShoppingCart([FromRoute] string barcode)
         {
-            var httpContext = _httpContextAccessor.HttpContext;
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = httpContext.Request.Headers["Authorization"].ToString().Substring("Bearer ".Length);
-            var claims = handler.ReadJwtToken(jwt).Claims;
-            var email = claims.FirstOrDefault(x => x.Type.Equals("email"))?.Value;
+            await _productUserShoppingCartRepo.AddProductToShoppingCart(barcode);
+            return CommandResult<bool>.Success(true);
+        }
 
-            await _productCategoryRepo.AddProductToFavorite(barcode, email);
+        [HttpPost("delete-shopping-cart-product/{barcode}")]
+        public async Task<CommandResult<ProductsUsersShoppingCart>> DeleteProductFromShoppingCart([FromRoute] string barcode)
+            => CommandResult<ProductsUsersShoppingCart>.Success(await _productUserShoppingCartRepo.DeleteProduct(barcode));
 
+        [HttpPost("set-quantity-product-shopping-cart")]
+        public async Task<CommandResult<bool>> LowerProductQuantity([FromBody] ProductSetQuantity productSetQuantity)
+        {
+            await _productUserShoppingCartRepo.SetQuantityProductShoppingCart(productSetQuantity.Barcode, productSetQuantity.Quantity);
+            return CommandResult<bool>.Success(true);
+        }
 
-
-
+        [HttpPost("place-order-without-payment")]
+        public async Task<CommandResult<bool>> PlaceOrder([FromBody] int amount)
+        {
+            await _orderRepo.PlaceOrderWithOutPayment(amount);
             return CommandResult<bool>.Success(true);
         }
 
 
+
+        #endregion
+
+        #region Favorite
+
+        [HttpGet("get-favorite-products")]
+        public async Task<CommandResult<List<ProductsUserFavorite>>> GetFavoriteProducts()
+            => CommandResult<List<ProductsUserFavorite>>.Success(await _productsUsersFavoriteRepo.GetProductsFavorite());
+
+        [HttpGet("add-product-favorite/{barcode}")]
+        public async Task<CommandResult<bool>> AddProductToFavorite([FromRoute] string barcode)
+        {
+            await _productsUsersFavoriteRepo.AddProductToFavorite(barcode);
+            return CommandResult<bool>.Success(true);
+        }
+
+        [HttpPost("delete-favorite-product/{barcode}")]
+        public async Task<CommandResult<ProductsUserFavorite>> DeleteProductFromFavorite([FromRoute] string barcode)
+            => CommandResult<ProductsUserFavorite>.Success(await _productsUsersFavoriteRepo.DeleteProduct(barcode));
+
+        #endregion
 
 
 

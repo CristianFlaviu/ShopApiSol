@@ -14,7 +14,6 @@ using ShopApi.Core.Email;
 using ShopApi.Core.RabbitMQ;
 using ShopApi.Core.SignalR;
 using ShopApi.Database.Data;
-using ShopApi.Email;
 using ShopApi.Extensions;
 using ShopApi.Repository;
 using System;
@@ -37,9 +36,11 @@ namespace ShopApi
         {
             services.AddSignalR();
             services.AddControllers();
-
             services.AddDbContext<DataContext>(optionsBuilder =>
-               optionsBuilder.UseNpgsql(Configuration.GetConnectionString("LocalDatabaseConnection")));
+                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("PostgresSqlDatabaseConnection")));
+
+            //services.AddDbContext<DataContext>(optionsBuilder =>
+            //    optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionString")));
 
             services.AddCors();
 
@@ -80,35 +81,22 @@ namespace ShopApi
             {
                 // Password settings.
                 options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+
+                options.Password.RequiredLength = 8;
+
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
-
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 
                 options.User.RequireUniqueEmail = true;
             });
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-                options.SlidingExpiration = true;
-            });
-
 
             services.AddTransient<EmailSender, EmailSender>();
 
@@ -118,9 +106,30 @@ namespace ShopApi
                 config.AddConsole();
             });
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(config =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopApi", Version = "v1" });
+                config.SwaggerDoc("v1", new OpenApiInfo() { Title = "WebAPI", Version = "v1" });
+                config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                config.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             });
 
             services.AddCors(options =>
@@ -128,7 +137,7 @@ namespace ShopApi
                 options.AddPolicy("CorsPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200")
+                        builder.WithOrigins("http://localhost:4200", "http://192.168.43.184:4200")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();
@@ -140,8 +149,12 @@ namespace ShopApi
 
             services.AddScoped<ProductRepo>();
             services.AddScoped<CategoryRepo>();
-            services.AddScoped<ProductCategoryRepo>();
             services.AddScoped<BrandRepo>();
+            services.AddScoped<UserRepo>();
+            services.AddScoped<OrderRepo>();
+
+            services.AddScoped<ProductUserShoppingCartRepo>();
+            services.AddScoped<ProductsUsersFavoriteRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

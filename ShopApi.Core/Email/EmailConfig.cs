@@ -1,4 +1,4 @@
-﻿namespace ShopApi.Email
+﻿namespace ShopApi.Core.Email
 {
     public class EmailConfig
     {
@@ -6,7 +6,5 @@
         public string Password { get; set; }
         public string Email { get; set; }
         public string Host { get; set; }
-
-
     }
 }

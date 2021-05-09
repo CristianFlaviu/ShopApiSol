@@ -10,8 +10,10 @@ namespace ShopApi.Database.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         [JsonIgnore]
-        public List<Product> FavoritesProducts { get; set; }
+        public List<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
         [JsonIgnore]
-        public List<Product> ShoppingCartProducts { get; set; }
+        public List<ProductsUserFavorite> ProductUserFavorites { get; set; }
+
+
     }
 }
