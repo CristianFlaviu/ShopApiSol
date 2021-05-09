@@ -5,6 +5,7 @@ using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ShopApi.Dto;
 
 namespace ShopApi.Controllers
 {
@@ -17,14 +18,16 @@ namespace ShopApi.Controllers
         private readonly CategoryRepo _categoryRepo;
         private readonly ProductUserShoppingCartRepo _productUserShoppingCartRepo;
         private readonly ProductsUsersFavoriteRepo _productsUsersFavoriteRepo;
+        private readonly OrderRepo _orderRepo;
 
 
-        public ProductsController(ProductRepo productRepo, CategoryRepo categoryRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, ProductsUsersFavoriteRepo productsUsersFavoriteRepo)
+        public ProductsController(ProductRepo productRepo, CategoryRepo categoryRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, ProductsUsersFavoriteRepo productsUsersFavoriteRepo, OrderRepo orderRepo)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
             _productUserShoppingCartRepo = productUserShoppingCartRepo;
             _productsUsersFavoriteRepo = productsUsersFavoriteRepo;
+            _orderRepo = orderRepo;
         }
 
         [HttpGet("get-products")]
@@ -54,6 +57,22 @@ namespace ShopApi.Controllers
         [HttpPost("delete-shopping-cart-product/{barcode}")]
         public async Task<CommandResult<ProductsUsersShoppingCart>> DeleteProductFromShoppingCart([FromRoute] string barcode)
             => CommandResult<ProductsUsersShoppingCart>.Success(await _productUserShoppingCartRepo.DeleteProduct(barcode));
+
+        [HttpPost("set-quantity-product-shopping-cart")]
+        public async Task<CommandResult<bool>> LowerProductQuantity([FromBody] ProductSetQuantity productSetQuantity)
+        {
+            await _productUserShoppingCartRepo.SetQuantityProductShoppingCart(productSetQuantity.Barcode, productSetQuantity.Quantity);
+            return CommandResult<bool>.Success(true);
+        }
+
+        [HttpPost("place-order-without-payment")]
+        public async Task<CommandResult<bool>> PlaceOrder([FromBody] int amount)
+        {
+            await _orderRepo.PlaceOrderWithOutPayment(amount);
+            return CommandResult<bool>.Success(true);
+        }
+
+
 
         #endregion
 

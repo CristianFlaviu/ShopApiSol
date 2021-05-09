@@ -10,12 +10,13 @@ namespace ShopApi.Database.Data
     public class DataContext : IdentityDbContext<IdentityUser>
     {
         public override DbSet<IdentityUser> Users { get; set; }
-
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
         public DbSet<ProductsUserFavorite> ProductsUserFavorites { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }

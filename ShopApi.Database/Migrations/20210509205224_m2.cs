@@ -6,18 +6,19 @@ namespace ShopApi.Database.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ShortTitle",
-                table: "Products",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.AddColumn<int>(
+                name: "Amount",
+                table: "Orders",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ShortTitle",
-                table: "Products");
+                name: "Amount",
+                table: "Orders");
         }
     }
 }

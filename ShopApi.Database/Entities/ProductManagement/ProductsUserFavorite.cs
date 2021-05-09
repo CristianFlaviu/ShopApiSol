@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ShopApi.Database.Entities.ProductManagement
+﻿namespace ShopApi.Database.Entities.ProductManagement
 {
     public class ProductsUserFavorite
     {

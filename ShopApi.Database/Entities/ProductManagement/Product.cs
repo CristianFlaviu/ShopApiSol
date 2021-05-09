@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ShopApi.Database.Entities.ProductManagement
@@ -22,7 +21,6 @@ namespace ShopApi.Database.Entities.ProductManagement
         public Brand Brand { get; set; }
         [JsonIgnore]
         public Category Category { get; set; }
-
         public string Attributes { get; set; }
         [JsonIgnore]
         public List<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }

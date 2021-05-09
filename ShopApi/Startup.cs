@@ -36,13 +36,11 @@ namespace ShopApi
         {
             services.AddSignalR();
             services.AddControllers();
+            services.AddDbContext<DataContext>(optionsBuilder =>
+                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("PostgresSqlDatabaseConnection")));
 
             //services.AddDbContext<DataContext>(optionsBuilder =>
-            //    optionsBuilder.UseNpgsql(Configuration.GetConnectionString("LocalDatabaseConnection")));
-
-
-            services.AddDbContext<DataContext>(optionsBuilder =>
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionString")));
+            //    optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionString")));
 
             services.AddCors();
 
@@ -67,7 +65,7 @@ namespace ShopApi
 
                 })
                 .AddJwtBearer(cfg =>
-                {   
+                {
                     cfg.RequireHttpsMetadata = false;
                     cfg.SaveToken = true;
                     cfg.TokenValidationParameters = new TokenValidationParameters
@@ -85,9 +83,9 @@ namespace ShopApi
                 options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
-                
+
                 options.Password.RequiredLength = 8;
-      
+
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -153,6 +151,7 @@ namespace ShopApi
             services.AddScoped<CategoryRepo>();
             services.AddScoped<BrandRepo>();
             services.AddScoped<UserRepo>();
+            services.AddScoped<OrderRepo>();
 
             services.AddScoped<ProductUserShoppingCartRepo>();
             services.AddScoped<ProductsUsersFavoriteRepo>();

@@ -46,9 +46,26 @@ namespace ShopApi.Repository
             await _dataContext.SaveChangesAsync();
         }
 
+        public async Task SetQuantityProductShoppingCart(string barcode, int quantity)
+        {
+            var user = await _userRepo.GetCurrentUser();
+
+            var productUserShoppingCart = await _dataContext.ProductsUsersShopping
+                .Include(x => x.Product)
+                .Include(x => x.User)
+                .SingleOrDefaultAsync(x =>
+                    x.Product.Barcode.Equals(barcode) && x.User.Email.Equals(user.Email));
+
+            if (productUserShoppingCart != null)
+            {
+                productUserShoppingCart.Quantity = quantity;
+
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
         public async Task<ProductsUsersShoppingCart> DeleteProduct(string barcode)
         {
-
             var user = await _userRepo.GetCurrentUser();
             var productAdded = await _dataContext.ProductsUsersShopping
                 .Include(x => x.Product)
@@ -73,6 +90,11 @@ namespace ShopApi.Repository
             return await _dataContext.ProductsUsersShopping.Include(x => x.Product)
                                                             .Where(x => x.User.Email.Equals(user.Email))
                                                             .ToListAsync();
+        }
+
+        public async Task DeleteAll()
+        {
+            _dataContext.ProductsUsersShopping.RemoveRange(await _dataContext.ProductsUsersShopping.ToListAsync());
         }
     }
 }
