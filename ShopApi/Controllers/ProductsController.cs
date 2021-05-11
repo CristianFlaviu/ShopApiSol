@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopApi.Core;
 using ShopApi.Database.Entities.ProductManagement;
+using ShopApi.Dto;
 using ShopApi.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ShopApi.Dto;
 
 namespace ShopApi.Controllers
 {
@@ -19,15 +19,17 @@ namespace ShopApi.Controllers
         private readonly ProductUserShoppingCartRepo _productUserShoppingCartRepo;
         private readonly ProductsUsersFavoriteRepo _productsUsersFavoriteRepo;
         private readonly OrderRepo _orderRepo;
+        private readonly PaymentRepo _paymentRepo;
 
 
-        public ProductsController(ProductRepo productRepo, CategoryRepo categoryRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, ProductsUsersFavoriteRepo productsUsersFavoriteRepo, OrderRepo orderRepo)
+        public ProductsController(ProductRepo productRepo, CategoryRepo categoryRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, ProductsUsersFavoriteRepo productsUsersFavoriteRepo, OrderRepo orderRepo, PaymentRepo paymentRepo)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
             _productUserShoppingCartRepo = productUserShoppingCartRepo;
             _productsUsersFavoriteRepo = productsUsersFavoriteRepo;
             _orderRepo = orderRepo;
+            _paymentRepo = paymentRepo;
         }
 
         [HttpGet("get-products")]
@@ -72,8 +74,12 @@ namespace ShopApi.Controllers
             return CommandResult<bool>.Success(true);
         }
 
-
-
+        [HttpPost("pay-order")]
+        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentDto paymentDto)
+        {
+            await _orderRepo.PlaceOrderWithPayment(paymentDto.Amount, paymentDto.CardNumber);
+            return CommandResult<bool>.Success(true);
+        }
         #endregion
 
         #region Favorite

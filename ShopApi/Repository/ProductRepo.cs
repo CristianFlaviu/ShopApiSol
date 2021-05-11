@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;

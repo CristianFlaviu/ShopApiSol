@@ -152,6 +152,7 @@ namespace ShopApi
             services.AddScoped<BrandRepo>();
             services.AddScoped<UserRepo>();
             services.AddScoped<OrderRepo>();
+            services.AddScoped<PaymentRepo>();
 
             services.AddScoped<ProductUserShoppingCartRepo>();
             services.AddScoped<ProductsUsersFavoriteRepo>();

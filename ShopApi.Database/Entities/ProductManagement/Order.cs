@@ -8,7 +8,6 @@ namespace ShopApi.Database.Entities.ProductManagement
         public int Id { get; set; }
         public List<ProductsUsersShoppingCart> Products { get; set; }
         public DateTime OrderDate { get; set; }
-        public Payment Payment { get; set; }
         public BaseUser User { get; set; }
         public int Amount { get; set; }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShopApi.Database.Data;
@@ -9,9 +10,10 @@ using ShopApi.Database.Data;
 namespace ShopApi.Database.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210511202026_m3")]
+    partial class m3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,10 +284,15 @@ namespace ShopApi.Database.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int?>("PaymentId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PaymentId");
 
                     b.HasIndex("UserId");
 
@@ -308,15 +315,10 @@ namespace ShopApi.Database.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -505,24 +507,24 @@ namespace ShopApi.Database.Migrations
 
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Order", b =>
                 {
+                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId");
+
                     b.HasOne("ShopApi.Database.Entities.BaseUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Payment");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Payment", b =>
                 {
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("ShopApi.Database.Entities.BaseUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Order");
 
                     b.Navigation("User");
                 });
