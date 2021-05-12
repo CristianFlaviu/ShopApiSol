@@ -1,24 +1,20 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopApi.Database.Data;
+using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using ShopApi.Database.Data;
-using ShopApi.Database.Entities.ProductManagement;
 
 namespace ShopApi.Repository
 {
     public class ProductsUsersFavoriteRepo
     {
         private readonly DataContext _dataContext;
-        private readonly IHttpContextAccessor _httpContextAccess;
         private readonly UserRepo _userRepo;
 
-        public ProductsUsersFavoriteRepo(DataContext dataContext, IHttpContextAccessor httpContextAccess, UserRepo userRepo)
+        public ProductsUsersFavoriteRepo(DataContext dataContext, UserRepo userRepo)
         {
             _dataContext = dataContext;
-            _httpContextAccess = httpContextAccess;
             _userRepo = userRepo;
         }
 

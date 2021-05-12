@@ -47,7 +47,11 @@ namespace ShopApi.Controllers
 
         [HttpGet("get-shopping-cart-products")]
         public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetShoppingCartProduct()
-            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsShoppingCartUser());
+            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsShoppingCartNotOrderedUser());
+
+        [HttpGet("get-ordered-products")]
+        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetOrderedProducts()
+            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsShoppingCartOrderedUser());
 
         [HttpGet("add-product-shopping-cart/{barcode}")]
         public async Task<CommandResult<bool>> AddProductToShoppingCart([FromRoute] string barcode)
@@ -80,6 +84,25 @@ namespace ShopApi.Controllers
             await _orderRepo.PlaceOrderWithPayment(paymentDto.Amount, paymentDto.CardNumber);
             return CommandResult<bool>.Success(true);
         }
+
+        [HttpGet("get-orders")]
+        public async Task<CommandResult<List<Order>>> GetOrders()
+        {
+            return CommandResult<List<Order>>.Success(await _orderRepo.GetOrders());
+        }
+
+        [HttpGet("get-products-by-order/{id}")]
+        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetProductsByOrder(int id)
+        {
+            return CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsByOrderId(id));
+        }
+
+        [HttpGet("get-order-by-id/{id}")]
+        public async Task<CommandResult<Order>> GetOrderById(int id)
+        {
+            return CommandResult<Order>.Success(await _orderRepo.GetOrderById(id));
+        }
+
         #endregion
 
         #region Favorite

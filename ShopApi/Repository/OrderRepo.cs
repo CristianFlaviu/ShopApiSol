@@ -1,7 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopApi.Repository
 {
@@ -23,7 +26,7 @@ namespace ShopApi.Repository
         public async Task PlaceOrderWithOutPayment(int amount)
         {
             var user = await _userRepo.GetCurrentUser();
-            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartUser();
+            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartNotOrderedUser();
             var order = new Order
             {
                 OrderDate = DateTime.Now,
@@ -33,14 +36,14 @@ namespace ShopApi.Repository
             };
 
             await _dataContext.Orders.AddAsync(order);
-            await _productUserShoppingCartRepo.DeleteAll();
+            await _productUserShoppingCartRepo.MarkProductsAsOrdered();
             await _dataContext.SaveChangesAsync();
         }
 
         public async Task PlaceOrderWithPayment(int amount, string cardNumber)
         {
             var user = await _userRepo.GetCurrentUser();
-            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartUser();
+            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartNotOrderedUser();
             var order = new Order
             {
                 OrderDate = DateTime.Now,
@@ -49,10 +52,25 @@ namespace ShopApi.Repository
                 Amount = amount,
             };
             await _paymentRepo.SaveAsync(amount, cardNumber, order);
-            await _productUserShoppingCartRepo.DeleteAll();
+            await _productUserShoppingCartRepo.MarkProductsAsOrdered();
             await _dataContext.SaveChangesAsync();
         }
 
+        public async Task<List<Order>> GetOrders()
+        {
+            var user = await _userRepo.GetCurrentUser();
 
+            return await _dataContext.Orders.Include(x => x.Products)
+                                                            .Include(x => x.Payments)
+                                                           .Where(x => x.User.Email.Equals(user.Email))
+                                                           .ToListAsync();
+        }
+
+        public async Task<Order> GetOrderById(int id)
+        {
+            return await _dataContext.Orders.Include(x => x.Products)
+                .Include(x => x.Payments)
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

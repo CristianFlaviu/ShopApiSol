@@ -10,6 +10,7 @@ namespace ShopApi.Database.Entities.ProductManagement
         public DateTime OrderDate { get; set; }
         public BaseUser User { get; set; }
         public int Amount { get; set; }
+        public List<Payment> Payments { get; set; }
 
     }
 }

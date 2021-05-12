@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ShopApi.Database.Entities.ProductManagement
 {
@@ -9,6 +10,7 @@ namespace ShopApi.Database.Entities.ProductManagement
         public int Amount { get; set; }
         public string CardNumber { get; set; }
         public BaseUser User { get; set; }
+        [JsonIgnore]
         public Order Order { get; set; }
     }
 }
