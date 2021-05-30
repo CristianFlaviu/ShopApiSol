@@ -2,7 +2,7 @@
 {
     public class PaymentDto
     {
-        public int Amount { get; set; }
         public string CardNumber { get; set; }
+        public int OrderId { get; set; }
     }
 }

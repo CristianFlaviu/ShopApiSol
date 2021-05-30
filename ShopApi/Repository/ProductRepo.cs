@@ -2,6 +2,7 @@
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopApi.Repository
@@ -36,6 +37,13 @@ namespace ShopApi.Repository
                 .SingleOrDefaultAsync(x => x.Barcode.Equals(barcode));
         }
 
+        public async Task ReduceProductQuantity(string barcode, int quantity)
+        {
+            var product = await _dataContext.Products.SingleOrDefaultAsync(x => x.Barcode.Equals(barcode));
+            product.UnitsAvailable -= quantity;
+            await _dataContext.SaveChangesAsync();
+
+        }
 
     }
 }

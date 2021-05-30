@@ -5,35 +5,24 @@ using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShopApi.Database.Entities;
 
 namespace ShopApi.Repository
 {
     public class ProductUserShoppingCartRepo
     {
         private readonly DataContext _dataContext;
-        private readonly IHttpContextAccessor _httpContextAccess;
-        private readonly UserRepo _userRepo;
 
-        public ProductUserShoppingCartRepo(DataContext dataContext, IHttpContextAccessor httpContextAccess, UserRepo userRepo)
+        public ProductUserShoppingCartRepo(DataContext dataContext)
         {
             _dataContext = dataContext;
-            _httpContextAccess = httpContextAccess;
-            _userRepo = userRepo;
         }
 
-        public async Task AddProductToShoppingCart(string barcode)
+        public async Task AddProductToShoppingCart(Product product, BaseUser user)
         {
-            var user = await _userRepo.GetCurrentUser();
-
-            var product = await _dataContext.Products.Include(x => x.Brand)
-                .Include(x => x.ProductsUsersShopping)
-                .SingleOrDefaultAsync(x => x.Barcode.Equals(barcode));
-
             var productAdded = await _dataContext.ProductsUsersShopping
-                .Include(x => x.Product)
-                .Include(x => x.User)
                 .SingleOrDefaultAsync(x =>
-                x.Product.Barcode.Equals(barcode) && x.User.Email.Equals(user.Email) && x.IsOrdered == false);
+                x.Product.Barcode.Equals(product.Barcode) && x.User.Id.Equals(user.Id) && x.IsOrdered == false);
 
             if (productAdded == null)
             {
@@ -46,15 +35,20 @@ namespace ShopApi.Repository
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task SetQuantityProductShoppingCart(string barcode, int quantity)
+        public async Task<List<ProductsUsersShoppingCart>> GetProductsShoppingCartNotOrderedUser(string userId)
         {
-            var user = await _userRepo.GetCurrentUser();
+            return await _dataContext.ProductsUsersShopping.Include(x => x.Product)
+                .Where(x => x.User.Id.Equals(userId) && x.IsOrdered == false)
+                .ToListAsync();
+        }
 
+        public async Task SetQuantityProductShoppingCart(string barcode, int quantity, string userId)
+        {
             var productUserShoppingCart = await _dataContext.ProductsUsersShopping
                 .Include(x => x.Product)
                 .Include(x => x.User)
                 .SingleOrDefaultAsync(x =>
-                    x.Product.Barcode.Equals(barcode) && x.User.Email.Equals(user.Email));
+                    x.Product.Barcode.Equals(barcode) && x.User.Id.Equals(userId) && !x.IsOrdered);
 
             if (productUserShoppingCart != null)
             {
@@ -64,67 +58,38 @@ namespace ShopApi.Repository
             }
         }
 
-        public async Task<ProductsUsersShoppingCart> DeleteProduct(string barcode)
+        public async Task DeleteProduct(string barcode, string userId)
         {
-            var user = await _userRepo.GetCurrentUser();
-            var productAdded = await _dataContext.ProductsUsersShopping
+            var productToBeDeleted = await _dataContext.ProductsUsersShopping
                 .Include(x => x.Product)
                 .Include(x => x.User)
                 .SingleOrDefaultAsync(x =>
-                    x.Product.Barcode.Equals(barcode) && x.User.Email.Equals(user.Email) && x.IsOrdered==false);
+                    x.Product.Barcode.Equals(barcode) && x.User.Id.Equals(userId) && !x.IsOrdered);
 
-            if (productAdded != null)
+            if (productToBeDeleted != null)
             {
-                _dataContext.ProductsUsersShopping.Remove(productAdded);
+                _dataContext.ProductsUsersShopping.Remove(productToBeDeleted);
                 await _dataContext.SaveChangesAsync();
             }
 
-            return productAdded;
-
         }
 
-        public async Task<List<ProductsUsersShoppingCart>> GetProductsShoppingCartNotOrderedUser()
+        public async Task<List<ProductsUsersShoppingCart>> GetProductsByOrderId(int id, string userId)
         {
-            var user = await _userRepo.GetCurrentUser();
-
-            return await _dataContext.ProductsUsersShopping.Include(x => x.Product)
-                                                            .Where(x => x.User.Email.Equals(user.Email) && x.IsOrdered == false)
-                                                            .ToListAsync();
-        }
-
-        public async Task<List<ProductsUsersShoppingCart>> GetProductsShoppingCartOrderedUser()
-        {
-            var user = await _userRepo.GetCurrentUser();
-
-            return await _dataContext.ProductsUsersShopping.Include(x => x.Product)
-                                                          .Where(x => x.User.Email.Equals(user.Email) && x.IsOrdered == true)
-                                                           .ToListAsync();
-        }
-
-        public async Task<List<ProductsUsersShoppingCart>> GetProductsByOrderId(int id)
-        {
-            var user = await _userRepo.GetCurrentUser();
-
             return await _dataContext.ProductsUsersShopping.Include(x => x.Product)
                                                             .Include(x => x.Order)
-                                                            .Where(x => x.User.Email.Equals(user.Email) && x.Order.Id == id)
+                                                            .Where(x => x.User.Id.Equals(userId) && x.Order.Id == id)
                                                             .ToListAsync();
         }
 
-
-        public async Task MarkProductsAsOrdered()
+        public async Task MarkProductsAsOrdered(string userId)
         {
-            var user = await _userRepo.GetCurrentUser();
-            await _dataContext.ProductsUsersShopping.Where(x => x.User.Email.Equals(user.Email) && x.IsOrdered == false)
+            await _dataContext.ProductsUsersShopping.Where(x => x.User.Id.Equals(userId) && x.IsOrdered == false)
                  .ForEachAsync(x => x.IsOrdered = true);
 
             await _dataContext.SaveChangesAsync();
 
         }
 
-        public async Task DeleteAll()
-        {
-            _dataContext.ProductsUsersShopping.RemoveRange(await _dataContext.ProductsUsersShopping.ToListAsync());
-        }
     }
 }

@@ -17,18 +17,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="Migrations\20210509201935_m1.cs" />
-	  <Compile Include="Migrations\20210509201935_m1.Designer.cs" />
-	  <Compile Include="Migrations\20210509205224_m2.cs" />
-	  <Compile Include="Migrations\20210509205224_m2.Designer.cs" />
-	  <Compile Include="Migrations\20210511202026_m3.cs" />
-	  <Compile Include="Migrations\20210511202026_m3.Designer.cs" />
-	  <Compile Include="Migrations\20210511202942_m4.cs" />
-	  <Compile Include="Migrations\20210511202942_m4.Designer.cs" />
-	  <Compile Include="Migrations\20210511214442_m5.cs" />
-	  <Compile Include="Migrations\20210511214442_m5.Designer.cs" />
-	  <Compile Include="Migrations\20210512180824_m6.cs" />
-	  <Compile Include="Migrations\20210512180824_m6.Designer.cs" />
+	  <Compile Include="Migrations\20210530153113_m1.cs" />
+	  <Compile Include="Migrations\20210530153113_m1.Designer.cs" />
+	  <Compile Include="Migrations\20210530171134_m3.cs" />
+	  <Compile Include="Migrations\20210530171134_m3.Designer.cs" />
 	  <Compile Include="Migrations\DataContextModelSnapshot.cs" />
 	</ItemGroup>
 

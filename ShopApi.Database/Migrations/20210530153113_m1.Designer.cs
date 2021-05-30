@@ -10,8 +10,8 @@ using ShopApi.Database.Data;
 namespace ShopApi.Database.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210512180824_m6")]
-    partial class m6
+    [Migration("20210530153113_m1")]
+    partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -278,8 +278,8 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone");
@@ -301,8 +301,8 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("CardNumber")
                         .HasColumnType("text");
@@ -359,6 +359,9 @@ namespace ShopApi.Database.Migrations
                     b.Property<string>("PathToImage")
                         .HasColumnType("text");
 
+                    b.Property<string>("ProductCode")
+                        .HasColumnType("text");
+
                     b.Property<double>("Score")
                         .HasColumnType("double precision");
 
@@ -367,9 +370,6 @@ namespace ShopApi.Database.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
-
-                    b.Property<int>("UnitsAvailable")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

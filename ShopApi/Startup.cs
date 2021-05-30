@@ -19,6 +19,9 @@ using ShopApi.Repository;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AutoMapper;
+using ShopApi.Authentication;
+using ShopApi.Service;
 
 namespace ShopApi
 {
@@ -55,6 +58,13 @@ namespace ShopApi
             services.AddAuthorization();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutoMapperExtension());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services
                 .AddAuthentication(options =>
@@ -153,6 +163,12 @@ namespace ShopApi
             services.AddScoped<UserRepo>();
             services.AddScoped<OrderRepo>();
             services.AddScoped<PaymentRepo>();
+
+            services.AddScoped<AuthenticationService>();
+            services.AddScoped<ProductService>();
+            services.AddScoped<ShoppingCartService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<FavoriteProductsService>();
 
             services.AddScoped<ProductUserShoppingCartRepo>();
             services.AddScoped<ProductsUsersFavoriteRepo>();

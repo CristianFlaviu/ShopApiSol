@@ -5,72 +5,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShopApi.Database.Entities;
 
 namespace ShopApi.Repository
 {
     public class OrderRepo
     {
         private readonly DataContext _dataContext;
-        private readonly UserRepo _userRepo;
-        private readonly ProductUserShoppingCartRepo _productUserShoppingCartRepo;
-        private readonly PaymentRepo _paymentRepo;
 
-        public OrderRepo(DataContext dataContext, UserRepo userRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, PaymentRepo paymentRepo)
+        public OrderRepo(DataContext dataContext)
         {
             _dataContext = dataContext;
-            _userRepo = userRepo;
-            _productUserShoppingCartRepo = productUserShoppingCartRepo;
-            _paymentRepo = paymentRepo;
+
         }
 
-        public async Task PlaceOrderWithOutPayment(int amount)
+        public async Task<Order> PlaceOrder(List<ProductsUsersShoppingCart> products, BaseUser user, double amount)
         {
-            var user = await _userRepo.GetCurrentUser();
-            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartNotOrderedUser();
             var order = new Order
             {
                 OrderDate = DateTime.Now,
                 Products = products,
                 User = user,
-                Amount = amount,
+                Amount = amount
             };
-
             await _dataContext.Orders.AddAsync(order);
-            await _productUserShoppingCartRepo.MarkProductsAsOrdered();
             await _dataContext.SaveChangesAsync();
+
+            return order;
         }
 
-        public async Task PlaceOrderWithPayment(int amount, string cardNumber)
+        public async Task<List<Order>> GetOrdersCurrentUser(string userId)
         {
-            var user = await _userRepo.GetCurrentUser();
-            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartNotOrderedUser();
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                Products = products,
-                User = user,
-                Amount = amount,
-            };
-            await _paymentRepo.SaveAsync(amount, cardNumber, order);
-            await _productUserShoppingCartRepo.MarkProductsAsOrdered();
-            await _dataContext.SaveChangesAsync();
-        }
-
-        public async Task<List<Order>> GetOrders()
-        {
-            var user = await _userRepo.GetCurrentUser();
-
             return await _dataContext.Orders.Include(x => x.Products)
-                                                            .Include(x => x.Payments)
-                                                           .Where(x => x.User.Email.Equals(user.Email))
+                                                           .Include(x => x.Payments)
+                                                           .Where(x => x.User.Id.Equals(userId))
                                                            .ToListAsync();
         }
 
-        public async Task<Order> GetOrderById(int id)
+        public async Task<Order> GetOrderById(int orderId, string userId)
         {
             return await _dataContext.Orders.Include(x => x.Products)
+                .Include(x => x.User)
                 .Include(x => x.Payments)
-                .SingleOrDefaultAsync(x => x.Id == id);
+                .SingleOrDefaultAsync(x => x.Id == orderId && x.User.Id.Equals(userId));
         }
     }
 }

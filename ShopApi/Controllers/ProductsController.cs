@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShopApi.Core;
 using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Dto;
-using ShopApi.Repository;
+using ShopApi.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,113 +14,129 @@ namespace ShopApi.Controllers
     [Route("products")]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductRepo _productRepo;
-        private readonly CategoryRepo _categoryRepo;
-        private readonly ProductUserShoppingCartRepo _productUserShoppingCartRepo;
-        private readonly ProductsUsersFavoriteRepo _productsUsersFavoriteRepo;
-        private readonly OrderRepo _orderRepo;
-        private readonly PaymentRepo _paymentRepo;
+
+        private readonly ProductService _productService;
+        private readonly ShoppingCartService _shoppingCartService;
+        private readonly OrderService _orderService;
+        private readonly FavoriteProductsService _favoriteProductsService;
 
 
-        public ProductsController(ProductRepo productRepo, CategoryRepo categoryRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, ProductsUsersFavoriteRepo productsUsersFavoriteRepo, OrderRepo orderRepo, PaymentRepo paymentRepo)
+        public ProductsController(ProductService productService, ShoppingCartService shoppingCartService, OrderService orderService, FavoriteProductsService favoriteProductsService)
         {
-            _productRepo = productRepo;
-            _categoryRepo = categoryRepo;
-            _productUserShoppingCartRepo = productUserShoppingCartRepo;
-            _productsUsersFavoriteRepo = productsUsersFavoriteRepo;
-            _orderRepo = orderRepo;
-            _paymentRepo = paymentRepo;
+            _productService = productService;
+            _shoppingCartService = shoppingCartService;
+            _orderService = orderService;
+            _favoriteProductsService = favoriteProductsService;
         }
+
+        #region  Products
 
         [HttpGet("get-products")]
         public async Task<CommandResult<List<Product>>> GetProducts()
-            => CommandResult<List<Product>>.Success(await _productRepo.GetAll());
+            => CommandResult<List<Product>>.Success(await _productService.GetAll());
         [HttpGet("get-product-by-barcode/{barcode}")]
         public async Task<CommandResult<Product>> GetProductByBarcode([FromRoute] string barcode)
-            => CommandResult<Product>.Success(await _productRepo.GetByBarcode(barcode));
+            => CommandResult<Product>.Success(await _productService.GetByBarcode(barcode));
 
         [HttpGet("get-products-category/{category}")]
         public async Task<CommandResult<List<Product>>> GetProductsFromCategory([FromRoute] string category)
-            => CommandResult<List<Product>>.Success(await _categoryRepo.GetAllFromCategory(category));
+            => CommandResult<List<Product>>.Success(await _productService.GetAllFromCategory(category));
+
+        #endregion
 
         #region ShoppingCart
-
-        [HttpGet("get-shopping-cart-products")]
-        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetShoppingCartProduct()
-            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsShoppingCartNotOrderedUser());
-
-        [HttpGet("get-ordered-products")]
-        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetOrderedProducts()
-            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsShoppingCartOrderedUser());
 
         [HttpGet("add-product-shopping-cart/{barcode}")]
         public async Task<CommandResult<bool>> AddProductToShoppingCart([FromRoute] string barcode)
         {
-            await _productUserShoppingCartRepo.AddProductToShoppingCart(barcode);
+            await _shoppingCartService.AddProduct(barcode);
+
             return CommandResult<bool>.Success(true);
         }
 
-        [HttpPost("delete-shopping-cart-product/{barcode}")]
-        public async Task<CommandResult<ProductsUsersShoppingCart>> DeleteProductFromShoppingCart([FromRoute] string barcode)
-            => CommandResult<ProductsUsersShoppingCart>.Success(await _productUserShoppingCartRepo.DeleteProduct(barcode));
+        [HttpGet("get-shopping-cart-products")]
+        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetShoppingCartProduct()
+            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _shoppingCartService.GetProductsShoppingCartNotOrderedUser());
 
         [HttpPost("set-quantity-product-shopping-cart")]
         public async Task<CommandResult<bool>> LowerProductQuantity([FromBody] ProductSetQuantity productSetQuantity)
         {
-            await _productUserShoppingCartRepo.SetQuantityProductShoppingCart(productSetQuantity.Barcode, productSetQuantity.Quantity);
+            await _shoppingCartService.SetQuantityProductShoppingCart(productSetQuantity.Barcode, productSetQuantity.Quantity);
             return CommandResult<bool>.Success(true);
+        }
+
+        [HttpPost("delete-shopping-cart-product/{barcode}")]
+        public async Task<CommandResult<bool>> DeleteProductFromShoppingCart([FromRoute] string barcode)
+        {
+            await _shoppingCartService.DeleteProduct(barcode);
+            return CommandResult<bool>.Success(true);
+        }
+
+        #endregion
+
+        #region  Orders
+
+        [HttpGet("get-orders")]
+        public async Task<CommandResult<List<Order>>> GetOrders()
+        {
+            return CommandResult<List<Order>>.Success(await _orderService.GetOrders());
         }
 
         [HttpPost("place-order-without-payment")]
         public async Task<CommandResult<bool>> PlaceOrder([FromBody] int amount)
         {
-            await _orderRepo.PlaceOrderWithOutPayment(amount);
+            await _orderService.PlaceOrderWithOutPayment();
             return CommandResult<bool>.Success(true);
-        }
-
-        [HttpPost("pay-order")]
-        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentDto paymentDto)
-        {
-            await _orderRepo.PlaceOrderWithPayment(paymentDto.Amount, paymentDto.CardNumber);
-            return CommandResult<bool>.Success(true);
-        }
-
-        [HttpGet("get-orders")]
-        public async Task<CommandResult<List<Order>>> GetOrders()
-        {
-            return CommandResult<List<Order>>.Success(await _orderRepo.GetOrders());
-        }
-
-        [HttpGet("get-products-by-order/{id}")]
-        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetProductsByOrder(int id)
-        {
-            return CommandResult<List<ProductsUsersShoppingCart>>.Success(await _productUserShoppingCartRepo.GetProductsByOrderId(id));
         }
 
         [HttpGet("get-order-by-id/{id}")]
         public async Task<CommandResult<Order>> GetOrderById(int id)
         {
-            return CommandResult<Order>.Success(await _orderRepo.GetOrderById(id));
+            return CommandResult<Order>.Success(await _orderService.GetOrderById(id));
+        }
+
+        [HttpPost("pay-order")]
+        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentDto paymentDto)
+        {
+            await _orderService.PlaceOrderWithPayment(paymentDto.CardNumber);
+            return CommandResult<bool>.Success(true);
+        }
+
+        [HttpPost("pay-order-later-payment")]
+        public async Task<CommandResult<bool>> PayOrderLaterPayment([FromBody] PaymentDto paymentDto)
+        {
+            await _orderService.PayOrderLaterPayment(paymentDto.OrderId, paymentDto.CardNumber);
+            return CommandResult<bool>.Success(true);
+        }
+
+        [HttpGet("get-products-by-order/{id}")]
+        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetProductsByOrder(int id)
+        {
+            return CommandResult<List<ProductsUsersShoppingCart>>.Success(await _orderService.GetProductsByOrderId(id));
         }
 
         #endregion
+
 
         #region Favorite
 
         [HttpGet("get-favorite-products")]
         public async Task<CommandResult<List<ProductsUserFavorite>>> GetFavoriteProducts()
-            => CommandResult<List<ProductsUserFavorite>>.Success(await _productsUsersFavoriteRepo.GetProductsFavorite());
+            => CommandResult<List<ProductsUserFavorite>>.Success(await _favoriteProductsService.GetFavoriteProducts());
 
         [HttpGet("add-product-favorite/{barcode}")]
         public async Task<CommandResult<bool>> AddProductToFavorite([FromRoute] string barcode)
         {
-            await _productsUsersFavoriteRepo.AddProductToFavorite(barcode);
+            await _favoriteProductsService.AddProduct(barcode);
             return CommandResult<bool>.Success(true);
         }
 
         [HttpPost("delete-favorite-product/{barcode}")]
-        public async Task<CommandResult<ProductsUserFavorite>> DeleteProductFromFavorite([FromRoute] string barcode)
-            => CommandResult<ProductsUserFavorite>.Success(await _productsUsersFavoriteRepo.DeleteProduct(barcode));
+        public async Task<CommandResult<bool>> DeleteProductFromFavorite([FromRoute] string barcode)
+        {
+            await _favoriteProductsService.DeleteProduct(barcode);
+            return CommandResult<bool>.Success(true);
+        }
 
         #endregion
 
