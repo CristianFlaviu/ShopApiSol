@@ -19,14 +19,14 @@ namespace ShopApi.Repository
 
         }
 
-        public async Task<Order> PlaceOrder(List<ProductsUsersShoppingCart> products, BaseUser user, double amount)
+        public async Task<Order> PlaceOrder(BaseUser user, double invoiceAmount)
         {
             var order = new Order
             {
                 OrderDate = DateTime.Now,
-                Products = products,
                 User = user,
-                Amount = amount
+                InvoiceAmount = invoiceAmount,
+                LimitDate = DateTime.Now.AddDays(7)
             };
             await _dataContext.Orders.AddAsync(order);
             await _dataContext.SaveChangesAsync();
@@ -36,7 +36,7 @@ namespace ShopApi.Repository
 
         public async Task<List<Order>> GetOrdersCurrentUser(string userId)
         {
-            return await _dataContext.Orders.Include(x => x.Products)
+            return await _dataContext.Orders
                                                            .Include(x => x.Payments)
                                                            .Where(x => x.User.Id.Equals(userId))
                                                            .ToListAsync();
@@ -44,7 +44,7 @@ namespace ShopApi.Repository
 
         public async Task<Order> GetOrderById(int orderId, string userId)
         {
-            return await _dataContext.Orders.Include(x => x.Products)
+            return await _dataContext.Orders
                 .Include(x => x.User)
                 .Include(x => x.Payments)
                 .SingleOrDefaultAsync(x => x.Id == orderId && x.User.Id.Equals(userId));

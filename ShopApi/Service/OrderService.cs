@@ -1,6 +1,7 @@
 ﻿using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Repository;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopApi.Service
@@ -8,18 +9,20 @@ namespace ShopApi.Service
     public class OrderService
     {
         private readonly UserRepo _userRepo;
-        private readonly ProductUserShoppingCartRepo _productsUsersShoppingCartRepo;
+        private readonly ShoppingCartRepo _shoppingCartRepo;
         private readonly PaymentRepo _paymentRepo;
         private readonly OrderRepo _orderRepo;
         private readonly ProductRepo _productRepo;
+        private readonly OrderedProductRepo _orderedProductRepo;
 
-        public OrderService(UserRepo userRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, PaymentRepo paymentRepo, OrderRepo orderRepo, ProductRepo productRepo)
+        public OrderService(UserRepo userRepo, ShoppingCartRepo shoppingCartRepo, PaymentRepo paymentRepo, OrderRepo orderRepo, ProductRepo productRepo, OrderedProductRepo orderedProductRepo)
         {
             _userRepo = userRepo;
-            _productsUsersShoppingCartRepo = productUserShoppingCartRepo;
+            _shoppingCartRepo = shoppingCartRepo;
             _paymentRepo = paymentRepo;
             _orderRepo = orderRepo;
             _productRepo = productRepo;
+            _orderedProductRepo = orderedProductRepo;
         }
 
         public async Task<List<Order>> GetOrders()
@@ -37,44 +40,68 @@ namespace ShopApi.Service
         public async Task PlaceOrderWithOutPayment()
         {
             var user = await _userRepo.GetCurrentUser();
-            var productsUserShoppingCart = await _productsUsersShoppingCartRepo.GetProductsShoppingCartNotOrderedUser(user.Id);
-            await _productsUsersShoppingCartRepo.MarkProductsAsOrdered(user.Id);
+            var productsShoppingCart = await _shoppingCartRepo.GetProductsShoppingCart(user.Id);
+            await _shoppingCartRepo.RemoveUserProducts(user.Id);
 
-            double amount = 0;
-            foreach (var productsUsersShoppingCart in productsUserShoppingCart)
+            var orderedProducts = productsShoppingCart.Select(x => new OrderedProduct
             {
-                amount += productsUsersShoppingCart.Quantity * productsUsersShoppingCart.Product.NewPrice;
-                await _productRepo.ReduceProductQuantity(productsUsersShoppingCart.Product.Barcode, productsUsersShoppingCart.Quantity);
+                PricePerProduct = x.Product.BasePrice - (x.Product.BasePrice * x.Product.Discount / 100),
+                Product = x.Product,
+                Quantity = x.Quantity,
+            }).ToList();
+            double amount = 0;
+            foreach (var orderedProduct in orderedProducts)
+            {
+                amount += orderedProduct.Quantity * orderedProduct.PricePerProduct;
+
+                await _productRepo.ReduceProductQuantity(orderedProduct.Product.Barcode, orderedProduct.Quantity);
             }
-            await _orderRepo.PlaceOrder(productsUserShoppingCart, user, amount);
+            var order = await _orderRepo.PlaceOrder(user, amount);
+            foreach (var orderedProduct in orderedProducts)
+            {
+                orderedProduct.Order = order;
+            }
+            await _orderedProductRepo.OrderProducts(orderedProducts);
         }
 
         public async Task PlaceOrderWithPayment(string cardNumber)
         {
             var user = await _userRepo.GetCurrentUser();
-            var productsUsersShoppingCarts = await _productsUsersShoppingCartRepo.GetProductsShoppingCartNotOrderedUser(user.Id);
-            double amount = 0;
+            var productsShoppingCart = await _shoppingCartRepo.GetProductsShoppingCart(user.Id);
+            await _shoppingCartRepo.RemoveUserProducts(user.Id);
 
-            foreach (var productsUsersShoppingCart in productsUsersShoppingCarts)
+            var orderedProducts = productsShoppingCart.Select(x => new OrderedProduct
             {
-                amount += productsUsersShoppingCart.Quantity * productsUsersShoppingCart.Product.NewPrice;
-                await _productRepo.ReduceProductQuantity(productsUsersShoppingCart.Product.Barcode, productsUsersShoppingCart.Quantity);
+                PricePerProduct = x.Product.BasePrice - (x.Product.BasePrice * x.Product.Discount / 100),
+                Product = x.Product,
+                Quantity = x.Quantity,
+            }).ToList();
 
+            double amount = 0;
+            foreach (var orderedProduct in orderedProducts)
+            {
+                amount += orderedProduct.Quantity * orderedProduct.PricePerProduct;
+                await _productRepo.ReduceProductQuantity(orderedProduct.Product.Barcode, orderedProduct.Quantity);
             }
-            await _productsUsersShoppingCartRepo.MarkProductsAsOrdered(user.Id);
-            var order = await _orderRepo.PlaceOrder(productsUsersShoppingCarts, user, amount);
+            var order = await _orderRepo.PlaceOrder(user, amount);
+            foreach (var orderedProduct in orderedProducts)
+            {
+                orderedProduct.Order = order;
+            }
+
+            await _orderedProductRepo.OrderProducts(orderedProducts);
             await _paymentRepo.AddPayment(amount, cardNumber, order, user);
         }
 
         public async Task PayOrderLaterPayment(int orderId, string cardNumber)
         {
             var user = await _userRepo.GetCurrentUser();
-            var productsUserShoppingCart = await _productsUsersShoppingCartRepo.GetProductsByOrderId(orderId, user.Id);
+            var productsUserShoppingCart = await _shoppingCartRepo.GetProductsByOrderId(orderId, user.Id);
             double amount = 0;
 
             foreach (var productsUsersShoppingCart in productsUserShoppingCart)
             {
-                amount += productsUsersShoppingCart.Quantity * productsUsersShoppingCart.Product.NewPrice;
+                amount += productsUsersShoppingCart.Quantity * 2;
 
             }
 
@@ -82,10 +109,9 @@ namespace ShopApi.Service
             await _paymentRepo.AddPayment(amount, cardNumber, order, user);
         }
 
-        public async Task<List<ProductsUsersShoppingCart>> GetProductsByOrderId(int id)
+        public async Task<List<OrderedProduct>> GetProductsByOrderId(int id)
         {
-            var user = await _userRepo.GetCurrentUser();
-            return await _productsUsersShoppingCartRepo.GetProductsByOrderId(id, user.Id);
+            return await _orderedProductRepo.GetProductsByOrderId(id);
         }
 
 

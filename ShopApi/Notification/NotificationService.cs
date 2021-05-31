@@ -23,10 +23,10 @@ namespace ShopApi.Core.Notification
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Hosted Service running.");
+            //_logger.LogInformation("Timed Hosted Service running.");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(5));
+            //_timer = new Timer(DoWork, null, TimeSpan.Zero,
+            //    TimeSpan.FromSeconds(5));
 
             return Task.CompletedTask;
         }
@@ -36,7 +36,7 @@ namespace ShopApi.Core.Notification
             var count = Interlocked.Increment(ref executionCount);
 
             var scope = _provider.CreateScope();
-            var productUserShoppingCartRepo = scope.ServiceProvider.GetRequiredService<ProductUserShoppingCartRepo>();
+            var productUserShoppingCartRepo = scope.ServiceProvider.GetRequiredService<ShoppingCartRepo>();
 
             var productUserShoppingCartList = await productUserShoppingCartRepo.GetProductsAboutToExpire();
 

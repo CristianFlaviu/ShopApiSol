@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShopApi.Database.Data;
@@ -9,9 +10,10 @@ using ShopApi.Database.Data;
 namespace ShopApi.Database.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210531142839_m7")]
+    partial class m7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,9 +300,6 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<double>("InvoiceAmount")
-                        .HasColumnType("double precision");
-
                     b.Property<DateTime>("LimitDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -327,8 +326,8 @@ namespace ShopApi.Database.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<double>("PricePerProduct")
-                        .HasColumnType("double precision");
+                    b.Property<int>("PricePerProduct")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("integer");
@@ -392,16 +391,10 @@ namespace ShopApi.Database.Migrations
                     b.Property<string>("Barcode")
                         .HasColumnType("text");
 
-                    b.Property<double>("BasePrice")
-                        .HasColumnType("double precision");
-
                     b.Property<int?>("BrandId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Discount")
                         .HasColumnType("integer");
 
                     b.Property<string>("PathToImage")
@@ -426,6 +419,48 @@ namespace ShopApi.Database.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductDiscount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("DiscountPercent")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductDiscounts");
+                });
+
+            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("BasePrice")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductPrices");
                 });
 
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ShoppingCartProduct", b =>
@@ -529,7 +564,7 @@ namespace ShopApi.Database.Migrations
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.FavoriteProduct", b =>
                 {
                     b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", "Product")
-                        .WithMany("FavoriteProducts")
+                        .WithMany("ProductUserFavorites")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("ShopApi.Database.Entities.BaseUser", "User")
@@ -595,10 +630,32 @@ namespace ShopApi.Database.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductDiscount", b =>
+                {
+                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", "Product")
+                        .WithOne("ProductDiscount")
+                        .HasForeignKey("ShopApi.Database.Entities.ProductManagement.ProductDiscount", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductPrice", b =>
+                {
+                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", "Product")
+                        .WithOne("ProductPrice")
+                        .HasForeignKey("ShopApi.Database.Entities.ProductManagement.ProductPrice", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ShoppingCartProduct", b =>
                 {
                     b.HasOne("ShopApi.Database.Entities.ProductManagement.Product", "Product")
-                        .WithMany("ShoppingCartProducts")
+                        .WithMany("ProductsUsersShopping")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("ShopApi.Database.Entities.BaseUser", "User")
@@ -624,11 +681,15 @@ namespace ShopApi.Database.Migrations
 
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Product", b =>
                 {
-                    b.Navigation("FavoriteProducts");
-
                     b.Navigation("OrderedProducts");
 
-                    b.Navigation("ShoppingCartProducts");
+                    b.Navigation("ProductDiscount");
+
+                    b.Navigation("ProductPrice");
+
+                    b.Navigation("ProductsUsersShopping");
+
+                    b.Navigation("ProductUserFavorites");
                 });
 
             modelBuilder.Entity("ShopApi.Database.Entities.BaseUser", b =>

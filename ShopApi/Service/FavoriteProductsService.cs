@@ -20,7 +20,7 @@ namespace ShopApi.Service
             _productRepo = productRepo;
         }
 
-        public async Task<List<ProductsUserFavorite>> GetFavoriteProducts()
+        public async Task<List<FavoriteProduct>> GetFavoriteProducts()
         {
             var user = await _userRepo.GetCurrentUser();
             return await _productsUsersFavoriteRepo.GetProductsFavorite(user);

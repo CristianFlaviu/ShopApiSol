@@ -1,6 +1,6 @@
 ﻿namespace ShopApi.Database.Entities.ProductManagement
 {
-    public class ProductsUserFavorite
+    public class FavoriteProduct
     {
         public int Id { get; set; }
         public Product Product { get; set; }

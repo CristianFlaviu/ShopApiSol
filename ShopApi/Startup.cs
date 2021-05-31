@@ -172,8 +172,9 @@ namespace ShopApi
             services.AddScoped<OrderService>();
             services.AddScoped<FavoriteProductsService>();
 
-            services.AddScoped<ProductUserShoppingCartRepo>();
+            services.AddScoped<ShoppingCartRepo>();
             services.AddScoped<ProductsUsersFavoriteRepo>();
+            services.AddScoped<OrderedProductRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

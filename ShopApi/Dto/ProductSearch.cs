@@ -1,8 +1,7 @@
 ﻿namespace ShopApi.Dto
 {
-    public class ProductsGeneralDto
+    public class ProductSearch
     {
-
         public string Barcode { get; set; }
         public string PathToImage { get; set; }
         public string ShortTitle { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApi.Core;
 using ShopApi.Database.Entities.ProductManagement;
@@ -14,33 +15,43 @@ namespace ShopApi.Controllers
     [Route("products")]
     public class ProductsController : ControllerBase
     {
-
         private readonly ProductService _productService;
         private readonly ShoppingCartService _shoppingCartService;
         private readonly OrderService _orderService;
         private readonly FavoriteProductsService _favoriteProductsService;
+        private readonly IMapper _mapper;
 
-
-        public ProductsController(ProductService productService, ShoppingCartService shoppingCartService, OrderService orderService, FavoriteProductsService favoriteProductsService)
+        public ProductsController(ProductService productService, ShoppingCartService shoppingCartService, OrderService orderService, FavoriteProductsService favoriteProductsService, IMapper mapper)
         {
             _productService = productService;
             _shoppingCartService = shoppingCartService;
             _orderService = orderService;
             _favoriteProductsService = favoriteProductsService;
+            _mapper = mapper;
         }
 
         #region  Products
 
         [HttpGet("get-products")]
-        public async Task<CommandResult<List<ProductsGeneralDto>>> GetProducts()
-            => CommandResult<List<ProductsGeneralDto>>.Success(await _productService.GetAll());
+        public async Task<CommandResult<List<ProductSearch>>> GetProducts()
+        {
+            var products = await _productService.GetAll();
+            return CommandResult<List<ProductSearch>>.Success(_mapper.Map<List<ProductSearch>>(products));
+        }
+
         [HttpGet("get-product-by-barcode/{barcode}")]
-        public async Task<CommandResult<Product>> GetProductByBarcode([FromRoute] string barcode)
-            => CommandResult<Product>.Success(await _productService.GetByBarcode(barcode));
+        public async Task<CommandResult<ProductDetails>> GetProductByBarcode([FromRoute] string barcode)
+        {
+            var product = await _productService.GetByBarcode(barcode);
+            return CommandResult<ProductDetails>.Success(_mapper.Map<ProductDetails>(product));
+        }
 
         [HttpGet("get-products-category/{category}")]
-        public async Task<CommandResult<List<Product>>> GetProductsFromCategory([FromRoute] string category)
-            => CommandResult<List<Product>>.Success(await _productService.GetAllFromCategory(category));
+        public async Task<CommandResult<List<ProductCarousel>>> GetProductsFromCategory([FromRoute] string category)
+        {
+            var products = await _productService.GetAllFromCategory(category);
+            return CommandResult<List<ProductCarousel>>.Success(_mapper.Map<List<ProductCarousel>>(products));
+        }
 
         #endregion
 
@@ -55,11 +66,15 @@ namespace ShopApi.Controllers
         }
 
         [HttpGet("get-shopping-cart-products")]
-        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetShoppingCartProduct()
-            => CommandResult<List<ProductsUsersShoppingCart>>.Success(await _shoppingCartService.GetProductsShoppingCartNotOrderedUser());
+        public async Task<CommandResult<List<ProductShoppingList>>> GetShoppingCartProduct()
+        {
+            var products = await _shoppingCartService.GetProductsShoppingCart();
+            return CommandResult<List<ProductShoppingList>>.Success(_mapper.Map<List<ProductShoppingList>>(products));
+
+        }
 
         [HttpPost("set-quantity-product-shopping-cart")]
-        public async Task<CommandResult<bool>> LowerProductQuantity([FromBody] ProductSetQuantity productSetQuantity)
+        public async Task<CommandResult<bool>> SetProductQuantity([FromBody] ProductSetQuantity productSetQuantity)
         {
             await _shoppingCartService.SetQuantityProductShoppingCart(productSetQuantity.Barcode, productSetQuantity.Quantity);
             return CommandResult<bool>.Success(true);
@@ -77,42 +92,48 @@ namespace ShopApi.Controllers
         #region  Orders
 
         [HttpGet("get-orders")]
-        public async Task<CommandResult<List<Order>>> GetOrders()
+        public async Task<CommandResult<List<OrderTable>>> GetOrders()
         {
-            return CommandResult<List<Order>>.Success(await _orderService.GetOrders());
+            var orders = await _orderService.GetOrders();
+
+            return CommandResult<List<OrderTable>>.Success(_mapper.Map<List<OrderTable>>(orders));
+        }
+
+        [HttpGet("get-order-by-id/{id}")]
+        public async Task<CommandResult<OrderTable>> GetOrderById(int id)
+        {
+            var order = await _orderService.GetOrderById(id);
+
+            return CommandResult<OrderTable>.Success(_mapper.Map<OrderTable>(order));
         }
 
         [HttpPost("place-order-without-payment")]
-        public async Task<CommandResult<bool>> PlaceOrder([FromBody] int amount)
+        public async Task<CommandResult<bool>> PlaceOrder()
         {
             await _orderService.PlaceOrderWithOutPayment();
             return CommandResult<bool>.Success(true);
         }
 
-        [HttpGet("get-order-by-id/{id}")]
-        public async Task<CommandResult<Order>> GetOrderById(int id)
+        [HttpPost("pay-order-with-payment")]
+        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentDetails paymentDetails)
         {
-            return CommandResult<Order>.Success(await _orderService.GetOrderById(id));
-        }
-
-        [HttpPost("pay-order")]
-        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentDto paymentDto)
-        {
-            await _orderService.PlaceOrderWithPayment(paymentDto.CardNumber);
+            await _orderService.PlaceOrderWithPayment(paymentDetails.CardNumber);
             return CommandResult<bool>.Success(true);
         }
 
         [HttpPost("pay-order-later-payment")]
-        public async Task<CommandResult<bool>> PayOrderLaterPayment([FromBody] PaymentDto paymentDto)
+        public async Task<CommandResult<bool>> PayOrderLaterPayment([FromBody] PaymentDetails paymentDetails)
         {
-            await _orderService.PayOrderLaterPayment(paymentDto.OrderId, paymentDto.CardNumber);
+            await _orderService.PayOrderLaterPayment(paymentDetails.OrderId, paymentDetails.CardNumber);
             return CommandResult<bool>.Success(true);
         }
 
         [HttpGet("get-products-by-order/{id}")]
-        public async Task<CommandResult<List<ProductsUsersShoppingCart>>> GetProductsByOrder(int id)
+        public async Task<CommandResult<List<ProductShoppingList>>> GetProductsByOrder(int id)
         {
-            return CommandResult<List<ProductsUsersShoppingCart>>.Success(await _orderService.GetProductsByOrderId(id));
+            var products = await _orderService.GetProductsByOrderId(id);
+
+            return CommandResult<List<ProductShoppingList>>.Success(_mapper.Map<List<ProductShoppingList>>(products));
         }
 
         #endregion
@@ -121,8 +142,12 @@ namespace ShopApi.Controllers
         #region Favorite
 
         [HttpGet("get-favorite-products")]
-        public async Task<CommandResult<List<ProductsUserFavorite>>> GetFavoriteProducts()
-            => CommandResult<List<ProductsUserFavorite>>.Success(await _favoriteProductsService.GetFavoriteProducts());
+        public async Task<CommandResult<List<ProductShoppingList>>> GetFavoriteProducts()
+        {
+            var products = await _favoriteProductsService.GetFavoriteProducts();
+            return CommandResult<List<ProductShoppingList>>.Success(_mapper.Map<List<ProductShoppingList>>(products));
+        }
+
 
         [HttpGet("add-product-favorite/{barcode}")]
         public async Task<CommandResult<bool>> AddProductToFavorite([FromRoute] string barcode)

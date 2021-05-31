@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ShopApi.Database.Entities;
 using ShopApi.Database.Entities.ProductManagement;
 
 
@@ -13,10 +12,11 @@ namespace ShopApi.Database.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<ProductsUsersShoppingCart> ProductsUsersShopping { get; set; }
-        public DbSet<ProductsUserFavorite> ProductsUserFavorites { get; set; }
+        public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
+        public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderedProduct> OrderedProducts { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
@@ -24,6 +24,7 @@ namespace ShopApi.Database.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
         }
     }
 }
