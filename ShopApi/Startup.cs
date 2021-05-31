@@ -19,6 +19,10 @@ using ShopApi.Repository;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AutoMapper;
+using ShopApi.Authentication;
+using ShopApi.Core.Notification;
+using ShopApi.Service;
 
 namespace ShopApi
 {
@@ -49,12 +53,20 @@ namespace ShopApi
                 .AddDefaultTokenProviders();
 
             services.AddHostedService<ConsumerService>();
+            services.AddHostedService<NotificationService>();
             services.AddSingleton<MessageHub>();
 
             services.AddAuthentication();
             services.AddAuthorization();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutoMapperExtension());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services
                 .AddAuthentication(options =>
@@ -154,8 +166,15 @@ namespace ShopApi
             services.AddScoped<OrderRepo>();
             services.AddScoped<PaymentRepo>();
 
-            services.AddScoped<ProductUserShoppingCartRepo>();
+            services.AddScoped<AuthenticationService>();
+            services.AddScoped<ProductService>();
+            services.AddScoped<ShoppingCartService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<FavoriteProductsService>();
+
+            services.AddScoped<ShoppingCartRepo>();
             services.AddScoped<ProductsUsersFavoriteRepo>();
+            services.AddScoped<OrderedProductRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

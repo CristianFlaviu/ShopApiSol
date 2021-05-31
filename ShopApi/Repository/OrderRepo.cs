@@ -1,58 +1,53 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ShopApi.Database.Entities;
 
 namespace ShopApi.Repository
 {
     public class OrderRepo
     {
         private readonly DataContext _dataContext;
-        private readonly UserRepo _userRepo;
-        private readonly ProductUserShoppingCartRepo _productUserShoppingCartRepo;
-        private readonly PaymentRepo _paymentRepo;
 
-        public OrderRepo(DataContext dataContext, UserRepo userRepo, ProductUserShoppingCartRepo productUserShoppingCartRepo, PaymentRepo paymentRepo)
+        public OrderRepo(DataContext dataContext)
         {
             _dataContext = dataContext;
-            _userRepo = userRepo;
-            _productUserShoppingCartRepo = productUserShoppingCartRepo;
-            _paymentRepo = paymentRepo;
+
         }
 
-        public async Task PlaceOrderWithOutPayment(int amount)
+        public async Task<Order> PlaceOrder(BaseUser user, double invoiceAmount)
         {
-            var user = await _userRepo.GetCurrentUser();
-            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartUser();
             var order = new Order
             {
                 OrderDate = DateTime.Now,
-                Products = products,
                 User = user,
-                Amount = amount,
+                InvoiceAmount = invoiceAmount,
+                LimitDate = DateTime.Now.AddDays(7)
             };
-
             await _dataContext.Orders.AddAsync(order);
-            await _productUserShoppingCartRepo.DeleteAll();
             await _dataContext.SaveChangesAsync();
+
+            return order;
         }
 
-        public async Task PlaceOrderWithPayment(int amount, string cardNumber)
+        public async Task<List<Order>> GetOrdersCurrentUser(string userId)
         {
-            var user = await _userRepo.GetCurrentUser();
-            var products = await _productUserShoppingCartRepo.GetProductsShoppingCartUser();
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                Products = products,
-                User = user,
-                Amount = amount,
-            };
-            await _paymentRepo.SaveAsync(amount, cardNumber, order);
-            await _productUserShoppingCartRepo.DeleteAll();
-            await _dataContext.SaveChangesAsync();
+            return await _dataContext.Orders
+                                                           .Include(x => x.Payments)
+                                                           .Where(x => x.User.Id.Equals(userId))
+                                                           .ToListAsync();
         }
 
-
+        public async Task<Order> GetOrderById(int orderId, string userId)
+        {
+            return await _dataContext.Orders
+                .Include(x => x.User)
+                .Include(x => x.Payments)
+                .SingleOrDefaultAsync(x => x.Id == orderId && x.User.Id.Equals(userId));
+        }
     }
 }

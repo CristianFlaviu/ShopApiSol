@@ -72,7 +72,7 @@ namespace ShopApi.Core.RabbitMQ
                var decodedMessage = JsonConvert.DeserializeObject<RaspberryInfo>(message);
 
 
-               _logger.LogInformation($"{DateTime.Now}  -  {message}");
+               _logger.LogInformation($"{DateTime.Now}  -  socket = {decodedMessage.Socket}   message= {decodedMessage.Barcode}");
 
                await _messageHub.Clients.All.SendAsync("transferData/" + decodedMessage.Socket, decodedMessage.Barcode, stoppingToken);
                try

@@ -6,6 +6,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Notification\**" />
+	  <EmbeddedResource Remove="Notification\**" />
+	  <None Remove="Notification\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Remove="Program.cs" />
 	</ItemGroup>
 

@@ -1,23 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShopApi.Database.Migrations
 {
-    public partial class m2 : Migration
+    public partial class m4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Amount",
+            migrationBuilder.AddColumn<DateTime>(
+                name: "LimitDate",
                 table: "Orders",
-                type: "integer",
+                type: "timestamp without time zone",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Amount",
+                name: "LimitDate",
                 table: "Orders");
         }
     }

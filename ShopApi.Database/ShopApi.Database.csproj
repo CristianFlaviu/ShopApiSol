@@ -13,18 +13,30 @@
 
 	<ItemGroup>
 	  <Compile Remove="Entities\ProductManagement\ProductCategory.cs" />
+	  <Compile Remove="Entities\ProductManagement\ProductDiscount.cs" />
+	  <Compile Remove="Entities\ProductManagement\ProductPrice.cs" />
 	  <Compile Remove="Program.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="Migrations\20210509201935_m1.cs" />
-	  <Compile Include="Migrations\20210509201935_m1.Designer.cs" />
-	  <Compile Include="Migrations\20210509205224_m2.cs" />
-	  <Compile Include="Migrations\20210509205224_m2.Designer.cs" />
-	  <Compile Include="Migrations\20210511202026_m3.cs" />
-	  <Compile Include="Migrations\20210511202026_m3.Designer.cs" />
-	  <Compile Include="Migrations\20210511202942_m4.cs" />
-	  <Compile Include="Migrations\20210511202942_m4.Designer.cs" />
+	  <Compile Include="Migrations\20210530153113_m1.cs" />
+	  <Compile Include="Migrations\20210530153113_m1.Designer.cs" />
+	  <Compile Include="Migrations\20210530171134_m3.cs" />
+	  <Compile Include="Migrations\20210530171134_m3.Designer.cs" />
+	  <Compile Include="Migrations\20210531114734_m4.cs" />
+	  <Compile Include="Migrations\20210531114734_m4.Designer.cs" />
+	  <Compile Include="Migrations\20210531141859_m5.cs" />
+	  <Compile Include="Migrations\20210531141859_m5.Designer.cs" />
+	  <Compile Include="Migrations\20210531142625_m6.cs" />
+	  <Compile Include="Migrations\20210531142625_m6.Designer.cs" />
+	  <Compile Include="Migrations\20210531142839_m7.cs" />
+	  <Compile Include="Migrations\20210531142839_m7.Designer.cs" />
+	  <Compile Include="Migrations\20210531154051_m8.cs" />
+	  <Compile Include="Migrations\20210531154051_m8.Designer.cs" />
+	  <Compile Include="Migrations\20210531162450_m9.cs" />
+	  <Compile Include="Migrations\20210531162450_m9.Designer.cs" />
+	  <Compile Include="Migrations\20210531175155_m10.cs" />
+	  <Compile Include="Migrations\20210531175155_m10.Designer.cs" />
 	  <Compile Include="Migrations\DataContextModelSnapshot.cs" />
 	</ItemGroup>
 

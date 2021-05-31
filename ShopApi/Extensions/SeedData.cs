@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ShopApi.Database.Data;
 
 namespace ShopApi.Extensions
 {
@@ -35,21 +36,19 @@ namespace ShopApi.Extensions
                                                 "Lapte de consum",
                                                 "Lapte batut Auchan" };
 
-
         public static string[] PathsToImage =
         {
-            "zuzu_kefir.png",
-            "zuzu_lapte.png",
-            "zuzu_lapte3.5.png",
-            "zuzu.jpg",
-            "zuzu_kefir.png",
-            "zuzu_lapte.png",
-            "zuzu_lapte3.5.png",
-            "zuzu.jpg",
-            "zuzu_kefir.png",
-            "zuzu_lapte.png",
-            "zuzu_lapte3.5.png",
-            "zuzu.jpg",
+            "https://i.ibb.co/3sTwBhb/zuzu-lapte.png",
+            "https://i.ibb.co/Sd5XFfc/i-edit.png",
+            "https://i.ibb.co/y8f7NG3/iaurt-edit.png",
+            "https://i.ibb.co/4RdsJ2q/zuzu-lapte3-5.png",
+            "https://i.ibb.co/KFwQtZv/Almette-Smantana.png",
+            "https://i.ibb.co/zSYLCX6/iaurt-grecesc-10-grasime-olympus-150g-8827871559710.png",
+            "https://i.ibb.co/kBqkyns/iaurt-natural-bakoma.png",
+            "https://i.ibb.co/L9vtRKR/iaurt-usurel-de-baut-330g.png",
+            "https://i.ibb.co/kqRZHqQ/lapte-batut-01.png",
+            "https://i.ibb.co/xX2xgfV/napolact-branza-burduf-ii-400g-32642.png",
+            "https://i.ibb.co/Q6KmMNT/salam-sergiana-brasov-crud-uscat-vid-cantitate-variabila-8903702839326.png"
 
         };
 
@@ -63,6 +62,8 @@ namespace ShopApi.Extensions
             var categoryRepo = services.GetService<CategoryRepo>();
             var productRepo = services.GetService<ProductRepo>();
 
+            var dataContext = services.GetService<DataContext>();
+
             var logger = services.GetRequiredService<ILogger<Startup>>();
 
             await AddDefaultUser(userManager, roleManager, logger);
@@ -71,7 +72,7 @@ namespace ShopApi.Extensions
 
             await AddDefaultBrand(brandRepo, logger);
 
-            await AddDefaultProduct(productRepo, brandRepo, categoryRepo, logger);
+            await AddDefaultProduct(productRepo, brandRepo, categoryRepo, logger, dataContext);
 
         }
 
@@ -155,7 +156,7 @@ namespace ShopApi.Extensions
             return await categoryRepo.GetByName("defaultCategory");
         }
 
-        public static async Task AddDefaultProduct(ProductRepo productRepo, BrandRepo brandRepo, CategoryRepo categoryRepo, ILogger<Startup> logger)
+        public static async Task AddDefaultProduct(ProductRepo productRepo, BrandRepo brandRepo, CategoryRepo categoryRepo, ILogger<Startup> logger, DataContext dataContext)
         {
             var count = 0;
             var attributes = new List<MyField>();
@@ -173,25 +174,22 @@ namespace ShopApi.Extensions
             {
                 var newProd = new Product
                 {
-                    Title = productName,
+                    Title = ProductNames[0],
                     ShortTitle = ShortProductNames[new Random().Next(0, 5)],
                     Barcode = SeedData.DefaultBarcode + count++,
                     Brand = brand,
                     Category = category,
                     PathToImage = SeedData.PathsToImage[count],
                     Score = new Random().Next(1, 5),
+                    BasePrice = new Random().Next(5, 15),
+                    Discount = new Random().Next(1, 3) * 10,
                     UnitsAvailable = new Random().Next(1, 20),
                     Availability = DateTime.Today,
-                    OldPrice = new Random().Next(10, 15),
-                    NewPrice = new Random().Next(5, 10),
-                    Discount = new Random().Next(10, 25),
                     Attributes = JsonConvert.SerializeObject(attributes)
-
-
                 };
                 await productRepo.SaveAsync(newProd);
             }
-            logger.LogInformation("Default Products Added");
+
         }
 
 

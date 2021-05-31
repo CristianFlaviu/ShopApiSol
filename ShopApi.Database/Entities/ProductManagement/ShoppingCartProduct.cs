@@ -1,6 +1,6 @@
 ﻿namespace ShopApi.Database.Entities.ProductManagement
 {
-    public class ProductsUsersShoppingCart
+    public class ShoppingCartProduct
     {
         public int Id { get; set; }
         public Product Product { get; set; }

@@ -1,8 +1,8 @@
 ﻿namespace ShopApi.Dto
 {
-    public class PaymentDto
+    public class PaymentDetails
     {
-        public int Amount { get; set; }
         public string CardNumber { get; set; }
+        public int OrderId { get; set; }
     }
 }

@@ -10,8 +10,8 @@ using ShopApi.Database.Data;
 namespace ShopApi.Database.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210511202942_m4")]
-    partial class m4
+    [Migration("20210530153113_m1")]
+    partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -278,8 +278,8 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone");
@@ -301,8 +301,8 @@ namespace ShopApi.Database.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("CardNumber")
                         .HasColumnType("text");
@@ -359,6 +359,9 @@ namespace ShopApi.Database.Migrations
                     b.Property<string>("PathToImage")
                         .HasColumnType("text");
 
+                    b.Property<string>("ProductCode")
+                        .HasColumnType("text");
+
                     b.Property<double>("Score")
                         .HasColumnType("double precision");
 
@@ -367,9 +370,6 @@ namespace ShopApi.Database.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
-
-                    b.Property<int>("UnitsAvailable")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -408,6 +408,9 @@ namespace ShopApi.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("IsOrdered")
+                        .HasColumnType("boolean");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
@@ -517,7 +520,7 @@ namespace ShopApi.Database.Migrations
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Payment", b =>
                 {
                     b.HasOne("ShopApi.Database.Entities.ProductManagement.Order", "Order")
-                        .WithMany()
+                        .WithMany("Payments")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("ShopApi.Database.Entities.BaseUser", "User")
@@ -561,7 +564,7 @@ namespace ShopApi.Database.Migrations
 
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.ProductsUsersShoppingCart", b =>
                 {
-                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Order", null)
+                    b.HasOne("ShopApi.Database.Entities.ProductManagement.Order", "Order")
                         .WithMany("Products")
                         .HasForeignKey("OrderId");
 
@@ -572,6 +575,8 @@ namespace ShopApi.Database.Migrations
                     b.HasOne("ShopApi.Database.Entities.BaseUser", "User")
                         .WithMany("ProductsUsersShopping")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
 
@@ -585,6 +590,8 @@ namespace ShopApi.Database.Migrations
 
             modelBuilder.Entity("ShopApi.Database.Entities.ProductManagement.Order", b =>
                 {
+                    b.Navigation("Payments");
+
                     b.Navigation("Products");
                 });
 

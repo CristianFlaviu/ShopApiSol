@@ -1,75 +1,54 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopApi.Database.Data;
+using ShopApi.Database.Entities;
+using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using ShopApi.Database.Data;
-using ShopApi.Database.Entities.ProductManagement;
 
 namespace ShopApi.Repository
 {
     public class ProductsUsersFavoriteRepo
     {
         private readonly DataContext _dataContext;
-        private readonly IHttpContextAccessor _httpContextAccess;
-        private readonly UserRepo _userRepo;
-
-        public ProductsUsersFavoriteRepo(DataContext dataContext, IHttpContextAccessor httpContextAccess, UserRepo userRepo)
+        public ProductsUsersFavoriteRepo(DataContext dataContext)
         {
             _dataContext = dataContext;
-            _httpContextAccess = httpContextAccess;
-            _userRepo = userRepo;
+
         }
 
-        public async Task AddProductToFavorite(string barcode)
+        public async Task AddProductToFavorite(Product product, BaseUser user)
         {
-            var user = await _userRepo.GetCurrentUser();
+            var productToBeAdded = await _dataContext.FavoriteProducts
+                    .SingleOrDefaultAsync(x =>
+                    x.Product.Barcode.Equals(product.Barcode) && x.User.Id.Equals(user.Id));
 
-            var product = await _dataContext.Products.Include(x => x.Brand)
-                .Include(x => x.ProductsUsersShopping)
-                .SingleOrDefaultAsync(x => x.Barcode.Equals(barcode));
-
-            var productAdded = await _dataContext.ProductsUserFavorites
-                .Include(x => x.Product)
-                .Include(x => x.User)
-                .SingleOrDefaultAsync(x =>
-                x.Product.Barcode.Equals(barcode) && x.User.Email.Equals(user.Email));
-
-            if (productAdded == null)
+            if (productToBeAdded == null)
             {
-                await _dataContext.ProductsUserFavorites.AddAsync(new ProductsUserFavorite { Product = product, User = user });
+                await _dataContext.FavoriteProducts.AddAsync(new FavoriteProduct { Product = product, User = user });
                 await _dataContext.SaveChangesAsync();
             }
         }
 
-        public async Task<ProductsUserFavorite> DeleteProduct(string barcode)
+        public async Task DeleteProduct(string barcode, BaseUser user)
         {
-
-            var user = await _userRepo.GetCurrentUser();
-            var productToRemove = await _dataContext.ProductsUserFavorites
-                .Include(x => x.Product)
-                .Include(x => x.User)
+            var productToRemove = await _dataContext.FavoriteProducts
                 .SingleOrDefaultAsync(x =>
-                    x.Product.Barcode.Equals(barcode) && x.User.Email.Equals(user.Email));
+                    x.Product.Barcode.Equals(barcode) && x.User.Id.Equals(user.Id));
 
             if (productToRemove != null)
             {
-                _dataContext.ProductsUserFavorites.Remove(productToRemove);
+                _dataContext.FavoriteProducts.Remove(productToRemove);
                 await _dataContext.SaveChangesAsync();
             }
-
-            return productToRemove;
-
         }
 
-        public async Task<List<ProductsUserFavorite>> GetProductsFavorite()
+        public async Task<List<FavoriteProduct>> GetProductsFavorite(BaseUser user)
         {
-            var user = await _userRepo.GetCurrentUser();
-
-            return await _dataContext.ProductsUserFavorites.Include(x => x.Product)
-                                                            .Where(x => x.User.Email.Equals(user.Email))
-                                                            .ToListAsync();
+            return await _dataContext.FavoriteProducts.
+                Include(x => x.Product)
+                .Where(x => x.User.Id.Equals(user.Id))
+                .ToListAsync();
         }
     }
 }

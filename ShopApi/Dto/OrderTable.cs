@@ -1,17 +1,15 @@
-﻿using System;
+﻿using ShopApi.Database.Entities.ProductManagement;
+using System;
 using System.Collections.Generic;
 
-namespace ShopApi.Database.Entities.ProductManagement
+namespace ShopApi.Dto
 {
-    public class Order
+    public class OrderTable
     {
         public int Id { get; set; }
-        public List<OrderedProduct> OrderedProducts { get; set; }
         public DateTime OrderDate { get; set; }
-        public BaseUser User { get; set; }
         public List<Payment> Payments { get; set; }
         public DateTime LimitDate { get; set; }
         public double InvoiceAmount { get; set; }
-
     }
 }
