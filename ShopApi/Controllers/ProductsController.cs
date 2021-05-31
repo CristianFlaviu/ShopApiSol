@@ -32,8 +32,8 @@ namespace ShopApi.Controllers
         #region  Products
 
         [HttpGet("get-products")]
-        public async Task<CommandResult<List<Product>>> GetProducts()
-            => CommandResult<List<Product>>.Success(await _productService.GetAll());
+        public async Task<CommandResult<List<ProductsGeneralDto>>> GetProducts()
+            => CommandResult<List<ProductsGeneralDto>>.Success(await _productService.GetAll());
         [HttpGet("get-product-by-barcode/{barcode}")]
         public async Task<CommandResult<Product>> GetProductByBarcode([FromRoute] string barcode)
             => CommandResult<Product>.Success(await _productService.GetByBarcode(barcode));

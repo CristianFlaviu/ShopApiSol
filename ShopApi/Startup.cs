@@ -21,6 +21,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AutoMapper;
 using ShopApi.Authentication;
+using ShopApi.Core.Notification;
 using ShopApi.Service;
 
 namespace ShopApi
@@ -52,6 +53,7 @@ namespace ShopApi
                 .AddDefaultTokenProviders();
 
             services.AddHostedService<ConsumerService>();
+            services.AddHostedService<NotificationService>();
             services.AddSingleton<MessageHub>();
 
             services.AddAuthentication();

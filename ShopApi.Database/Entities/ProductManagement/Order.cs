@@ -11,6 +11,7 @@ namespace ShopApi.Database.Entities.ProductManagement
         public BaseUser User { get; set; }
         public double Amount { get; set; }
         public List<Payment> Payments { get; set; }
+        public DateTime LimitDate { get; set; }
 
     }
 }

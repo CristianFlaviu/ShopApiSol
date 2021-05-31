@@ -2,7 +2,6 @@
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopApi.Repository

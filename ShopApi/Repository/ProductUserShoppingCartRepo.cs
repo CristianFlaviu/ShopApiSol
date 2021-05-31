@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
@@ -88,7 +89,14 @@ namespace ShopApi.Repository
                  .ForEachAsync(x => x.IsOrdered = true);
 
             await _dataContext.SaveChangesAsync();
+        }
 
+        public async Task<List<ProductsUsersShoppingCart>> GetProductsAboutToExpire()
+        {
+            return await _dataContext.ProductsUsersShopping
+                .Include(x => x.User)
+                .Include(x => x.Product)
+                .Where(x => x.Product.Availability < DateTime.Now.AddDays(2)).ToListAsync();
         }
 
     }
