@@ -8,7 +8,7 @@ namespace ShopApi.Dto
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
-        public List<Payment> Payments { get; set; }
+        public Payment Payment { get; set; }
         public DateTime LimitDate { get; set; }
         public double InvoiceAmount { get; set; }
     }

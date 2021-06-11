@@ -21,7 +21,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AutoMapper;
 using ShopApi.Authentication;
-using ShopApi.Core.Notification;
+using ShopApi.Notification;
 using ShopApi.Service;
 
 namespace ShopApi

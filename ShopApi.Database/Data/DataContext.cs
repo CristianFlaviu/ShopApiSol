@@ -25,6 +25,10 @@ namespace ShopApi.Database.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Order>()
+                .HasOne(a => a.Payment).WithOne(b => b.Order)
+                .HasForeignKey<Payment>(e => e.OrderId);
+
         }
     }
 }

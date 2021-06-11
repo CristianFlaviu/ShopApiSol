@@ -4,9 +4,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using ShopApi.Core.Email;
 using ShopApi.Repository;
 
-namespace ShopApi.Core.Notification
+namespace ShopApi.Notification
 {
     public class NotificationService : IHostedService, IDisposable
     {
@@ -23,10 +24,9 @@ namespace ShopApi.Core.Notification
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            //_logger.LogInformation("Timed Hosted Service running.");
 
-            //_timer = new Timer(DoWork, null, TimeSpan.Zero,
-            //    TimeSpan.FromSeconds(5));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero,
+                TimeSpan.FromSeconds(20));
 
             return Task.CompletedTask;
         }
@@ -36,16 +36,24 @@ namespace ShopApi.Core.Notification
             var count = Interlocked.Increment(ref executionCount);
 
             var scope = _provider.CreateScope();
-            var productUserShoppingCartRepo = scope.ServiceProvider.GetRequiredService<ShoppingCartRepo>();
+            var orderRepo = scope.ServiceProvider.GetRequiredService<OrderRepo>();
 
-            var productUserShoppingCartList = await productUserShoppingCartRepo.GetProductsAboutToExpire();
+            var emailService = scope.ServiceProvider.GetRequiredService<EmailSender>();
 
-            foreach (var productsUsersShoppingCart in productUserShoppingCartList)
+            var orders = await orderRepo.GetAllOrders();
+
+
+
+            foreach (var order in orders)
             {
-                _logger.LogInformation($"user {productsUsersShoppingCart.User.FirstName} Product {productsUsersShoppingCart.Product.Title} \n");
+                if (order.Payment == null && order.LimitDate < DateTime.Now)
+                {
+                    _logger.LogInformation($"user {order.User.FirstName} Order {order.Id} \n");
+
+                    await emailService.SendOrderNotPaidMailAsync(order.User.FirstName, order.User.LastName, order.User.Email, order.OrderDate.ToLocalTime().ToShortDateString());
+                }
+
             }
-
-
 
             _logger.LogInformation(
             "Timed Hosted Service is working. Count: {Count}", count);

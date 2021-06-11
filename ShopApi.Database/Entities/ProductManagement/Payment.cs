@@ -12,5 +12,6 @@ namespace ShopApi.Database.Entities.ProductManagement
         public BaseUser User { get; set; }
         [JsonIgnore]
         public Order Order { get; set; }
+        public int OrderId { get; set; }
     }
 }

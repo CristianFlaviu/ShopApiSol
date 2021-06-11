@@ -100,5 +100,39 @@ namespace ShopApi.Core.Email
                 throw;
             }
         }
+
+
+        public async Task<IdentityResult> SendOrderNotPaidMailAsync(string userFullName, string sendToUsername, string sendToEmail, string orderDate)
+        {
+            try
+            {
+                using var client = new SmtpClient();
+                var builder = new BodyBuilder();
+
+                var webUrl = _configuration.GetSection("WebUrl").Value;
+
+                builder.HtmlBody = String.Format(EmailTemplates.UnpaidOrder, userFullName, webUrl, orderDate);
+
+                var emailInfo = new MimeMessage { Subject = "Order not Paid", Body = builder.ToMessageBody() };
+
+                emailInfo.From.Add(new MailboxAddress(_emailConfig.Username, _emailConfig.Email));
+                emailInfo.To.Add(new MailboxAddress(sendToUsername, sendToEmail));
+
+                await client.ConnectAsync(_emailConfig.Host, 587);
+                await client.AuthenticateAsync(_emailConfig.Username, _emailConfig.Password);
+                await client.SendAsync(emailInfo);
+                await client.DisconnectAsync(true);
+
+                _logger.LogInformation(string.Format(StringFormatTemplates.EmailSentSuccessfully, sendToEmail));
+
+                return IdentityResult.Success;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(string.Format(StringFormatTemplates.EmailFailedToSend, sendToEmail) + e.Message);
+                throw;
+            }
+        }
+
     }
 }

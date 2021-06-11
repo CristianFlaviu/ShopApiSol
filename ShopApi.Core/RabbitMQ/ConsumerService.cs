@@ -21,7 +21,7 @@ namespace ShopApi.Core.RabbitMQ
         private ConnectionFactory _connectionFactory;
         private IConnection _connection;
         private IModel _channel;
-        private const string QueueName = "barcode_queue";
+        private const string QueueName = "Barcode_Second_queue";
         private readonly IHubContext<MessageHub> _messageHub;
 
         public ConsumerService(IServiceProvider provider,

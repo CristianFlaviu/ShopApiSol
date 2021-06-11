@@ -53,6 +53,15 @@ namespace ShopApi.Controllers
             return CommandResult<List<ProductCarousel>>.Success(_mapper.Map<List<ProductCarousel>>(products));
         }
 
+        [HttpGet("get-products-by-order/{id}")]
+        public async Task<CommandResult<List<ProductShoppingList>>> GetProductsByOrder(int id)
+        {
+            var products = await _orderService.GetProductsByOrderId(id);
+
+            return CommandResult<List<ProductShoppingList>>.Success(_mapper.Map<List<ProductShoppingList>>(products));
+        }
+
+
         #endregion
 
         #region ShoppingCart
@@ -88,56 +97,6 @@ namespace ShopApi.Controllers
         }
 
         #endregion
-
-        #region  Orders
-
-        [HttpGet("get-orders")]
-        public async Task<CommandResult<List<OrderTable>>> GetOrders()
-        {
-            var orders = await _orderService.GetOrders();
-
-            return CommandResult<List<OrderTable>>.Success(_mapper.Map<List<OrderTable>>(orders));
-        }
-
-        [HttpGet("get-order-by-id/{id}")]
-        public async Task<CommandResult<OrderTable>> GetOrderById(int id)
-        {
-            var order = await _orderService.GetOrderById(id);
-
-            return CommandResult<OrderTable>.Success(_mapper.Map<OrderTable>(order));
-        }
-
-        [HttpPost("place-order-without-payment")]
-        public async Task<CommandResult<bool>> PlaceOrder()
-        {
-            await _orderService.PlaceOrderWithOutPayment();
-            return CommandResult<bool>.Success(true);
-        }
-
-        [HttpPost("pay-order-with-payment")]
-        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentDetails paymentDetails)
-        {
-            await _orderService.PlaceOrderWithPayment(paymentDetails.CardNumber);
-            return CommandResult<bool>.Success(true);
-        }
-
-        [HttpPost("pay-order-later-payment")]
-        public async Task<CommandResult<bool>> PayOrderLaterPayment([FromBody] PaymentDetails paymentDetails)
-        {
-            await _orderService.PayOrderLaterPayment(paymentDetails.OrderId, paymentDetails.CardNumber);
-            return CommandResult<bool>.Success(true);
-        }
-
-        [HttpGet("get-products-by-order/{id}")]
-        public async Task<CommandResult<List<ProductShoppingList>>> GetProductsByOrder(int id)
-        {
-            var products = await _orderService.GetProductsByOrderId(id);
-
-            return CommandResult<List<ProductShoppingList>>.Success(_mapper.Map<List<ProductShoppingList>>(products));
-        }
-
-        #endregion
-
 
         #region Favorite
 

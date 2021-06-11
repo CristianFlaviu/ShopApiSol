@@ -9,7 +9,7 @@ namespace ShopApi.Database.Entities.ProductManagement
         public List<OrderedProduct> OrderedProducts { get; set; }
         public DateTime OrderDate { get; set; }
         public BaseUser User { get; set; }
-        public List<Payment> Payments { get; set; }
+        public Payment Payment { get; set; }
         public DateTime LimitDate { get; set; }
         public double InvoiceAmount { get; set; }
 

@@ -26,7 +26,7 @@ namespace ShopApi.Repository
                 OrderDate = DateTime.Now,
                 User = user,
                 InvoiceAmount = invoiceAmount,
-                LimitDate = DateTime.Now.AddDays(7)
+                LimitDate = DateTime.Now.AddDays(-7)
             };
             await _dataContext.Orders.AddAsync(order);
             await _dataContext.SaveChangesAsync();
@@ -37,7 +37,7 @@ namespace ShopApi.Repository
         public async Task<List<Order>> GetOrdersCurrentUser(string userId)
         {
             return await _dataContext.Orders
-                                                           .Include(x => x.Payments)
+                                                           .Include(x => x.Payment)
                                                            .Where(x => x.User.Id.Equals(userId))
                                                            .ToListAsync();
         }
@@ -46,8 +46,16 @@ namespace ShopApi.Repository
         {
             return await _dataContext.Orders
                 .Include(x => x.User)
-                .Include(x => x.Payments)
+                .Include(x => x.Payment)
                 .SingleOrDefaultAsync(x => x.Id == orderId && x.User.Id.Equals(userId));
+        }
+
+        public async Task<List<Order>> GetAllOrders()
+        {
+            return await _dataContext.Orders
+                .Include(x => x.User)
+                .Include(x => x.Payment).ToListAsync();
+
         }
     }
 }
