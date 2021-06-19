@@ -9,5 +9,6 @@
         public int Discount { get; set; }
         public double OldPrice { get; set; }
         public int Quantity { get; set; }
+        public int UnitsAvailable { get; set; }
     }
 }

@@ -38,13 +38,11 @@ namespace ShopApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // services.AddLogging(loginBuilder => loginBuilder.AddSerilog(dispose: true));
             services.AddSignalR();
             services.AddControllers();
             services.AddDbContext<DataContext>(optionsBuilder =>
-                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("PostgresSqlDatabaseConnection")));
-
-            //services.AddDbContext<DataContext>(optionsBuilder =>
-            //    optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionString")));
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionString")));
 
             services.AddCors();
 
@@ -149,7 +147,7 @@ namespace ShopApi
                 options.AddPolicy("CorsPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200", "http://192.168.43.184:4200")
+                        builder.WithOrigins("http://localhost:4200", "http://40.68.136.232:4200")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();
@@ -178,15 +176,16 @@ namespace ShopApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+           // loggerFactory.AddSerilog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopApi v1"));
             }
-
+          //  app.ConfigureLogging(Configuration);
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -174,7 +174,7 @@ namespace ShopApi.Extensions
             {
                 var newProd = new Product
                 {
-                    Title = ProductNames[0],
+                    Title = ProductNames[new Random().Next(0, 5)],
                     ShortTitle = ShortProductNames[new Random().Next(0, 5)],
                     Barcode = SeedData.DefaultBarcode + count++,
                     Brand = brand,

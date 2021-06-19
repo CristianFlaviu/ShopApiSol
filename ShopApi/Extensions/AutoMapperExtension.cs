@@ -31,7 +31,9 @@ namespace ShopApi.Extensions
                 .ForMember(p => p.Title, o => o.MapFrom(pp => pp.Product.Title))
                 .ForMember(p => p.PathToImage, o => o.MapFrom(pp => pp.Product.PathToImage))
                 .ForMember(p => p.Discount, o => o.MapFrom(pp => pp.Product.Discount))
-                .ForMember(p => p.Barcode, o => o.MapFrom(pp => pp.Product.Barcode));
+                .ForMember(p => p.Barcode, o => o.MapFrom(pp => pp.Product.Barcode))
+                .ForMember(p => p.UnitsAvailable, o => o.MapFrom(pp => pp.Product.UnitsAvailable));
+            ;
 
             CreateMap<FavoriteProduct, ProductShoppingList>()
                 .ForMember(p => p.OldPrice, o => o.MapFrom(pp => pp.Product.BasePrice))
@@ -40,7 +42,8 @@ namespace ShopApi.Extensions
                 .ForMember(p => p.Title, o => o.MapFrom(pp => pp.Product.Title))
                 .ForMember(p => p.PathToImage, o => o.MapFrom(pp => pp.Product.PathToImage))
                 .ForMember(p => p.Discount, o => o.MapFrom(pp => pp.Product.Discount))
-                .ForMember(p => p.Barcode, o => o.MapFrom(pp => pp.Product.Barcode));
+                .ForMember(p => p.Barcode, o => o.MapFrom(pp => pp.Product.Barcode))
+                .ForMember(p => p.UnitsAvailable, o => o.MapFrom(pp => pp.Product.UnitsAvailable));
 
             CreateMap<Order, OrderTable>();
 

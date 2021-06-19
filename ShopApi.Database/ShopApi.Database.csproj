@@ -19,26 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="Migrations\20210530153113_m1.cs" />
-	  <Compile Include="Migrations\20210530153113_m1.Designer.cs" />
-	  <Compile Include="Migrations\20210530171134_m3.cs" />
-	  <Compile Include="Migrations\20210530171134_m3.Designer.cs" />
-	  <Compile Include="Migrations\20210531114734_m4.cs" />
-	  <Compile Include="Migrations\20210531114734_m4.Designer.cs" />
-	  <Compile Include="Migrations\20210531141859_m5.cs" />
-	  <Compile Include="Migrations\20210531141859_m5.Designer.cs" />
-	  <Compile Include="Migrations\20210531142625_m6.cs" />
-	  <Compile Include="Migrations\20210531142625_m6.Designer.cs" />
-	  <Compile Include="Migrations\20210531142839_m7.cs" />
-	  <Compile Include="Migrations\20210531142839_m7.Designer.cs" />
-	  <Compile Include="Migrations\20210531154051_m8.cs" />
-	  <Compile Include="Migrations\20210531154051_m8.Designer.cs" />
-	  <Compile Include="Migrations\20210531162450_m9.cs" />
-	  <Compile Include="Migrations\20210531162450_m9.Designer.cs" />
-	  <Compile Include="Migrations\20210531175155_m10.cs" />
-	  <Compile Include="Migrations\20210531175155_m10.Designer.cs" />
-	  <Compile Include="Migrations\20210610010344_m403.cs" />
-	  <Compile Include="Migrations\20210610010344_m403.Designer.cs" />
+	  <Compile Include="Migrations\20210615183446_m1.cs" />
+	  <Compile Include="Migrations\20210615183446_m1.Designer.cs" />
 	  <Compile Include="Migrations\DataContextModelSnapshot.cs" />
 	</ItemGroup>
 

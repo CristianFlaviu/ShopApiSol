@@ -26,7 +26,7 @@ namespace ShopApi.Notification
         {
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(20));
+                TimeSpan.FromHours(30));
 
             return Task.CompletedTask;
         }
