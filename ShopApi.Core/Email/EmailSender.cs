@@ -6,6 +6,7 @@ using MimeKit.Utils;
 using ShopApi.Constants;
 using System;
 using System.Threading.Tasks;
+using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
@@ -85,7 +86,7 @@ namespace ShopApi.Core.Email
                 emailInfo.From.Add(new MailboxAddress(_emailConfig.Username, _emailConfig.Email));
                 emailInfo.To.Add(new MailboxAddress(sendToUsername, sendToEmail));
 
-                await client.ConnectAsync(_emailConfig.Host, 587);
+                await client.ConnectAsync(_emailConfig.Host, 587, SecureSocketOptions.None);
                 await client.AuthenticateAsync(_emailConfig.Username, _emailConfig.Password);
                 await client.SendAsync(emailInfo);
                 await client.DisconnectAsync(true);

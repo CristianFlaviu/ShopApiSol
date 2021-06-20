@@ -4,7 +4,7 @@ using Serilog;
 
 namespace ShopApi.Extensions
 {
-    public static class LoggingExt
+    public static class LoggingExtension
     {
         public static void ConfigureLogging(this IApplicationBuilder app, IConfiguration configuration)
         {

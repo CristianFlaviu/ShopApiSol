@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApi.Core;
-using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Dto;
 using ShopApi.Service;
 using System.Collections.Generic;

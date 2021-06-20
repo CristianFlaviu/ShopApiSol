@@ -3,16 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ShopApi.Database.Data;
 using ShopApi.Database.Entities;
 using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Repository;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ShopApi.Database.Data;
 
 namespace ShopApi.Extensions
 {
@@ -38,10 +39,9 @@ namespace ShopApi.Extensions
 
         public static string[] PathsToImage =
         {
-            "https://i.ibb.co/3sTwBhb/zuzu-lapte.png",
+
             "https://i.ibb.co/Sd5XFfc/i-edit.png",
             "https://i.ibb.co/y8f7NG3/iaurt-edit.png",
-            "https://i.ibb.co/4RdsJ2q/zuzu-lapte3-5.png",
             "https://i.ibb.co/KFwQtZv/Almette-Smantana.png",
             "https://i.ibb.co/zSYLCX6/iaurt-grecesc-10-grasime-olympus-150g-8827871559710.png",
             "https://i.ibb.co/kBqkyns/iaurt-natural-bakoma.png",
@@ -58,22 +58,243 @@ namespace ShopApi.Extensions
 
             var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-            var brandRepo = services.GetService<BrandRepo>();
-            var categoryRepo = services.GetService<CategoryRepo>();
-            var productRepo = services.GetService<ProductRepo>();
-
             var dataContext = services.GetService<DataContext>();
 
             var logger = services.GetRequiredService<ILogger<Startup>>();
 
-            await AddDefaultUser(userManager, roleManager, logger);
+            /* ###############################   BRANDS  ############################### */
+            if (dataContext.Users.FirstOrDefault(x => x.Email == "flaviu_remus@yahoo.com") == null)
+            {
+                await AddDefaultUser(userManager, roleManager, logger);
+                var zuzuBrand = new Brand
+                {
+                    Email = "Zuzu@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Zuzu",
+                    Phone = "0744584911"
+                };
 
-            await AddDefaultCategory(categoryRepo, logger);
+                var fulgaBrand = new Brand
+                {
+                    Email = "fulga@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Fulga",
+                    Phone = "0744584911"
+                };
 
-            await AddDefaultBrand(brandRepo, logger);
+                var covalactBrand = new Brand
+                {
+                    Email = "covalact @yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Covalact ",
+                    Phone = "0744584911"
+                };
 
-            await AddDefaultProduct(productRepo, brandRepo, categoryRepo, logger, dataContext);
+                await dataContext.Brands.AddAsync(zuzuBrand);
+                await dataContext.Brands.AddAsync(fulgaBrand);
+                await dataContext.Brands.AddAsync(covalactBrand);
 
+                /* ###############################   CATEGORIES   ############################### */
+
+                var food = new Category
+                {
+                    ParentCategory = null,
+                    Name = "Food"
+                };
+                await dataContext.Category.AddAsync(food);
+
+                var dairyProducts = new Category
+                {
+                    ParentCategory = food,
+                    Name = "Dairy products"
+                };
+                await dataContext.Category.AddAsync(dairyProducts);
+
+                var yogurt = new Category
+                {
+                    ParentCategory = dairyProducts,
+                    Name = "Yogurt"
+                };
+                await dataContext.Category.AddAsync(yogurt);
+
+                var butter = new Category
+                {
+                    ParentCategory = dairyProducts,
+                    Name = "Butter"
+                };
+                await dataContext.Category.AddAsync(butter);
+
+                var milk = new Category
+                {
+                    ParentCategory = dairyProducts,
+                    Name = "Milk"
+                };
+                await dataContext.Category.AddAsync(milk);
+
+
+                /* ###############################   PRODUCTS  ############################### */
+
+
+                /* ###### ZUZU 3.5 L ###### */
+                var attributesMilk35Zuzu = new ArrayList();
+
+                attributesMilk35Zuzu.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information" });
+
+                attributesMilk35Zuzu.Add(new MyField { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
+
+                attributesMilk35Zuzu.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+
+                attributesMilk35Zuzu.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
+                attributesMilk35Zuzu.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+
+                attributesMilk35Zuzu.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+
+                var zuzuMilk35 = new Product
+                {
+                    Title = "Milk Zuzu 1.8L, 3.5% fat",
+                    ShortTitle = "Milk",
+                    Barcode = "123",
+                    Brand = zuzuBrand,
+                    Category = milk,
+                    PathToImage = "https://i.ibb.co/4RdsJ2q/zuzu-lapte3-5.png",
+                    Score = 4.53,
+                    BasePrice = 10,
+                    Discount = 12,
+                    UnitsAvailable = 4,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesMilk35Zuzu)
+                };
+                await dataContext.Products.AddAsync(zuzuMilk35);
+
+
+                /* ###### ZUZU 1 L ###### */
+                var attributesMilk1LZuzu = new ArrayList();
+                attributesMilk1LZuzu.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information" });
+
+                attributesMilk1LZuzu.Add(new MyField { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
+
+                attributesMilk1LZuzu.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+
+                attributesMilk1LZuzu.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
+                attributesMilk1LZuzu.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+
+                attributesMilk1LZuzu.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                var zuzuMilk1L = new Product
+                {
+                    Title = "Milk Zuzu 1L, 3.5% fat",
+                    ShortTitle = "Milk",
+                    Barcode = "1234",
+                    Brand = zuzuBrand,
+                    Category = milk,
+                    PathToImage = "https://i.ibb.co/3sTwBhb/zuzu-lapte.png",
+                    Score = 4.68,
+                    BasePrice = 5,
+                    Discount = 5,
+                    UnitsAvailable = 30,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesMilk1LZuzu)
+                };
+                await dataContext.Products.AddAsync(zuzuMilk1L);
+
+
+
+                /* ###### Fulga 1 L ###### */
+                var attributesMilkFulga = new ArrayList();
+                attributesMilkFulga.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "181", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "44.3g", InfoCategory = "Nutritional Information" });
+
+                attributesMilkFulga.Add(new MyField { Name = "Fats ", Value = "1.5g", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField { Name = "Fatty acids ", Value = "1g", InfoCategory = "Nutritional Information" });
+
+                attributesMilkFulga.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField { Name = "Proteins", Value = "3.1g", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+
+                attributesMilkFulga.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
+                attributesMilkFulga.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesMilkFulga.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                var fulgaMilk1L = new Product
+                {
+                    Title = "Milk Fulga 1L, 1.5% fat",
+                    ShortTitle = "Milk",
+                    Barcode = "12345",
+                    Brand = fulgaBrand,
+                    Category = milk,
+                    PathToImage = "https://i.ibb.co/DzrBHPn/lapte-de-consum-fulga-uht-1-l-8877631897630.png",
+                    Score = 3.57,
+                    BasePrice = 5,
+                    Discount = 8,
+                    UnitsAvailable = 13,
+                    Availability = DateTime.Today.AddDays(4),
+                    Attributes = JsonConvert.SerializeObject(attributesMilkFulga)
+                };
+                await dataContext.Products.AddAsync(fulgaMilk1L);
+
+
+                /* ###### Covalact 1 L ###### */
+                var attributesMilkCovalact = new ArrayList();
+                attributesMilkCovalact.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "62g", InfoCategory = "Nutritional Information" });
+
+                attributesMilkCovalact.Add(new MyField { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
+
+                attributesMilkCovalact.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
+
+                attributesMilkCovalact.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+
+                attributesMilkCovalact.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
+                attributesMilkCovalact.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesMilkFulga.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                var covalactMilk1L = new Product
+                {
+                    Title = "Milk Covalact 1L, 1.5% fat",
+                    ShortTitle = "Milk",
+                    Barcode = "12355",
+                    Brand = covalactBrand,
+                    Category = milk,
+                    PathToImage = "https://i.ibb.co/JqVKVWw/lapte-consum-covalact-1-l-cutie-8868827234334.png",
+                    Score = 4.81,
+                    BasePrice = 5,
+                    Discount = 3,
+                    UnitsAvailable = 8,
+                    Availability = DateTime.Today.AddDays(4),
+                    Attributes = JsonConvert.SerializeObject(attributesMilkFulga)
+                };
+                await dataContext.Products.AddAsync(covalactMilk1L);
+
+                await dataContext.SaveChangesAsync();
+            }
         }
 
         private static async Task AddDefaultUser(UserManager<IdentityUser> userManager,
@@ -120,87 +341,12 @@ namespace ShopApi.Extensions
             }
         }
 
-        public static async Task AddDefaultBrand(BrandRepo brandRepo, ILogger<Startup> logger)
-        {
-            if ((await brandRepo.GetByName("ProduseLucacesti")) == null)
-            {
-                var defaultBrand = new Brand
-                {
-                    Email = "ProduseLucacestiMM@yahoo.com",
-                    Address = "Strada Somesului Nr5",
-                    City = "Lucacesti",
-                    Country = "Romania",
-                    Name = "ProduseLucacesti",
-                    Phone = "0744584966"
-                };
-                await brandRepo.SaveAsync(defaultBrand);
-
-                logger.LogInformation("Default Brand Added");
-            }
-        }
-
-        public static async Task<Category> AddDefaultCategory(CategoryRepo categoryRepo, ILogger<Startup> logger)
-        {
-            if ((await categoryRepo.GetByName("defaultCategory")) == null)
-            {
-                var defaultCategory = new Category
-                {
-                    ParentCategory = null,
-                    Name = "defaultCategory"
-                };
-                await categoryRepo.SaveAsync(defaultCategory);
-
-                logger.LogInformation("Default Category Added");
-            }
-
-            return await categoryRepo.GetByName("defaultCategory");
-        }
-
-        public static async Task AddDefaultProduct(ProductRepo productRepo, BrandRepo brandRepo, CategoryRepo categoryRepo, ILogger<Startup> logger, DataContext dataContext)
-        {
-            var count = 0;
-            var attributes = new List<MyField>();
-            var category = await categoryRepo.GetByName("defaultCategory");
-
-            attributes.Add(new MyField { Name = "Grasimi", Value = "186", InfoCategory = "NutritionInfo", IsImportant = true });
-            attributes.Add(new MyField { Name = "Glucide ", Value = "4.7", InfoCategory = "NutritionInfo", IsImportant = true });
-            attributes.Add(new MyField { Name = "Alergeni descriere", Value = "Lapte", InfoCategory = "IngredientsAndAllergens", IsImportant = false });
-            attributes.Add(new MyField { Name = "Greutate", Value = "1kg", InfoCategory = "Size", IsImportant = true });
-            attributes.Add(new MyField { Name = "Ingrediente", Value = "Lapte", InfoCategory = "IngredientsAndAllergens", IsImportant = false });
-
-            var brand = await brandRepo.GetByName("ProduseLucacesti");
-
-            foreach (var productName in SeedData.ProductNames)
-            {
-                var newProd = new Product
-                {
-                    Title = ProductNames[new Random().Next(0, 5)],
-                    ShortTitle = ShortProductNames[new Random().Next(0, 5)],
-                    Barcode = SeedData.DefaultBarcode + count++,
-                    Brand = brand,
-                    Category = category,
-                    PathToImage = SeedData.PathsToImage[count],
-                    Score = new Random().Next(1, 5),
-                    BasePrice = new Random().Next(5, 15),
-                    Discount = new Random().Next(1, 3) * 10,
-                    UnitsAvailable = new Random().Next(1, 20),
-                    Availability = DateTime.Today,
-                    Attributes = JsonConvert.SerializeObject(attributes)
-                };
-                await productRepo.SaveAsync(newProd);
-            }
-
-        }
-
-
-
 
         public class MyField
         {
             public string Name { get; set; }
             public string Value { get; set; }
             public string InfoCategory { get; set; }
-            public bool IsImportant { get; set; } = true;
         }
     }
 }

@@ -16,7 +16,8 @@ namespace ShopApi.Extensions
             try
             {
                 var db = services.GetRequiredService<T>();
-                db.Database.EnsureDeleted();
+                // db.Database.EnsureDeleted();
+                // db.Database.EnsureCreated();
                 db.Database.Migrate();
 
                 logger.LogInformation("Migration Succeeded");

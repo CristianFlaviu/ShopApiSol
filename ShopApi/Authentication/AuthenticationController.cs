@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ShopApi.Core;
-using ShopApi.Core.Email;
 using ShopApi.Dto;
+using System;
 using System.Threading.Tasks;
 
 namespace ShopApi.Authentication
@@ -12,22 +12,17 @@ namespace ShopApi.Authentication
     [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly EmailSender _emailSender;
+
         private readonly AuthenticationService _authenticationService;
+        private readonly ILogger<AuthenticationController> _logger;
 
 
-        public AuthenticationController(UserManager<IdentityUser> userManager,
-                                         RoleManager<IdentityRole> roleManager,
-                                        EmailSender emailSender,
-                                         AuthenticationService authenticationService
+        public AuthenticationController(AuthenticationService authenticationService,
+                                         ILogger<AuthenticationController> logger
                                      )
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _emailSender = emailSender;
             _authenticationService = authenticationService;
+            _logger = logger;
         }
 
         [HttpPost("login")]

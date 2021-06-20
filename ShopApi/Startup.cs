@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,20 +10,20 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using ShopApi.Authentication;
 using ShopApi.Config;
 using ShopApi.Core.Email;
 using ShopApi.Core.RabbitMQ;
 using ShopApi.Core.SignalR;
 using ShopApi.Database.Data;
 using ShopApi.Extensions;
+using ShopApi.Notification;
 using ShopApi.Repository;
+using ShopApi.Service;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using AutoMapper;
-using ShopApi.Authentication;
-using ShopApi.Notification;
-using ShopApi.Service;
 
 namespace ShopApi
 {
@@ -38,7 +39,7 @@ namespace ShopApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddLogging(loginBuilder => loginBuilder.AddSerilog(dispose: true));
+            services.AddLogging(loginBuilder => loginBuilder.AddSerilog(dispose: true));
             services.AddSignalR();
             services.AddControllers();
             services.AddDbContext<DataContext>(optionsBuilder =>
@@ -96,7 +97,6 @@ namespace ShopApi
 
                 options.Password.RequiredLength = 8;
 
-
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
@@ -142,6 +142,11 @@ namespace ShopApi
                 });
             });
 
+            //services.AddHttpsRedirection(options =>
+            //{
+            //    options.HttpsPort = 5001;
+            //});
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -175,18 +180,20 @@ namespace ShopApi
             services.AddScoped<OrderedProductRepo>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-           // loggerFactory.AddSerilog();
+            loggerFactory.AddSerilog();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopApi v1"));
             }
-          //  app.ConfigureLogging(Configuration);
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("./v1/swagger.json", "ShopApi v1"));
+            app.ConfigureLogging(Configuration);
+            app.ConfigureExceptionHandler(loggerFactory);
+
+         //   app.UseHttpsRedirection();
 
             app.UseRouting();
 
