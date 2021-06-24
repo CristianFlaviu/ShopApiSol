@@ -44,9 +44,9 @@ namespace ShopApi.Core.Email
                 image.ContentId = MimeUtils.GenerateMessageId();
 
                 // Set the html version of the message text
-                builder.HtmlBody = string.Format(@"<p>Hey Ioana,
+                builder.HtmlBody = string.Format(@"<p>Hey ,
                                                     <br>
-                <p> Tin sa ca maine s-ar putea sa ma trezesc mai tarziu, undeva pe la 10.A durat ceva sa ma prind cum sa trimit un mail din C#<br>             
+                <p> C#<br>             
                 <br>
                 <center><img src=""cid:{0}""></center>
                    Happy Shopping", image.ContentId);
@@ -86,7 +86,7 @@ namespace ShopApi.Core.Email
                 emailInfo.From.Add(new MailboxAddress(_emailConfig.Username, _emailConfig.Email));
                 emailInfo.To.Add(new MailboxAddress(sendToUsername, sendToEmail));
 
-                await client.ConnectAsync(_emailConfig.Host, 587, SecureSocketOptions.None);
+                await client.ConnectAsync(_emailConfig.Host, 587, SecureSocketOptions.StartTls);
                 await client.AuthenticateAsync(_emailConfig.Username, _emailConfig.Password);
                 await client.SendAsync(emailInfo);
                 await client.DisconnectAsync(true);

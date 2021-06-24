@@ -88,7 +88,7 @@ namespace ShopApi.Controllers
             return CommandResult<bool>.Success(true);
         }
 
-        [HttpPost("delete-shopping-cart-product/{barcode}")]
+        [HttpDelete("delete-shopping-cart-product/{barcode}")]
         public async Task<CommandResult<bool>> DeleteProductFromShoppingCart([FromRoute] string barcode)
         {
             await _shoppingCartService.DeleteProduct(barcode);
@@ -114,7 +114,7 @@ namespace ShopApi.Controllers
             return CommandResult<bool>.Success(true);
         }
 
-        [HttpPost("delete-favorite-product/{barcode}")]
+        [HttpDelete("delete-favorite-product/{barcode}")]
         public async Task<CommandResult<bool>> DeleteProductFromFavorite([FromRoute] string barcode)
         {
             await _favoriteProductsService.DeleteProduct(barcode);

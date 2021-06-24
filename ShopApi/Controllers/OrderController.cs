@@ -16,19 +16,13 @@ namespace ShopApi.Controllers
     [Route("orders")]
     public class OrderController : ControllerBase
     {
-   
-        private readonly ProductService _productService;
-        private readonly ShoppingCartService _shoppingCartService;
         private readonly OrderService _orderService;
-        private readonly FavoriteProductsService _favoriteProductsService;
+
         private readonly IMapper _mapper;
 
-        public OrderController(ProductService productService, ShoppingCartService shoppingCartService, OrderService orderService, FavoriteProductsService favoriteProductsService, IMapper mapper)
+        public OrderController(OrderService orderService, IMapper mapper)
         {
-            _productService = productService;
-            _shoppingCartService = shoppingCartService;
             _orderService = orderService;
-            _favoriteProductsService = favoriteProductsService;
             _mapper = mapper;
         }
 
@@ -58,9 +52,9 @@ namespace ShopApi.Controllers
         }
 
         [HttpPost("pay-order-with-payment")]
-        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentDetails paymentDetails)
+        public async Task<CommandResult<bool>> PayOrder([FromBody] PaymentCardNumber paymentCardNumber)
         {
-            await _orderService.PlaceOrderWithPayment(paymentDetails.CardNumber);
+            await _orderService.PlaceOrderWithPayment(paymentCardNumber.CardNumber);
             return CommandResult<bool>.Success(true);
         }
 

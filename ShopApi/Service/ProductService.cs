@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Polly;
+using Polly.Retry;
 using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Repository;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.Extensions.Logging;
-using Polly;
-using Polly.Retry;
-using ShopApi.Dto;
 
 namespace ShopApi.Service
 {
@@ -39,7 +36,6 @@ namespace ShopApi.Service
         {
             return await _productRepo.GetAllFromCategory(category);
         }
-
 
     }
 }

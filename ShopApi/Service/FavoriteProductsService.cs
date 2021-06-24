@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ShopApi.Core;
-using ShopApi.Database.Entities;
-using ShopApi.Database.Entities.ProductManagement;
+﻿using ShopApi.Database.Entities.ProductManagement;
 using ShopApi.Repository;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ShopApi.Service
 {
