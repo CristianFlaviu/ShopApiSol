@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ShopApi.Database.Entities;
 
 namespace ShopApi.Repository
 {
@@ -19,15 +17,8 @@ namespace ShopApi.Repository
 
         }
 
-        public async Task<Order> PlaceOrder(BaseUser user, double invoiceAmount)
+        public async Task<Order> PlaceOrder(Order order)
         {
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                User = user,
-                InvoiceAmount = invoiceAmount,
-                LimitDate = DateTime.Now.AddDays(-7)
-            };
             await _dataContext.Orders.AddAsync(order);
             await _dataContext.SaveChangesAsync();
 

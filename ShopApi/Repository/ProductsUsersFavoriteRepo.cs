@@ -17,17 +17,11 @@ namespace ShopApi.Repository
 
         }
 
-        public async Task AddProductToFavorite(Product product, BaseUser user)
+        public async Task AddProductToFavorite(FavoriteProduct favoriteProduct)
         {
-            var productToBeAdded = await _dataContext.FavoriteProducts
-                    .SingleOrDefaultAsync(x =>
-                    x.Product.Barcode.Equals(product.Barcode) && x.User.Id.Equals(user.Id));
+            await _dataContext.FavoriteProducts.AddAsync(favoriteProduct);
+            await _dataContext.SaveChangesAsync();
 
-            if (productToBeAdded == null)
-            {
-                await _dataContext.FavoriteProducts.AddAsync(new FavoriteProduct { Product = product, User = user });
-                await _dataContext.SaveChangesAsync();
-            }
         }
 
         public async Task DeleteProduct(string barcode, BaseUser user)

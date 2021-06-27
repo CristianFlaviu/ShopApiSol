@@ -28,7 +28,7 @@ namespace ShopApi.Service
         {
             var user = await _userRepo.GetCurrentUser();
             var product = await _productRepo.GetByBarcode(barcode);
-            await _productsUsersFavoriteRepo.AddProductToFavorite(product, user);
+            await _productsUsersFavoriteRepo.AddProductToFavorite(new FavoriteProduct { Product = product, User = user });
         }
 
         public async Task DeleteProduct(string barcode)

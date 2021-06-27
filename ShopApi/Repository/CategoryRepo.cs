@@ -15,13 +15,13 @@ namespace ShopApi.Repository
         }
         public async Task SaveAsync(Category category)
         {
-            await _dataContext.Category.AddAsync(category);
+            await _dataContext.Categories.AddAsync(category);
             await _dataContext.SaveChangesAsync();
         }
 
         public async Task<Category> GetByName(string name)
         {
-            return await _dataContext.Category.SingleOrDefaultAsync(x => x.Name.Equals(name));
+            return await _dataContext.Categories.SingleOrDefaultAsync(x => x.Name.Equals(name));
         }
     }
 }

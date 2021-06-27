@@ -15,8 +15,7 @@ namespace ShopApi.Repository
         {
             _dataContext = dataContext;
         }
-
-
+        
         public async Task OrderProducts(List<OrderedProduct> list)
         {
             await _dataContext.OrderedProducts.AddRangeAsync(list);

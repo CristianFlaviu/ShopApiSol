@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using ShopApi.Database.Data;
-using ShopApi.Database.Entities;
+﻿using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
+using System.Threading.Tasks;
 
 namespace ShopApi.Repository
 {
@@ -14,10 +12,9 @@ namespace ShopApi.Repository
         {
             _dataContext = dataContext;
         }
-        public async Task AddPayment(double amount, string cardNumber, Order order, BaseUser user)
+        public async Task AddPayment(Payment payment)
         {
-            var p = new Payment { Amount = amount, Date = DateTime.Now, User = user, CardNumber = cardNumber, Order = order };
-            await _dataContext.Payments.AddAsync(p);
+            await _dataContext.Payments.AddAsync(payment);
             await _dataContext.SaveChangesAsync();
         }
     }

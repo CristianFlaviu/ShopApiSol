@@ -16,11 +16,6 @@ namespace ShopApi.Repository
             _dataContext = dataContext;
         }
 
-        public async Task SaveAsync(Product product)
-        {
-            await _dataContext.Products.AddAsync(product);
-            await _dataContext.SaveChangesAsync();
-        }
 
         public async Task<List<Product>> GetAll()
         {
@@ -41,7 +36,6 @@ namespace ShopApi.Repository
                 .ToListAsync();
 
         }
-
 
         public async Task ReduceProductQuantity(string barcode, int quantity)
         {

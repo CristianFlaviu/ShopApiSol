@@ -11,7 +11,7 @@ namespace ShopApi.Database.Data
         public override DbSet<IdentityUser> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
-        public DbSet<Category> Category { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
         public DbSet<Payment> Payments { get; set; }

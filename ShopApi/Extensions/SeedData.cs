@@ -107,35 +107,35 @@ namespace ShopApi.Extensions
                     ParentCategory = null,
                     Name = "Food"
                 };
-                await dataContext.Category.AddAsync(food);
+                await dataContext.Categories.AddAsync(food);
 
                 var dairyProducts = new Category
                 {
                     ParentCategory = food,
                     Name = "Dairy products"
                 };
-                await dataContext.Category.AddAsync(dairyProducts);
+                await dataContext.Categories.AddAsync(dairyProducts);
 
                 var yogurt = new Category
                 {
                     ParentCategory = dairyProducts,
                     Name = "Yogurt"
                 };
-                await dataContext.Category.AddAsync(yogurt);
+                await dataContext.Categories.AddAsync(yogurt);
 
                 var butter = new Category
                 {
                     ParentCategory = dairyProducts,
                     Name = "Butter"
                 };
-                await dataContext.Category.AddAsync(butter);
+                await dataContext.Categories.AddAsync(butter);
 
                 var milk = new Category
                 {
                     ParentCategory = dairyProducts,
                     Name = "Milk"
                 };
-                await dataContext.Category.AddAsync(milk);
+                await dataContext.Categories.AddAsync(milk);
 
 
                 /* ###############################   PRODUCTS  ############################### */

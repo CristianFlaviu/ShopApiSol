@@ -73,7 +73,7 @@ namespace ShopApi.Core.RabbitMQ
 
 
                _logger.LogInformation($"{DateTime.Now}  -  socket = {decodedMessage.Socket}   message= {decodedMessage.Barcode}");
-
+              
                await _messageHub.Clients.All.SendAsync("transferData/" + decodedMessage.Socket, decodedMessage.Barcode, stoppingToken);
                try
                {
