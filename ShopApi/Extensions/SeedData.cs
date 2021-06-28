@@ -96,6 +96,37 @@ namespace ShopApi.Extensions
                     Phone = "0744584911"
                 };
 
+                var olympusBrand = new Brand
+                {
+                    Email = "olympusBrand @yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Olympus",
+                    Phone = "0744584911"
+                };
+                var napolactBrand = new Brand
+                {
+                    Email = "Napolact@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Napolact",
+                    Phone = "0744584911"
+                };
+
+                var mullerBrand = new Brand
+                {
+                    Email = "Muller@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Muller",
+                    Phone = "0744584911"
+                };
+
+
+
                 await dataContext.Brands.AddAsync(zuzuBrand);
                 await dataContext.Brands.AddAsync(fulgaBrand);
                 await dataContext.Brands.AddAsync(covalactBrand);
@@ -144,23 +175,35 @@ namespace ShopApi.Extensions
                 /* ###### ZUZU 3.5 L ###### */
                 var attributesMilk35Zuzu = new ArrayList();
 
-                attributesMilk35Zuzu.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
-                attributesMilk35Zuzu.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information"});
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information"});
 
-                attributesMilk35Zuzu.Add(new MyField { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
-                attributesMilk35Zuzu.Add(new MyField { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information"});
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information"});
 
-                attributesMilk35Zuzu.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilk35Zuzu.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilk35Zuzu.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
-                attributesMilk35Zuzu.Add(new MyField { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
-                attributesMilk35Zuzu.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information"});
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information"});
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
 
-                attributesMilk35Zuzu.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
-                attributesMilk35Zuzu.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use"});
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
 
 
-                attributesMilk35Zuzu.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+                attributesMilk35Zuzu.Add(new MyField
+                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
 
 
                 var zuzuMilk35 = new Product
@@ -183,23 +226,35 @@ namespace ShopApi.Extensions
 
                 /* ###### ZUZU 1 L ###### */
                 var attributesMilk1LZuzu = new ArrayList();
-                attributesMilk1LZuzu.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
-                attributesMilk1LZuzu.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information"});
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information"});
 
-                attributesMilk1LZuzu.Add(new MyField { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
-                attributesMilk1LZuzu.Add(new MyField { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information"});
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information"});
 
-                attributesMilk1LZuzu.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilk1LZuzu.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilk1LZuzu.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
-                attributesMilk1LZuzu.Add(new MyField { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
-                attributesMilk1LZuzu.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information"});
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information"});
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
 
-                attributesMilk1LZuzu.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
-                attributesMilk1LZuzu.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use"});
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
 
 
-                attributesMilk1LZuzu.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+                attributesMilk1LZuzu.Add(new MyField
+                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
 
                 var zuzuMilk1L = new Product
                 {
@@ -222,22 +277,34 @@ namespace ShopApi.Extensions
 
                 /* ###### Fulga 1 L ###### */
                 var attributesMilkFulga = new ArrayList();
-                attributesMilkFulga.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "181", InfoCategory = "Nutritional Information" });
-                attributesMilkFulga.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "44.3g", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField
+                    {Name = "kJ per 100g or 100ml ", Value = "181", InfoCategory = "Nutritional Information"});
+                attributesMilkFulga.Add(new MyField
+                    {Name = "kcal per 100g or 100ml ", Value = "44.3g", InfoCategory = "Nutritional Information"});
 
-                attributesMilkFulga.Add(new MyField { Name = "Fats ", Value = "1.5g", InfoCategory = "Nutritional Information" });
-                attributesMilkFulga.Add(new MyField { Name = "Fatty acids ", Value = "1g", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Fats ", Value = "1.5g", InfoCategory = "Nutritional Information"});
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Fatty acids ", Value = "1g", InfoCategory = "Nutritional Information"});
 
-                attributesMilkFulga.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilkFulga.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilkFulga.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
-                attributesMilkFulga.Add(new MyField { Name = "Proteins", Value = "3.1g", InfoCategory = "Nutritional Information" });
-                attributesMilkFulga.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information"});
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Proteins", Value = "3.1g", InfoCategory = "Nutritional Information"});
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
 
-                attributesMilkFulga.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
-                attributesMilkFulga.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use"});
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
 
-                attributesMilkFulga.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
 
                 var fulgaMilk1L = new Product
                 {
@@ -259,22 +326,33 @@ namespace ShopApi.Extensions
 
                 /* ###### Covalact 1 L ###### */
                 var attributesMilkCovalact = new ArrayList();
-                attributesMilkCovalact.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
-                attributesMilkCovalact.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "62g", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information"});
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "kcal per 100g or 100ml ", Value = "62g", InfoCategory = "Nutritional Information"});
 
-                attributesMilkCovalact.Add(new MyField { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
-                attributesMilkCovalact.Add(new MyField { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information"});
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information"});
 
-                attributesMilkCovalact.Add(new MyField { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilkCovalact.Add(new MyField { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
-                attributesMilkCovalact.Add(new MyField { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information"});
 
-                attributesMilkCovalact.Add(new MyField { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
 
-                attributesMilkCovalact.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-                attributesMilkCovalact.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use"});
+                attributesMilkCovalact.Add(new MyField
+                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
 
-                attributesMilkFulga.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+                attributesMilkFulga.Add(new MyField
+                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
 
                 var covalactMilk1L = new Product
                 {
@@ -292,9 +370,252 @@ namespace ShopApi.Extensions
                     Attributes = JsonConvert.SerializeObject(attributesMilkFulga)
                 };
                 await dataContext.Products.AddAsync(covalactMilk1L);
+          
 
+            /* ###### olympus yogurt ###### */
+                var attributesYogurtGreek = new ArrayList();
+                attributesYogurtGreek.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "275", InfoCategory = "Nutritional Information" });
+                attributesYogurtGreek.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "65", InfoCategory = "Nutritional Information" });
+
+                attributesYogurtGreek.Add(new MyField { Name = "Fats ", Value = "2g", InfoCategory = "Nutritional Information" });
+                attributesYogurtGreek.Add(new MyField { Name = "Fatty acids ", Value = "1.2g", InfoCategory = "Nutritional Information" });
+
+                attributesYogurtGreek.Add(new MyField { Name = "Carbohydrates ", Value = "3.8g", InfoCategory = "Nutritional Information" });
+                attributesYogurtGreek.Add(new MyField { Name = "Sugars", Value = "3.8g", InfoCategory = "Nutritional Information" });
+                attributesYogurtGreek.Add(new MyField { Name = "Salt", Value = "0.2g", InfoCategory = "Nutritional Information" });
+                attributesYogurtGreek.Add(new MyField { Name = "Proteins", Value = "8g", InfoCategory = "Nutritional Information" });
+
+
+                attributesYogurtGreek.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
+                attributesYogurtGreek.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesYogurtGreek.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                attributesYogurtGreek.Add(new MyField { Name = "Weight", Value = "150g", InfoCategory = "Dimension" });
+
+                attributesYogurtGreek.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var olympysYogortGreek = new Product
+                {
+                    Title = "Greek yogurt 150g",
+                    ShortTitle = "Milk",
+                    Barcode = "123451",
+                    Brand = olympusBrand,
+                    Category = yogurt,
+                    PathToImage = "https://i.ibb.co/zSZJJTb/iaurt-grecesc.png",
+                    Score = 4.78,
+                    BasePrice = 2,
+                    Discount = 5,
+                    UnitsAvailable = 23,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesYogurtGreek)
+                };
+                await dataContext.Products.AddAsync(olympysYogortGreek);
+
+
+                /* ######  Napolact Yogurt 900g ###### */
+                var attributesNapolactYogurt900 = new ArrayList();
+                attributesNapolactYogurt900.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "250", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt900.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "60", InfoCategory = "Nutritional Information" });
+
+                attributesNapolactYogurt900.Add(new MyField { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt900.Add(new MyField { Name = "Fatty acids ", Value = "2.1g", InfoCategory = "Nutritional Information" });
+
+                attributesNapolactYogurt900.Add(new MyField { Name = "Carbohydrates ", Value = "3.7g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt900.Add(new MyField { Name = "Sugars", Value = "3.7g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt900.Add(new MyField { Name = "Salt", Value = "0.06g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt900.Add(new MyField { Name = "Proteins", Value = "3.4g", InfoCategory = "Nutritional Information" });
+
+
+                attributesNapolactYogurt900.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
+                attributesNapolactYogurt900.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesNapolactYogurt900.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                attributesNapolactYogurt900.Add(new MyField { Name = "Weight", Value = "900g", InfoCategory = "Dimension" });
+
+                attributesNapolactYogurt900.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var NapolactYogurt = new Product
+                {
+                    Title = "Napolact yogurt 900g",
+                    ShortTitle = "Milk",
+                    Barcode = "123452",
+                    Brand = napolactBrand,
+                    Category = yogurt,
+                    PathToImage = "https://i.ibb.co/chFND6W/iaurt-napolact-numa-bun-900-g-8950854713374.png",
+                    Score = 4.78,
+                    BasePrice = 7,
+                    Discount = 4,
+                    UnitsAvailable = 23,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesNapolactYogurt900)
+                };
+                await dataContext.Products.AddAsync(NapolactYogurt);
+
+
+                /* ######  Napolact Yogurt 140g  ###### */
+                var attributesNapolactYogurt140g = new ArrayList();
+                attributesNapolactYogurt140g.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "261", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt140g.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "63", InfoCategory = "Nutritional Information" });
+
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Fats ", Value = "3.8g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Fatty acids ", Value = "2.3g", InfoCategory = "Nutritional Information" });
+
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Carbohydrates ", Value = "3.7g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Sugars", Value = "3.7g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Salt", Value = "0.06g", InfoCategory = "Nutritional Information" });
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Proteins", Value = "3.4g", InfoCategory = "Nutritional Information" });
+
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Weight", Value = "900g", InfoCategory = "Dimension" });
+
+                attributesNapolactYogurt140g.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var NapolactYogurt140 = new Product
+                {
+                    Title = "Napolact yogurt 140g",
+                    ShortTitle = "Milk",
+                    Barcode = "123453",
+                    Brand = covalactBrand,
+                    Category = yogurt,
+                    PathToImage = "https://i.ibb.co/gTf0fY8/iaurt-napolact-bio-pahar-140-g-8950857367582.png",
+                    Score = 4.78,
+                    BasePrice = 2.25,
+                    Discount = 4,
+                    UnitsAvailable = 17,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesNapolactYogurt140g)
+                };
+                await dataContext.Products.AddAsync(NapolactYogurt140);
+
+
+
+                /* ######  Covalact Yogurt 900g  ###### */
+                var attributesCovalactYogurt900g = new ArrayList();
+                attributesCovalactYogurt900g.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "260", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt900g.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "62", InfoCategory = "Nutritional Information" });
+
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Fats ", Value = "2.8g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Fatty acids ", Value = "1.7g", InfoCategory = "Nutritional Information" });
+
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Carbohydrates ", Value = "3.8g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Sugars", Value = "3.8g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Proteins", Value = "3.2g", InfoCategory = "Nutritional Information" });
+
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Weight", Value = "900g", InfoCategory = "Dimension" });
+
+                attributesCovalactYogurt900g.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var covalactYogurt900 = new Product
+                {
+                    Title = "Covalact yogurt 900g",
+                    ShortTitle = "Milk",
+                    Barcode = "123454",
+                    Brand = napolactBrand,
+                    Category = yogurt,
+                    PathToImage = "https://i.ibb.co/ctB08Cw/iaurt-ecologic-covalact-38-grasime-140g-8876676218910.png",
+                    Score = 2,
+                    BasePrice = 8,
+                    Discount = 3,
+                    UnitsAvailable = 4,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesCovalactYogurt900g)
+                };
+                await dataContext.Products.AddAsync(covalactYogurt900);
+
+                /* ######  Covalact Yogurt 140g  ###### */
+                var attributesCovalactYogurt140g = new ArrayList();
+                attributesCovalactYogurt140g.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "233", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt140g.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "53", InfoCategory = "Nutritional Information" });
+
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Fats ", Value = "2.8g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Fatty acids ", Value = "1.7g", InfoCategory = "Nutritional Information" });
+
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Carbohydrates ", Value = "3.8g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Sugars", Value = "3.8g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Proteins", Value = "3.2g", InfoCategory = "Nutritional Information" });
+
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Weight", Value = "140g", InfoCategory = "Dimension" });
+
+                attributesCovalactYogurt140g.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var covalactYogurt140 = new Product
+                {
+                    Title = "Covalact yogurt 140g",
+                    ShortTitle = "Milk",
+                    Barcode = "123455",
+                    Brand = napolactBrand,
+                    Category = yogurt,
+                    PathToImage = "https://i.ibb.co/kxGVQpx/iaurt-covalact-900-g-8886763946014.png",
+                    Score = 4.78,
+                    BasePrice = 7,
+                    Discount = 3,
+                    UnitsAvailable = 17,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesNapolactYogurt140g)
+                };
+                await dataContext.Products.AddAsync(covalactYogurt140);
+
+
+
+                /* ######  Muller Yogurt  ###### */
+                var attributesMullerYogurt= new ArrayList();
+                attributesMullerYogurt.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "427", InfoCategory = "Nutritional Information" });
+                attributesMullerYogurt.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "101", InfoCategory = "Nutritional Information" });
+
+                attributesMullerYogurt.Add(new MyField { Name = "Fats ", Value = "3.2g", InfoCategory = "Nutritional Information" });
+                attributesMullerYogurt.Add(new MyField { Name = "Fatty acids ", Value = "2.2g", InfoCategory = "Nutritional Information" });
+
+                attributesMullerYogurt.Add(new MyField { Name = "Carbohydrates ", Value = "14g", InfoCategory = "Nutritional Information" });
+                attributesMullerYogurt.Add(new MyField { Name = "Sugars", Value = "12.9g", InfoCategory = "Nutritional Information" });
+                attributesMullerYogurt.Add(new MyField { Name = "Proteins", Value = "3.3g", InfoCategory = "Nutritional Information" });
+
+                attributesMullerYogurt.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
+                attributesMullerYogurt.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesMullerYogurt.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                attributesMullerYogurt.Add(new MyField { Name = "Weight", Value = "140g", InfoCategory = "Dimension" });
+
+                attributesMullerYogurt.Add(new MyField { Name = "Country", Value = "Germany", InfoCategory = "Origin Country" });
+
+                var mullerYogurt = new Product
+                {
+                    Title = "Muller  yogurt 500g",
+                    ShortTitle = "Milk",
+                    Barcode = "123456",
+                    Brand = mullerBrand,
+                    Category = yogurt,
+                    PathToImage = "https://i.ibb.co/G3pzXHh/iaurt-cu-cirese-muller-pezzi-500g-8850666913822.png",
+                    Score = 4.78,
+                    BasePrice = 7,
+                    Discount = 3,
+                    UnitsAvailable = 17,
+                    Availability = DateTime.Today.AddDays(5),
+                    Attributes = JsonConvert.SerializeObject(attributesMullerYogurt)
+                };
+                await dataContext.Products.AddAsync(mullerYogurt);
                 await dataContext.SaveChangesAsync();
+
             }
+
         }
 
         private static async Task AddDefaultUser(UserManager<IdentityUser> userManager,
