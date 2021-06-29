@@ -1,6 +1,5 @@
 ﻿using ShopApi.Database.Entities.ProductManagement;
 using System;
-using System.Collections.Generic;
 
 namespace ShopApi.Dto
 {
@@ -9,7 +8,8 @@ namespace ShopApi.Dto
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public Payment Payment { get; set; }
-        public DateTime LimitDate { get; set; }
-        public double InvoiceAmount { get; set; }
+        public DateTime DueDate { get; set; }
+        public double ProductsCost { get; set; }
+        public double Interest { get; set; }
     }
 }

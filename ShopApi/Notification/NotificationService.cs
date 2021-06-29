@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ShopApi.Core.Email;
+using ShopApi.Repository;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using ShopApi.Core.Email;
-using ShopApi.Repository;
 
 namespace ShopApi.Notification
 {
@@ -46,7 +46,7 @@ namespace ShopApi.Notification
 
             foreach (var order in orders)
             {
-                if (order.Payment == null && order.LimitDate < DateTime.Now)
+                if (order.Payment == null && order.DueDate < DateTime.Now)
                 {
                     _logger.LogInformation($"user {order.User.FirstName} Order {order.Id} \n");
 

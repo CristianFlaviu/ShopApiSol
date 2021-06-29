@@ -61,8 +61,7 @@ namespace ShopApi.Service
             {
                 User = user,
                 OrderDate = DateTime.Now,
-                LimitDate = DateTime.Now.AddDays(7),
-                InvoiceAmount = amount
+                DueDate = DateTime.Now.AddDays(7)
             });
 
             foreach (var orderedProduct in orderedProducts)
@@ -95,7 +94,7 @@ namespace ShopApi.Service
             {
                 User = user,
                 OrderDate = DateTime.Now,
-                LimitDate = DateTime.Now.AddDays(7)
+                DueDate = DateTime.Now.AddDays(7)
             });
             foreach (var orderedProduct in orderedProducts)
             {
@@ -105,6 +104,7 @@ namespace ShopApi.Service
             await _orderedProductRepo.OrderProducts(orderedProducts);
             await _paymentRepo.AddPayment(new Payment
             {
+                Date = DateTime.Now,
                 Amount = amount,
                 CardNumber = cardNumber,
                 Order = order,
@@ -116,12 +116,19 @@ namespace ShopApi.Service
         {
             var user = await _userRepo.GetCurrentUser();
             var order = await _orderRepo.GetOrderById(orderId, user.Id);
+
+            var amount = order.DueDate < DateTime.Now ?
+                order.OrderedProducts.Sum(x => x.PricePerProduct * x.Quantity) :
+                DateTime.Now.Subtract(order.OrderDate).Days * 0.5 +
+                order.OrderedProducts.Sum(x => x.PricePerProduct * x.Quantity);
+
             await _paymentRepo.AddPayment(new Payment
             {
-                Amount = order.InvoiceAmount,
+                Date = DateTime.Now,
                 CardNumber = cardNumber,
                 Order = order,
-                User = user
+                User = user,
+                Amount = amount
             });
         }
 

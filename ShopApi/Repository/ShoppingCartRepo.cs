@@ -1,12 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ShopApi.Database.Data;
+using ShopApi.Database.Entities;
 using ShopApi.Database.Entities.ProductManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ShopApi.Database.Entities;
 
 namespace ShopApi.Repository
 {
@@ -75,12 +73,6 @@ namespace ShopApi.Repository
 
         }
 
-        public async Task<List<ShoppingCartProduct>> GetProductsByOrderId(int id, string userId)
-        {
-            return await _dataContext.ShoppingCartProducts.Include(x => x.Product).ToListAsync();
-
-        }
-
         public async Task RemoveUserProducts(string userId)
         {
             var useProducts = await _dataContext.ShoppingCartProducts.Include(
@@ -91,13 +83,6 @@ namespace ShopApi.Repository
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<List<ShoppingCartProduct>> GetProductsAboutToExpire()
-        {
-            return await _dataContext.ShoppingCartProducts
-                .Include(x => x.User)
-                .Include(x => x.Product)
-                .Where(x => x.Product.Availability < DateTime.Now.AddDays(2)).ToListAsync();
-        }
 
     }
 }

@@ -218,7 +218,6 @@ namespace ShopApi.Extensions
                     BasePrice = 10,
                     Discount = 12,
                     UnitsAvailable = 4,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesMilk35Zuzu)
                 };
                 await dataContext.Products.AddAsync(zuzuMilk35);
@@ -268,7 +267,6 @@ namespace ShopApi.Extensions
                     BasePrice = 5,
                     Discount = 5,
                     UnitsAvailable = 30,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesMilk1LZuzu)
                 };
                 await dataContext.Products.AddAsync(zuzuMilk1L);
@@ -318,7 +316,6 @@ namespace ShopApi.Extensions
                     BasePrice = 5,
                     Discount = 8,
                     UnitsAvailable = 13,
-                    Availability = DateTime.Today.AddDays(4),
                     Attributes = JsonConvert.SerializeObject(attributesMilkFulga)
                 };
                 await dataContext.Products.AddAsync(fulgaMilk1L);
@@ -366,7 +363,6 @@ namespace ShopApi.Extensions
                     BasePrice = 5,
                     Discount = 3,
                     UnitsAvailable = 8,
-                    Availability = DateTime.Today.AddDays(4),
                     Attributes = JsonConvert.SerializeObject(attributesMilkFulga)
                 };
                 await dataContext.Products.AddAsync(covalactMilk1L);
@@ -407,7 +403,6 @@ namespace ShopApi.Extensions
                     BasePrice = 2,
                     Discount = 5,
                     UnitsAvailable = 23,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesYogurtGreek)
                 };
                 await dataContext.Products.AddAsync(olympysYogortGreek);
@@ -448,7 +443,6 @@ namespace ShopApi.Extensions
                     BasePrice = 7,
                     Discount = 4,
                     UnitsAvailable = 23,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesNapolactYogurt900)
                 };
                 await dataContext.Products.AddAsync(NapolactYogurt);
@@ -488,7 +482,6 @@ namespace ShopApi.Extensions
                     BasePrice = 2.25,
                     Discount = 4,
                     UnitsAvailable = 17,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesNapolactYogurt140g)
                 };
                 await dataContext.Products.AddAsync(NapolactYogurt140);
@@ -529,7 +522,6 @@ namespace ShopApi.Extensions
                     BasePrice = 8,
                     Discount = 3,
                     UnitsAvailable = 4,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesCovalactYogurt900g)
                 };
                 await dataContext.Products.AddAsync(covalactYogurt900);
@@ -568,7 +560,6 @@ namespace ShopApi.Extensions
                     BasePrice = 7,
                     Discount = 3,
                     UnitsAvailable = 17,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesNapolactYogurt140g)
                 };
                 await dataContext.Products.AddAsync(covalactYogurt140);
@@ -608,7 +599,6 @@ namespace ShopApi.Extensions
                     BasePrice = 7,
                     Discount = 3,
                     UnitsAvailable = 17,
-                    Availability = DateTime.Today.AddDays(5),
                     Attributes = JsonConvert.SerializeObject(attributesMullerYogurt)
                 };
                 await dataContext.Products.AddAsync(mullerYogurt);

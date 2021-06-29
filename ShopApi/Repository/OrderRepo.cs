@@ -29,6 +29,7 @@ namespace ShopApi.Repository
         {
             return await _dataContext.Orders
                                                            .Include(x => x.Payment)
+                                                           .Include(x=>x.OrderedProducts)
                                                            .Where(x => x.User.Id.Equals(userId))
                                                            .ToListAsync();
         }
@@ -38,6 +39,7 @@ namespace ShopApi.Repository
             return await _dataContext.Orders
                 .Include(x => x.User)
                 .Include(x => x.Payment)
+                .Include(x=>x.OrderedProducts)
                 .SingleOrDefaultAsync(x => x.Id == orderId && x.User.Id.Equals(userId));
         }
 
@@ -45,7 +47,9 @@ namespace ShopApi.Repository
         {
             return await _dataContext.Orders
                 .Include(x => x.User)
-                .Include(x => x.Payment).ToListAsync();
+                .Include(x => x.Payment)
+                .Include(x => x.OrderedProducts)
+                .ToListAsync();
 
         }
     }

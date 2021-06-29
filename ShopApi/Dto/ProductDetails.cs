@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ShopApi.Dto
+﻿namespace ShopApi.Dto
 {
     public class ProductDetails
     {
@@ -8,7 +6,6 @@ namespace ShopApi.Dto
         public double NewPrice { get; set; }
         public double OldPrice { get; set; }
         public double Score { get; set; }
-        public DateTime Availability { get; set; }
         public string Barcode { get; set; }
         public int UnitsAvailable { get; set; }
         public string PathToImage { get; set; }
