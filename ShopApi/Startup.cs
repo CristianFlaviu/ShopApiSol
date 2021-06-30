@@ -19,11 +19,12 @@ using ShopApi.Core.SignalR;
 using ShopApi.Database.Data;
 using ShopApi.Extensions;
 using ShopApi.Notification;
-using ShopApi.Repository;
-using ShopApi.Service;
+using ShopApi.Repositories;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using ShopApi.Database.Seed;
+using ShopApi.Services;
 
 namespace ShopApi
 {
@@ -193,7 +194,7 @@ namespace ShopApi
             app.ConfigureLogging(Configuration);
             app.ConfigureExceptionHandler(loggerFactory);
 
-         //   app.UseHttpsRedirection();
+            //   app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace ShopApi.Repository
+namespace ShopApi.Repositories
 {
     public class OrderedProductRepo
     {

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApi.Core;
 using ShopApi.Dto;
-using ShopApi.Service;
+using ShopApi.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ShopApi.Controllers
 {

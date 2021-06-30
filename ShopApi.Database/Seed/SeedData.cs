@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -6,52 +13,11 @@ using Newtonsoft.Json;
 using ShopApi.Database.Data;
 using ShopApi.Database.Entities;
 using ShopApi.Database.Entities.ProductManagement;
-using ShopApi.Repository;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace ShopApi.Extensions
+namespace ShopApi.Database.Seed
 {
     public static class SeedData
     {
-        public static string DefaultBarcode = "076575693118";
-        public static string[] ProductNames = { "Lapte integral Zuzu ",
-                                                "Lapte de consum Zuzu",
-                                                "Lapte de consum Auchan ",
-                                                "Lapte batut Auchan",
-                                                "Lapte integral Zuzu",
-                                                "Lapte de consum Zuzu 1.8L, 3.5% grasime",
-                                                "Lapte de consum Auchan 1 l",
-                                                "Lapte batut Auchan 2% grasime, 330 g" };
-        public static string[] ShortProductNames = { "Lapte integral",
-                                                "Lapte de consum ",
-                                                "Lapte de consum ",
-                                                "Lapte batut ",
-                                                "Lapte integral ",
-                                                "Lapte de consum ",
-                                                "Lapte de consum",
-                                                "Lapte batut Auchan" };
-
-        public static string[] PathsToImage =
-        {
-
-            "https://i.ibb.co/Sd5XFfc/i-edit.png",
-            "https://i.ibb.co/y8f7NG3/iaurt-edit.png",
-            "https://i.ibb.co/KFwQtZv/Almette-Smantana.png",
-            "https://i.ibb.co/zSYLCX6/iaurt-grecesc-10-grasime-olympus-150g-8827871559710.png",
-            "https://i.ibb.co/kBqkyns/iaurt-natural-bakoma.png",
-            "https://i.ibb.co/L9vtRKR/iaurt-usurel-de-baut-330g.png",
-            "https://i.ibb.co/kqRZHqQ/lapte-batut-01.png",
-            "https://i.ibb.co/xX2xgfV/napolact-branza-burduf-ii-400g-32642.png",
-            "https://i.ibb.co/Q6KmMNT/salam-sergiana-brasov-crud-uscat-vid-cantitate-variabila-8903702839326.png"
-
-        };
-
         public static async Task InitializeAsync(IServiceProvider services)
         {
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
@@ -60,7 +26,7 @@ namespace ShopApi.Extensions
 
             var dataContext = services.GetService<DataContext>();
 
-            var logger = services.GetRequiredService<ILogger<Startup>>();
+            var logger = services.GetRequiredService<ILogger<DataContext>>();
 
             /* ###############################   BRANDS  ############################### */
             if (dataContext.Users.FirstOrDefault(x => x.Email == "flaviu_remus@yahoo.com") == null)
@@ -609,7 +575,7 @@ namespace ShopApi.Extensions
         }
 
         private static async Task AddDefaultUser(UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager, ILogger<Startup> logger)
+            RoleManager<IdentityRole> roleManager, ILogger<DataContext> logger)
         {
             var checkDefaultUser = await userManager.Users
                 .Where(x => x.Email == "flaviu_remus@yahoo.com")
@@ -651,7 +617,6 @@ namespace ShopApi.Extensions
 
             }
         }
-
 
         public class MyField
         {

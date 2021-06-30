@@ -134,7 +134,7 @@ namespace ShopApi.Authentication
             return CommandResult<bool>.Success(true);
         }
 
-        public async Task<CommandResult<bool>> ConfirmEmail(ConfirmationEmailDto modelDto)
+        public async Task<CommandResult<bool>> ConfirmEmail(ConfirmationEmail modelDto)
         {
             var user = await _userManager.FindByEmailAsync(modelDto.Email);
             var tokenDecodedByte = WebEncoders.Base64UrlDecode(modelDto.Token);

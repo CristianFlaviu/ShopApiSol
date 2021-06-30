@@ -27,7 +27,8 @@
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="Dto\ProductDto.cs" />
-    <Compile Remove="Repository\ProductCategoryRepo.cs" />
+    <Compile Remove="Extensions\SeedData.cs" />
+    <Compile Remove="Repositories\ProductCategoryRepo.cs" />
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 

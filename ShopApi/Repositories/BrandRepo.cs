@@ -3,7 +3,7 @@ using ShopApi.Database.Data;
 using ShopApi.Database.Entities.ProductManagement;
 using System.Threading.Tasks;
 
-namespace ShopApi.Repository
+namespace ShopApi.Repositories
 {
     public class BrandRepo
     {

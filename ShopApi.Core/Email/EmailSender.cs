@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MailKit.Security;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using MimeKit.Utils;
 using ShopApi.Constants;
 using System;
 using System.Threading.Tasks;
-using MailKit.Security;
-using Microsoft.Extensions.Configuration;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace ShopApi.Core.Email
@@ -25,52 +24,6 @@ namespace ShopApi.Core.Email
             _configuration = configuration;
         }
 
-        public async Task<IdentityResult> SendMailAsync(string bodyMessage, string subject, string sendToUsername, string sendToEmail)
-        {
-            try
-            {
-                using var client = new SmtpClient();
-                var emailInfo = new MimeMessage
-                {
-                    Subject = subject,
-                    Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = bodyMessage }
-                };
-                var builder = new BodyBuilder();
-
-                builder.TextBody = bodyMessage;
-
-                var image = builder.LinkedResources.Add(@"..\ShopApi.Core\Email\cat.jpg");
-
-                image.ContentId = MimeUtils.GenerateMessageId();
-
-                // Set the html version of the message text
-                builder.HtmlBody = string.Format(@"<p>Hey ,
-                                                    <br>
-                <p> C#<br>             
-                <br>
-                <center><img src=""cid:{0}""></center>
-                   Happy Shopping", image.ContentId);
-
-                //emailInfo.Body = builder.ToMessageBody();
-
-                emailInfo.From.Add(new MailboxAddress(_emailConfig.Username, _emailConfig.Email));
-                emailInfo.To.Add(new MailboxAddress(sendToUsername, sendToEmail));
-
-                await client.ConnectAsync(_emailConfig.Host, 587);
-                await client.AuthenticateAsync(_emailConfig.Username, _emailConfig.Password);
-                await client.SendAsync(emailInfo);
-                await client.DisconnectAsync(true);
-
-                _logger.LogInformation(string.Format(StringFormatTemplates.EmailSentSuccessfully, sendToEmail));
-
-                return IdentityResult.Success;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(string.Format(StringFormatTemplates.EmailFailedToSend, sendToEmail) + e.Message);
-                throw;
-            }
-        }
         public async Task<IdentityResult> SendRegistrationMailAsync(string token, string userFullName, string sendToUsername, string sendToEmail)
         {
             try

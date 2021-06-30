@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ShopApi.Core.Email;
-using ShopApi.Repository;
+using ShopApi.Repositories;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

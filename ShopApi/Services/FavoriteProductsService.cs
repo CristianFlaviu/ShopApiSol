@@ -1,9 +1,9 @@
 ﻿using ShopApi.Database.Entities.ProductManagement;
-using ShopApi.Repository;
+using ShopApi.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShopApi.Service
+namespace ShopApi.Services
 {
     public class FavoriteProductsService
     {

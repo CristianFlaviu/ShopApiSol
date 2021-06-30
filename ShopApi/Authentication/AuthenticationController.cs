@@ -45,7 +45,7 @@ namespace ShopApi.Authentication
         }
 
         [HttpPost("confirm-email")]
-        public async Task<CommandResult<bool>> ConfirmEmail([FromBody] ConfirmationEmailDto modelDto)
+        public async Task<CommandResult<bool>> ConfirmEmail([FromBody] ConfirmationEmail modelDto)
         {
             return await _authenticationService.ConfirmEmail(modelDto);
         }

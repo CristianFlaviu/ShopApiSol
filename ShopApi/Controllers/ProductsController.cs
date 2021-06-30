@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApi.Core;
 using ShopApi.Dto;
-using ShopApi.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ShopApi.Services;
 
 namespace ShopApi.Controllers
 {
