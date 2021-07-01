@@ -91,8 +91,41 @@ namespace ShopApi.Database.Seed
                     Phone = "0744584911"
                 };
 
+                var sevenDays = new Brand
+                {
+                    Email = "SevenDays@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "7Days",
+                    Phone = "0744584911"
+                };
+
+                var boromir = new Brand
+                {
+                    Email = "boromir@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Boromir",
+                    Phone = "0744584911"
+                };
+                var chipicao = new Brand
+                {
+                    Email = "chipicao@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Chipicao",
+                    Phone = "0744584911"
+                };
 
 
+
+
+                await dataContext.Brands.AddAsync(chipicao);
+                await dataContext.Brands.AddAsync(sevenDays);
+                await dataContext.Brands.AddAsync(boromir);
                 await dataContext.Brands.AddAsync(zuzuBrand);
                 await dataContext.Brands.AddAsync(fulgaBrand);
                 await dataContext.Brands.AddAsync(covalactBrand);
@@ -133,6 +166,22 @@ namespace ShopApi.Database.Seed
                     Name = "Milk"
                 };
                 await dataContext.Categories.AddAsync(milk);
+
+                var sweets = new Category
+                {
+                    ParentCategory = null,
+                    Name = "sweets"
+                };
+                await dataContext.Categories.AddAsync(sweets);
+
+                var croissant = new Category
+                {
+                    ParentCategory = sweets,
+                    Name = "croissant"
+                };
+
+                await dataContext.Categories.AddAsync(croissant);
+
 
 
                 /* ###############################   PRODUCTS  ############################### */
@@ -349,7 +398,6 @@ namespace ShopApi.Database.Seed
 
 
                 attributesYogurtGreek.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-                attributesYogurtGreek.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
                 attributesYogurtGreek.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
@@ -389,7 +437,7 @@ namespace ShopApi.Database.Seed
 
 
                 attributesNapolactYogurt900.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-                attributesNapolactYogurt900.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+               
 
                 attributesNapolactYogurt900.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
@@ -428,7 +476,6 @@ namespace ShopApi.Database.Seed
                 attributesNapolactYogurt140g.Add(new MyField { Name = "Proteins", Value = "3.4g", InfoCategory = "Nutritional Information" });
 
                 attributesNapolactYogurt140g.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-                attributesNapolactYogurt140g.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
                 attributesNapolactYogurt140g.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
@@ -468,7 +515,6 @@ namespace ShopApi.Database.Seed
                 attributesCovalactYogurt900g.Add(new MyField { Name = "Proteins", Value = "3.2g", InfoCategory = "Nutritional Information" });
 
                 attributesCovalactYogurt900g.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-                attributesCovalactYogurt900g.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
                 attributesCovalactYogurt900g.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
@@ -506,7 +552,6 @@ namespace ShopApi.Database.Seed
                 attributesCovalactYogurt140g.Add(new MyField { Name = "Proteins", Value = "3.2g", InfoCategory = "Nutritional Information" });
 
                 attributesCovalactYogurt140g.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-                attributesCovalactYogurt140g.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
                 attributesCovalactYogurt140g.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
@@ -545,7 +590,6 @@ namespace ShopApi.Database.Seed
                 attributesMullerYogurt.Add(new MyField { Name = "Proteins", Value = "3.3g", InfoCategory = "Nutritional Information" });
 
                 attributesMullerYogurt.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-                attributesMullerYogurt.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
                 attributesMullerYogurt.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
@@ -568,6 +612,206 @@ namespace ShopApi.Database.Seed
                     Attributes = JsonConvert.SerializeObject(attributesMullerYogurt)
                 };
                 await dataContext.Products.AddAsync(mullerYogurt);
+
+                /* ######  Croissant 7 Days ###### */
+                var attributes7Days = new ArrayList();
+                attributes7Days.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "1866", InfoCategory = "Nutritional Information" });
+                attributes7Days.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "447", InfoCategory = "Nutritional Information" });
+
+                attributes7Days.Add(new MyField { Name = "Fats ", Value = "28g", InfoCategory = "Nutritional Information" });
+                attributes7Days.Add(new MyField { Name = "Fatty acids ", Value = "15g", InfoCategory = "Nutritional Information" });
+
+                attributes7Days.Add(new MyField { Name = "Carbohydrates ", Value = "42g", InfoCategory = "Nutritional Information" });
+                attributes7Days.Add(new MyField { Name = "Sugars", Value = "14g", InfoCategory = "Nutritional Information" });
+                attributes7Days.Add(new MyField { Name = "Salt", Value = "1g", InfoCategory = "Nutritional Information" });
+
+                attributes7Days.Add(new MyField { Name = "Proteins", Value = "6g", InfoCategory = "Nutritional Information" });
+
+                attributes7Days.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
+
+                attributes7Days.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
+
+                attributes7Days.Add(new MyField { Name = "Weight", Value = "65g", InfoCategory = "Dimension" });
+
+                attributes7Days.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var sevenDaysProduct = new Product
+                {
+                    Title = "Croissant 7 Days with cocoa filling 65g",
+                    ShortTitle = "Croissant 7 Days",
+                    Barcode = "5201360521230",
+                    Brand = sevenDays,
+                    Category = croissant,
+                    PathToImage = "https://i.ibb.co/kJHg4J4/Seven-Days.png",
+                    Score = 4.78,
+                    BasePrice = 1.6,
+                    Discount = 3,
+                    UnitsAvailable = 50,
+                    Attributes = JsonConvert.SerializeObject(attributes7Days)
+                };
+                await dataContext.Products.AddAsync(sevenDaysProduct);
+
+                /* ######  Croissant 7 Days Mini ###### */
+                var attributes7DaysMini = new ArrayList();
+                attributes7DaysMini.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "1757", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "420", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysMini.Add(new MyField { Name = "Fats ", Value = "20g", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "Fatty acids ", Value = "12", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysMini.Add(new MyField { Name = "Carbohydrates ", Value = "49g", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "Sugars", Value = "23g", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "Salt", Value = "1g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysMini.Add(new MyField { Name = "Proteins", Value = "6g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysMini.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
+                attributes7DaysMini.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
+
+                attributes7DaysMini.Add(new MyField { Name = "Weight", Value = "50g", InfoCategory = "Dimension" });
+
+                attributes7DaysMini.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var sevenDaysProductMini = new Product
+                {
+                    Title = "Mini Croissante 7 Days with cocoa filling 185g",
+                    ShortTitle = "Mini Croissante",
+                    Barcode = "5201360521230",
+                    Brand = sevenDays,
+                    Category = croissant,
+                    PathToImage = "https://i.ibb.co/NZ73RQv/mini-croissante-7-day-s-cu-umplutura-de-cacao-185g-8845586530334.png",
+                    Score = 4.78,
+                    BasePrice = 6,
+                    Discount = 3,
+                    UnitsAvailable = 25,
+                    Attributes = JsonConvert.SerializeObject(attributes7DaysMini)
+                };
+                await dataContext.Products.AddAsync(sevenDaysProductMini);
+
+
+                /* ######  Boromir ###### */
+                var attributesBoromirCroissanti = new ArrayList();
+                attributesBoromirCroissanti.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "1690", InfoCategory = "Nutritional Information" });
+                attributesBoromirCroissanti.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "402.3", InfoCategory = "Nutritional Information" });
+
+                attributesBoromirCroissanti.Add(new MyField { Name = "Fats ", Value = "18.8g", InfoCategory = "Nutritional Information" });
+                attributesBoromirCroissanti.Add(new MyField { Name = "Fatty acids ", Value = "6.8g", InfoCategory = "Nutritional Information" });
+
+                attributesBoromirCroissanti.Add(new MyField { Name = "Carbohydrates ", Value = "51.2g", InfoCategory = "Nutritional Information" });
+                attributesBoromirCroissanti.Add(new MyField { Name = "Sugars", Value = "19.1g", InfoCategory = "Nutritional Information" });
+                attributesBoromirCroissanti.Add(new MyField { Name = "Salt", Value = "0.9g", InfoCategory = "Nutritional Information" });
+
+                attributesBoromirCroissanti.Add(new MyField { Name = "Proteins", Value = "6g", InfoCategory = "Nutritional Information" });
+
+                attributesBoromirCroissanti.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
+                attributesBoromirCroissanti.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesBoromirCroissanti.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
+
+                attributesBoromirCroissanti.Add(new MyField { Name = "Weight", Value = "50g", InfoCategory = "Dimension" });
+
+                attributesBoromirCroissanti.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var boromirProduct = new Product
+                {
+                    Title = "Boromir croissant with milk cream 50g",
+                    ShortTitle = "Croissant Boromir",
+                    Barcode = "5201360521270",
+                    Brand = chipicao,
+                    Category = croissant,
+                    PathToImage = "https://i.ibb.co/Tmx7SdN/croissant-boromir-cu-crema-de-lapte-50g-8836753948702.png",
+                    Score = 4.78,
+                    BasePrice = 1.5,
+                    Discount = 2,
+                    UnitsAvailable = 35,
+                    Attributes = JsonConvert.SerializeObject(attributesBoromirCroissanti)
+
+                };
+                await dataContext.Products.AddAsync(boromirProduct);
+
+
+                /* ######  chipicao ###### */
+                var attributesChipicao = new ArrayList();
+                attributesChipicao.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "1887", InfoCategory = "Nutritional Information" });
+                attributesChipicao.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "402.3", InfoCategory = "Nutritional Information" });
+
+                attributesChipicao.Add(new MyField { Name = "Fats ", Value = "18.8g", InfoCategory = "Nutritional Information" });
+                attributesChipicao.Add(new MyField { Name = "Fatty acids ", Value = "6.8g", InfoCategory = "Nutritional Information" });
+
+                attributesChipicao.Add(new MyField { Name = "Carbohydrates ", Value = "51.2g", InfoCategory = "Nutritional Information" });
+                attributesChipicao.Add(new MyField { Name = "Sugars", Value = "19.1g", InfoCategory = "Nutritional Information" });
+                attributesChipicao.Add(new MyField { Name = "Salt", Value = "0.9g", InfoCategory = "Nutritional Information" });
+
+                attributesChipicao.Add(new MyField { Name = "Proteins", Value = "6g", InfoCategory = "Nutritional Information" });
+
+                attributesChipicao.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
+                attributesChipicao.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesChipicao.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
+
+                attributesChipicao.Add(new MyField { Name = "Weight", Value = "60g", InfoCategory = "Dimension" });
+
+                attributesChipicao.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+
+                var chipicaoProduct = new Product
+            {
+                Title = "Boromir croissant with milk cream 50g",
+                ShortTitle = "Croissant Chipicao ",
+                Barcode = "5201360521290",
+                Brand = chipicao,
+                Category = croissant,
+                PathToImage = "https://i.ibb.co/MNsk4Vq/croissant-chipicao-cu-umplutura-de-cacao-60g-9415587627038.jpg",
+                Score = 4.78,
+                BasePrice = 2,
+                Discount = 2,
+                UnitsAvailable = 40,
+                Attributes = JsonConvert.SerializeObject(attributesChipicao)
+
+            };
+            await dataContext.Products.AddAsync(boromirProduct);
+
+
+                /* ######  7 days borseto ###### */
+                var attributesBorseto = new ArrayList();
+                attributesBorseto.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "attributesBorseto", InfoCategory = "Nutritional Information" });
+                attributesBorseto.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "403.3", InfoCategory = "Nutritional Information" });
+
+                attributesBorseto.Add(new MyField { Name = "Fats ", Value = "20.8g", InfoCategory = "Nutritional Information" });
+                attributesBorseto.Add(new MyField { Name = "Fatty acids ", Value = "10g", InfoCategory = "Nutritional Information" });
+
+                attributesBorseto.Add(new MyField { Name = "Carbohydrates ", Value = "50g", InfoCategory = "Nutritional Information" });
+                attributesBorseto.Add(new MyField { Name = "Sugars", Value = "19.1g", InfoCategory = "Nutritional Information" });
+                attributesBorseto.Add(new MyField { Name = "Salt", Value = "0.9g", InfoCategory = "Nutritional Information" });
+
+                attributesBorseto.Add(new MyField { Name = "Proteins", Value = "6g", InfoCategory = "Nutritional Information" });
+
+                attributesBorseto.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
+                attributesBorseto.Add(new MyField { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesBorseto.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
+
+                attributesBorseto.Add(new MyField { Name = "Weight", Value = "80g", InfoCategory = "Dimension" });
+
+                attributesBorseto.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+
+                var borsetoProduct = new Product
+                {
+                    Title = "7 Days Borseto with berry filling 80 g",
+                    ShortTitle = "7 Days Borseto ",
+                    Barcode = "5201360523290",
+                    Brand = sevenDays,
+                    Category = croissant,
+                    PathToImage = "https://i.ibb.co/cF87cdh/7-day-s-borseto-produs-de-produs-de-patiserie-cu-umplutura-de-fructe-de-padure-80g-8845587775518.png",
+                    Score = 4.78,
+                    BasePrice = 2.3,
+                    Discount = 4,
+                    UnitsAvailable = 40,
+                    Attributes = JsonConvert.SerializeObject(attributesBorseto)
+                };
+                await dataContext.Products.AddAsync(borsetoProduct);
+
                 await dataContext.SaveChangesAsync();
 
             }
@@ -583,7 +827,7 @@ namespace ShopApi.Database.Seed
 
             if (checkDefaultUser == null)
             {
-                const string password = "Gps123456*";
+                const string password = "rectilinie1";
                 const string defaultRole = "defaultRole";
                 var defaultBaseUser = new BaseUser()
                 {

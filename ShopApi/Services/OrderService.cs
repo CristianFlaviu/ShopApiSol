@@ -46,7 +46,7 @@ namespace ShopApi.Services
 
             var orderedProducts = productsShoppingCart.Select(x => new OrderedProduct
             {
-                PricePerProduct = x.Product.BasePrice - (x.Product.BasePrice * x.Product.Discount / 100),
+                PricePerProduct = x.Product.BasePrice - Math.Round(x.Product.BasePrice * x.Product.Discount / 100, 2),
                 Product = x.Product,
                 Quantity = x.Quantity,
             }).ToList();
@@ -54,7 +54,6 @@ namespace ShopApi.Services
             foreach (var orderedProduct in orderedProducts)
             {
                 amount += orderedProduct.Quantity * orderedProduct.PricePerProduct;
-
                 await _productRepo.ReduceProductQuantity(orderedProduct.Product.Barcode, orderedProduct.Quantity);
             }
             var order = await _orderRepo.PlaceOrder(new Order
@@ -79,7 +78,7 @@ namespace ShopApi.Services
 
             var orderedProducts = productsShoppingCart.Select(x => new OrderedProduct
             {
-                PricePerProduct = x.Product.BasePrice - (x.Product.BasePrice * x.Product.Discount / 100),
+                PricePerProduct = x.Product.BasePrice - Math.Round(x.Product.BasePrice * x.Product.Discount / 100, 2),
                 Product = x.Product,
                 Quantity = x.Quantity,
             }).ToList();
