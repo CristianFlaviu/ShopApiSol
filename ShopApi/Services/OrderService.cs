@@ -50,10 +50,9 @@ namespace ShopApi.Services
                 Product = x.Product,
                 Quantity = x.Quantity,
             }).ToList();
-            double amount = 0;
+          
             foreach (var orderedProduct in orderedProducts)
             {
-                amount += orderedProduct.Quantity * orderedProduct.PricePerProduct;
                 await _productRepo.ReduceProductQuantity(orderedProduct.Product.Barcode, orderedProduct.Quantity);
             }
             var order = await _orderRepo.PlaceOrder(new Order

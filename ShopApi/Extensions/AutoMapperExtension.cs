@@ -23,7 +23,7 @@ namespace ShopApi.Extensions
 
             CreateMap<Product, ProductCarousel>()
                 .ForMember(p => p.OldPrice, o => o.MapFrom(pp => pp.BasePrice))
-                .ForMember(p => p.NewPrice, o => o.MapFrom(pp => pp.BasePrice - Math.Round((pp.BasePrice * pp.Discount / 100), 2)));
+                .ForMember(p => p.NewPrice, o => o.MapFrom(pp => pp.BasePrice - Math.Round(pp.BasePrice * pp.Discount / 100, 2)));
 
             CreateMap<ShoppingCartProduct, ProductShoppingList>()
                 .ForMember(p => p.OldPrice, o => o.MapFrom(pp => pp.Product.BasePrice))

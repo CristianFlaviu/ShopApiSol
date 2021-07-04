@@ -7,9 +7,13 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using ShopApi.Core.SignalR;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ShopApi.Database.Data;
 
 namespace ShopApi.Core.RabbitMQ
 {
@@ -58,10 +62,13 @@ namespace ShopApi.Core.RabbitMQ
             _connection.Close();
 
         }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             stoppingToken.ThrowIfCancellationRequested();
+            var scope = _provider.CreateScope();
+            var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+
 
             var consumer = new AsyncEventingBasicConsumer(_channel);
             consumer.Received += async (bc, ea) =>
@@ -73,7 +80,11 @@ namespace ShopApi.Core.RabbitMQ
 
 
                _logger.LogInformation($"{DateTime.Now}  -  socket = {decodedMessage.Socket}   message= {decodedMessage.Barcode}");
-              
+
+
+               var productExists = await dataContext.Products.AnyAsync(x => x.Barcode == decodedMessage.Barcode, stoppingToken);
+
+
                await _messageHub.Clients.All.SendAsync("transferData/" + decodedMessage.Socket, decodedMessage.Barcode, stoppingToken);
                try
                {

@@ -29,7 +29,7 @@ namespace ShopApi.Database.Seed
             var logger = services.GetRequiredService<ILogger<DataContext>>();
 
             /* ###############################   BRANDS  ############################### */
-            if (dataContext.Users.FirstOrDefault(x => x.Email == "flaviu_remus@yahoo.com") == null)
+            if (!dataContext.Products.Any())
             {
                 await AddDefaultUser(userManager, roleManager, logger);
                 var zuzuBrand = new Brand
@@ -120,15 +120,23 @@ namespace ShopApi.Database.Seed
                     Phone = "0744584911"
                 };
 
+                var pilos = new Brand
+                {
+                    Email = "chipicao@yahoo.com",
+                    Address = "Sectorul 5",
+                    City = "Bucuresti",
+                    Country = "Romania",
+                    Name = "Pilos",
+                    Phone = "0744584911"
+                };
 
 
-
-                await dataContext.Brands.AddAsync(chipicao);
-                await dataContext.Brands.AddAsync(sevenDays);
-                await dataContext.Brands.AddAsync(boromir);
-                await dataContext.Brands.AddAsync(zuzuBrand);
-                await dataContext.Brands.AddAsync(fulgaBrand);
-                await dataContext.Brands.AddAsync(covalactBrand);
+                //await dataContext.Brands.AddAsync(chipicao);
+                //await dataContext.Brands.AddAsync(sevenDays);
+                //await dataContext.Brands.AddAsync(boromir);
+                //await dataContext.Brands.AddAsync(zuzuBrand);
+                //await dataContext.Brands.AddAsync(fulgaBrand);
+                //await dataContext.Brands.AddAsync(covalactBrand);
 
                 /* ###############################   CATEGORIES   ############################### */
 
@@ -183,49 +191,48 @@ namespace ShopApi.Database.Seed
                 await dataContext.Categories.AddAsync(croissant);
 
 
-
                 /* ###############################   PRODUCTS  ############################### */
 
 
-                /* ###### ZUZU 3.5 L ###### */
+                /* ###### ZUZU 0.5 L ###### */
                 var attributesMilk35Zuzu = new ArrayList();
 
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information"});
+                { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information"});
+                { Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information" });
 
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information"});
+                { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
 
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information"});
+                { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information"});
+                { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
+                { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
 
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use"});
+                { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
+                { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
 
                 attributesMilk35Zuzu.Add(new MyField
-                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
+                { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
 
                 var zuzuMilk35 = new Product
                 {
-                    Title = "Milk Zuzu 1.8L, 3.5% fat",
-                    ShortTitle = "Milk",
-                    Barcode = "123",
+                    Title = "Milk Zuzu 0.5L, 3.5% fat",
+                    ShortTitle = "Milk Zuzu 0.5L",
+                    Barcode = "5941355009346",
                     Brand = zuzuBrand,
                     Category = milk,
                     PathToImage = "https://i.ibb.co/4RdsJ2q/zuzu-lapte3-5.png",
@@ -241,40 +248,40 @@ namespace ShopApi.Database.Seed
                 /* ###### ZUZU 1 L ###### */
                 var attributesMilk1LZuzu = new ArrayList();
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information"});
+                { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information"});
+                { Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information" });
 
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information"});
+                { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
 
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information"});
+                { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information"});
+                { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
+                { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
 
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use"});
+                { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
+                { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
 
                 attributesMilk1LZuzu.Add(new MyField
-                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
+                { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
                 var zuzuMilk1L = new Product
                 {
                     Title = "Milk Zuzu 1L, 3.5% fat",
-                    ShortTitle = "Milk",
-                    Barcode = "1234",
+                    ShortTitle = "Milk Zuzu 1L",
+                    Barcode = "5941355000688",
                     Brand = zuzuBrand,
                     Category = milk,
                     PathToImage = "https://i.ibb.co/3sTwBhb/zuzu-lapte.png",
@@ -286,44 +293,90 @@ namespace ShopApi.Database.Seed
                 };
                 await dataContext.Products.AddAsync(zuzuMilk1L);
 
+                /* ###### PILOS 1 L ###### */
+                var attributesPilos = new ArrayList();
+                attributesPilos.Add(new MyField
+                { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
+                attributesPilos.Add(new MyField
+                { Name = "kcal per 100g or 100ml ", Value = "4.7g", InfoCategory = "Nutritional Information" });
+
+                attributesPilos.Add(new MyField
+                { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
+                attributesPilos.Add(new MyField
+                { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
+
+                attributesPilos.Add(new MyField
+                { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesPilos.Add(new MyField
+                { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
+                attributesPilos.Add(new MyField
+                { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
+                attributesPilos.Add(new MyField
+                { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
+                attributesPilos.Add(new MyField
+                { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
+
+                attributesPilos.Add(new MyField
+                { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
+                attributesPilos.Add(new MyField
+                { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
+
+                attributesPilos.Add(new MyField
+                { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
+
+                var pilosMilk1L = new Product
+                {
+                    Title = "Milk Pilos 1L, 3.5% fat",
+                    ShortTitle = "Milk Pilos 1L",
+                    Barcode = "4056489082958",
+                    Brand = pilos,
+                    Category = milk,
+                    PathToImage = "https://i.ibb.co/tqyvrfY/6801724-99.png",
+                    Score = 4.68,
+                    BasePrice = 3.5,
+                    Discount = 5,
+                    UnitsAvailable = 30,
+                    Attributes = JsonConvert.SerializeObject(attributesPilos)
+                };
+                await dataContext.Products.AddAsync(pilosMilk1L);
 
 
                 /* ###### Fulga 1 L ###### */
                 var attributesMilkFulga = new ArrayList();
                 attributesMilkFulga.Add(new MyField
-                    {Name = "kJ per 100g or 100ml ", Value = "181", InfoCategory = "Nutritional Information"});
+                { Name = "kJ per 100g or 100ml ", Value = "181", InfoCategory = "Nutritional Information" });
                 attributesMilkFulga.Add(new MyField
-                    {Name = "kcal per 100g or 100ml ", Value = "44.3g", InfoCategory = "Nutritional Information"});
+                { Name = "kcal per 100g or 100ml ", Value = "44.3g", InfoCategory = "Nutritional Information" });
 
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Fats ", Value = "1.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Fats ", Value = "1.5g", InfoCategory = "Nutritional Information" });
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Fatty acids ", Value = "1g", InfoCategory = "Nutritional Information"});
+                { Name = "Fatty acids ", Value = "1g", InfoCategory = "Nutritional Information" });
 
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information"});
+                { Name = "Salt", Value = "0.1g", InfoCategory = "Nutritional Information" });
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Proteins", Value = "3.1g", InfoCategory = "Nutritional Information"});
+                { Name = "Proteins", Value = "3.1g", InfoCategory = "Nutritional Information" });
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
+                { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
 
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use"});
+                { Name = "Storage Conditions", Value = "To be kept at 2-4C degree", InfoCategory = "Use" });
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
+                { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
                 attributesMilkFulga.Add(new MyField
-                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
+                { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
                 var fulgaMilk1L = new Product
                 {
                     Title = "Milk Fulga 1L, 1.5% fat",
-                    ShortTitle = "Milk",
-                    Barcode = "12345",
+                    ShortTitle = "Milk Fulga 1L",
+                    Barcode = "5949101000326",
                     Brand = fulgaBrand,
                     Category = milk,
                     PathToImage = "https://i.ibb.co/DzrBHPn/lapte-de-consum-fulga-uht-1-l-8877631897630.png",
@@ -339,38 +392,38 @@ namespace ShopApi.Database.Seed
                 /* ###### Covalact 1 L ###### */
                 var attributesMilkCovalact = new ArrayList();
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information"});
+                { Name = "kJ per 100g or 100ml ", Value = "257", InfoCategory = "Nutritional Information" });
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "kcal per 100g or 100ml ", Value = "62g", InfoCategory = "Nutritional Information"});
+                { Name = "kcal per 100g or 100ml ", Value = "62g", InfoCategory = "Nutritional Information" });
 
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Fats ", Value = "3.5g", InfoCategory = "Nutritional Information" });
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information"});
+                { Name = "Fatty acids ", Value = "2.4g", InfoCategory = "Nutritional Information" });
 
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Carbohydrates ", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information"});
+                { Name = "Sugars", Value = "4.5g", InfoCategory = "Nutritional Information" });
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information"});
+                { Name = "Proteins", Value = "3g", InfoCategory = "Nutritional Information" });
 
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information"});
+                { Name = "Fat percentage", Value = "3.5%", InfoCategory = "Nutritional Information" });
 
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use"});
+                { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
                 attributesMilkCovalact.Add(new MyField
-                    {Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use"});
+                { Name = "Method of preparation", Value = "Pasteurized", InfoCategory = "Use" });
 
-                attributesMilkFulga.Add(new MyField
-                    {Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens"});
+                attributesMilkCovalact.Add(new MyField
+                { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
                 var covalactMilk1L = new Product
                 {
                     Title = "Milk Covalact 1L, 1.5% fat",
-                    ShortTitle = "Milk",
-                    Barcode = "12355",
+                    ShortTitle = "Milk Covalact 1L",
+                    Barcode = "5941221001771",
                     Brand = covalactBrand,
                     Category = milk,
                     PathToImage = "https://i.ibb.co/JqVKVWw/lapte-consum-covalact-1-l-cutie-8868827234334.png",
@@ -378,12 +431,12 @@ namespace ShopApi.Database.Seed
                     BasePrice = 5,
                     Discount = 3,
                     UnitsAvailable = 8,
-                    Attributes = JsonConvert.SerializeObject(attributesMilkFulga)
+                    Attributes = JsonConvert.SerializeObject(attributesMilkCovalact)
                 };
                 await dataContext.Products.AddAsync(covalactMilk1L);
-          
 
-            /* ###### olympus yogurt ###### */
+
+                /* ###### olympus yogurt ###### */
                 var attributesYogurtGreek = new ArrayList();
                 attributesYogurtGreek.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "275", InfoCategory = "Nutritional Information" });
                 attributesYogurtGreek.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "65", InfoCategory = "Nutritional Information" });
@@ -408,8 +461,8 @@ namespace ShopApi.Database.Seed
                 var olympysYogortGreek = new Product
                 {
                     Title = "Greek yogurt 150g",
-                    ShortTitle = "Milk",
-                    Barcode = "123451",
+                    ShortTitle = "Greek yogurt 150g",
+                    Barcode = "5202178001970",
                     Brand = olympusBrand,
                     Category = yogurt,
                     PathToImage = "https://i.ibb.co/zSZJJTb/iaurt-grecesc.png",
@@ -437,7 +490,7 @@ namespace ShopApi.Database.Seed
 
 
                 attributesNapolactYogurt900.Add(new MyField { Name = "Storage Conditions", Value = "To be kept at 2-6C degree", InfoCategory = "Use" });
-               
+
 
                 attributesNapolactYogurt900.Add(new MyField { Name = "Allergen", Value = "Lactose", InfoCategory = "Food allergens" });
 
@@ -448,8 +501,8 @@ namespace ShopApi.Database.Seed
                 var NapolactYogurt = new Product
                 {
                     Title = "Napolact yogurt 900g",
-                    ShortTitle = "Milk",
-                    Barcode = "123452",
+                    ShortTitle = "Napolact yogurt 900g",
+                    Barcode = "5941065007236",
                     Brand = napolactBrand,
                     Category = yogurt,
                     PathToImage = "https://i.ibb.co/chFND6W/iaurt-napolact-numa-bun-900-g-8950854713374.png",
@@ -486,8 +539,8 @@ namespace ShopApi.Database.Seed
                 var NapolactYogurt140 = new Product
                 {
                     Title = "Napolact yogurt 140g",
-                    ShortTitle = "Milk",
-                    Barcode = "123453",
+                    ShortTitle = "Napolact yogurt 140g",
+                    Barcode = "5941065007245",
                     Brand = covalactBrand,
                     Category = yogurt,
                     PathToImage = "https://i.ibb.co/gTf0fY8/iaurt-napolact-bio-pahar-140-g-8950857367582.png",
@@ -525,8 +578,8 @@ namespace ShopApi.Database.Seed
                 var covalactYogurt900 = new Product
                 {
                     Title = "Covalact yogurt 900g",
-                    ShortTitle = "Milk",
-                    Barcode = "123454",
+                    ShortTitle = "Covalact yogurt 900g",
+                    Barcode = "5941173405108",
                     Brand = napolactBrand,
                     Category = yogurt,
                     PathToImage = "https://i.ibb.co/ctB08Cw/iaurt-ecologic-covalact-38-grasime-140g-8876676218910.png",
@@ -562,8 +615,8 @@ namespace ShopApi.Database.Seed
                 var covalactYogurt140 = new Product
                 {
                     Title = "Covalact yogurt 140g",
-                    ShortTitle = "Milk",
-                    Barcode = "123455",
+                    ShortTitle = "Covalact yogurt 140g",
+                    Barcode = "5941173405119",
                     Brand = napolactBrand,
                     Category = yogurt,
                     PathToImage = "https://i.ibb.co/kxGVQpx/iaurt-covalact-900-g-8886763946014.png",
@@ -578,7 +631,7 @@ namespace ShopApi.Database.Seed
 
 
                 /* ######  Muller Yogurt  ###### */
-                var attributesMullerYogurt= new ArrayList();
+                var attributesMullerYogurt = new ArrayList();
                 attributesMullerYogurt.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "427", InfoCategory = "Nutritional Information" });
                 attributesMullerYogurt.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "101", InfoCategory = "Nutritional Information" });
 
@@ -600,8 +653,8 @@ namespace ShopApi.Database.Seed
                 var mullerYogurt = new Product
                 {
                     Title = "Muller  yogurt 500g",
-                    ShortTitle = "Milk",
-                    Barcode = "123456",
+                    ShortTitle = "Muller  yogurt 500g",
+                    Barcode = "4025500204914",
                     Brand = mullerBrand,
                     Category = yogurt,
                     PathToImage = "https://i.ibb.co/G3pzXHh/iaurt-cu-cirese-muller-pezzi-500g-8850666913822.png",
@@ -638,7 +691,7 @@ namespace ShopApi.Database.Seed
                 var sevenDaysProduct = new Product
                 {
                     Title = "Croissant 7 Days with cocoa filling 65g",
-                    ShortTitle = "Croissant 7 Days",
+                    ShortTitle = "Croissant 7 Days cacao",
                     Barcode = "5201360521230",
                     Brand = sevenDays,
                     Category = croissant,
@@ -651,13 +704,91 @@ namespace ShopApi.Database.Seed
                 };
                 await dataContext.Products.AddAsync(sevenDaysProduct);
 
+                /* ######  Croissant 7 Days Vainilie ###### */
+                var attributes7DaysVanilla = new ArrayList();
+                attributes7DaysVanilla.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "2041", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanilla.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "489", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanilla.Add(new MyField { Name = "Fats ", Value = "30", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanilla.Add(new MyField { Name = "Fatty acids ", Value = "15g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanilla.Add(new MyField { Name = "Carbohydrates ", Value = "42g", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanilla.Add(new MyField { Name = "Sugars", Value = "14g", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanilla.Add(new MyField { Name = "Salt", Value = "0.45g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanilla.Add(new MyField { Name = "Proteins", Value = "6g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanilla.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
+
+                attributes7DaysVanilla.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
+
+                attributes7DaysVanilla.Add(new MyField { Name = "Weight", Value = "80g", InfoCategory = "Dimension" });
+
+                attributes7DaysVanilla.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var sevenDaysVanillaProduct = new Product
+                {
+                    Title = "Croissant 7 Day with vanilla filling, 80 g",
+                    ShortTitle = "Croissant 7 Days vanilla",
+                    Barcode = "5201360644742",
+                    Brand = sevenDays,
+                    Category = croissant,
+                    PathToImage = "https://i.ibb.co/qnPHZYW/croissant-7-days-cu-umplutura-de-vanilie-80-g-8948730396702.png",
+                    Score = 4.78,
+                    BasePrice = 2.1,
+                    Discount = 2,
+                    UnitsAvailable = 50,
+                    Attributes = JsonConvert.SerializeObject(attributes7DaysVanilla)
+                };
+                await dataContext.Products.AddAsync(sevenDaysVanillaProduct);
+
+                /* ######  Croissant 7 Days Vainilie ###### */
+                var attributes7DaysVanillaCherry = new ArrayList();
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "2041", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "489", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Fats ", Value = "30", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Fatty acids ", Value = "15g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Carbohydrates ", Value = "42g", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Sugars", Value = "14g", InfoCategory = "Nutritional Information" });
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Salt", Value = "0.45g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Proteins", Value = "6g", InfoCategory = "Nutritional Information" });
+
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
+
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
+
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Weight", Value = "80g", InfoCategory = "Dimension" });
+
+                attributes7DaysVanillaCherry.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
+
+                var sevenDaysVanillaCherryProduct = new Product
+                {
+                    Title = "Croissant 7 Day with vanilla and cherry filling 80g",
+                    ShortTitle = "Croissant 7 Days vanilla",
+                    Barcode = "5201360644753",
+                    Brand = sevenDays,
+                    Category = croissant,
+                    PathToImage = "https://i.ibb.co/qnPHZYW/croissant-7-days-cu-umplutura-de-vanilie-80-g-8948730396702.png",
+                    Score = 4.78,
+                    BasePrice = 2.1,
+                    Discount = 2,
+                    UnitsAvailable = 50,
+                    Attributes = JsonConvert.SerializeObject(attributes7DaysVanillaCherry)
+                };
+                await dataContext.Products.AddAsync(sevenDaysVanillaCherryProduct);
+
+
+
                 /* ######  Croissant 7 Days Mini ###### */
                 var attributes7DaysMini = new ArrayList();
-                attributes7DaysMini.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "1757", InfoCategory = "Nutritional Information" });
-                attributes7DaysMini.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "420", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "kJ per 100g or 100ml ", Value = "1767", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "kcal per 100g or 100ml ", Value = "423", InfoCategory = "Nutritional Information" });
 
-                attributes7DaysMini.Add(new MyField { Name = "Fats ", Value = "20g", InfoCategory = "Nutritional Information" });
-                attributes7DaysMini.Add(new MyField { Name = "Fatty acids ", Value = "12", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "Fats ", Value = "24g", InfoCategory = "Nutritional Information" });
+                attributes7DaysMini.Add(new MyField { Name = "Fatty acids ", Value = "13g", InfoCategory = "Nutritional Information" });
 
                 attributes7DaysMini.Add(new MyField { Name = "Carbohydrates ", Value = "49g", InfoCategory = "Nutritional Information" });
                 attributes7DaysMini.Add(new MyField { Name = "Sugars", Value = "23g", InfoCategory = "Nutritional Information" });
@@ -668,21 +799,21 @@ namespace ShopApi.Database.Seed
                 attributes7DaysMini.Add(new MyField { Name = "Storage Conditions", Value = "Store in a cool, dry place, away from direct sunlight", InfoCategory = "Use" });
                 attributes7DaysMini.Add(new MyField { Name = "Allergen", Value = "Wheat flour (contains gluten), eggs, milk.", InfoCategory = "Food allergens" });
 
-                attributes7DaysMini.Add(new MyField { Name = "Weight", Value = "50g", InfoCategory = "Dimension" });
+                attributes7DaysMini.Add(new MyField { Name = "Weight", Value = "80g", InfoCategory = "Dimension" });
 
                 attributes7DaysMini.Add(new MyField { Name = "Country", Value = "Romania", InfoCategory = "Origin Country" });
 
                 var sevenDaysProductMini = new Product
                 {
-                    Title = "Mini Croissante 7 Days with cocoa filling 185g",
-                    ShortTitle = "Mini Croissante",
-                    Barcode = "5201360521230",
+                    Title = "Croissant 7 Day with vanilla and cherry filling 80g",
+                    ShortTitle = "Croissant 7 Days vanilla and cherry",
+                    Barcode = "5201360644764",
                     Brand = sevenDays,
                     Category = croissant,
-                    PathToImage = "https://i.ibb.co/NZ73RQv/mini-croissante-7-day-s-cu-umplutura-de-cacao-185g-8845586530334.png",
+                    PathToImage = "https://i.ibb.co/jrmPz7k/croissant-7-days-double-max-cu-umplutura-de-vanilie-si-visine-80g-8841666756638.png",
                     Score = 4.78,
-                    BasePrice = 6,
-                    Discount = 3,
+                    BasePrice = 2.1,
+                    Discount = 2,
                     UnitsAvailable = 25,
                     Attributes = JsonConvert.SerializeObject(attributes7DaysMini)
                 };
@@ -716,7 +847,7 @@ namespace ShopApi.Database.Seed
                 {
                     Title = "Boromir croissant with milk cream 50g",
                     ShortTitle = "Croissant Boromir",
-                    Barcode = "5201360521270",
+                    Barcode = "5941300001104",
                     Brand = chipicao,
                     Category = croissant,
                     PathToImage = "https://i.ibb.co/Tmx7SdN/croissant-boromir-cu-crema-de-lapte-50g-8836753948702.png",
@@ -755,21 +886,21 @@ namespace ShopApi.Database.Seed
 
 
                 var chipicaoProduct = new Product
-            {
-                Title = "Boromir croissant with milk cream 50g",
-                ShortTitle = "Croissant Chipicao ",
-                Barcode = "5201360521290",
-                Brand = chipicao,
-                Category = croissant,
-                PathToImage = "https://i.ibb.co/MNsk4Vq/croissant-chipicao-cu-umplutura-de-cacao-60g-9415587627038.jpg",
-                Score = 4.78,
-                BasePrice = 2,
-                Discount = 2,
-                UnitsAvailable = 40,
-                Attributes = JsonConvert.SerializeObject(attributesChipicao)
+                {
+                    Title = "Boromir croissant with milk cream 50g",
+                    ShortTitle = "Croissant Chipicao milk cream",
+                    Barcode = "5201360417163",
+                    Brand = chipicao,
+                    Category = croissant,
+                    PathToImage = "https://i.ibb.co/MNsk4Vq/croissant-chipicao-cu-umplutura-de-cacao-60g-9415587627038.jpg",
+                    Score = 4.78,
+                    BasePrice = 2,
+                    Discount = 2,
+                    UnitsAvailable = 40,
+                    Attributes = JsonConvert.SerializeObject(attributesChipicao)
 
-            };
-            await dataContext.Products.AddAsync(boromirProduct);
+                };
+                await dataContext.Products.AddAsync(chipicaoProduct);
 
 
                 /* ######  7 days borseto ###### */
@@ -800,7 +931,7 @@ namespace ShopApi.Database.Seed
                 {
                     Title = "7 Days Borseto with berry filling 80 g",
                     ShortTitle = "7 Days Borseto ",
-                    Barcode = "5201360523290",
+                    Barcode = "5201360644775",
                     Brand = sevenDays,
                     Category = croissant,
                     PathToImage = "https://i.ibb.co/cF87cdh/7-day-s-borseto-produs-de-produs-de-patiserie-cu-umplutura-de-fructe-de-padure-80g-8845587775518.png",
