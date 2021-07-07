@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace ShopApi.Notification
 {
-    public class NotificationService : IHostedService, IDisposable
+    public class NotificationService : IHostedService
     {
-        private int executionCount = 0;
         private readonly ILogger<NotificationService> _logger;
         private readonly IServiceProvider _provider;
         private Timer _timer;
@@ -26,15 +25,13 @@ namespace ShopApi.Notification
         {
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromHours(30));
+                TimeSpan.FromHours(24));
 
             return Task.CompletedTask;
         }
 
         private async void DoWork(object state)
         {
-            var count = Interlocked.Increment(ref executionCount);
-
             var scope = _provider.CreateScope();
             var orderRepo = scope.ServiceProvider.GetRequiredService<OrderRepo>();
 
@@ -42,21 +39,16 @@ namespace ShopApi.Notification
 
             var orders = await orderRepo.GetAllOrders();
 
-
-
             foreach (var order in orders)
             {
-                if (order.Payment == null && order.DueDate < DateTime.Now)
+                if (order.Payment == null && order.DueDate < DateTime.Now.Date.AddDays(-1))
                 {
                     _logger.LogInformation($"user {order.User.FirstName} Order {order.Id} \n");
 
-                    await emailService.SendOrderNotPaidMailAsync(order.User.FirstName, order.User.LastName, order.User.Email, order.OrderDate.ToLocalTime().ToShortDateString());
+                    await emailService.SendOrderNotPaidMailAsync(order.User.FirstName, order.User.LastName, order.User.Email, order.OrderDate.ToLocalTime().ToShortDateString(),order.Id.ToString());
                 }
 
             }
-
-            _logger.LogInformation(
-            "Timed Hosted Service is working. Count: {Count}", count);
         }
 
         public Task StopAsync(CancellationToken stoppingToken)
@@ -68,9 +60,5 @@ namespace ShopApi.Notification
             return Task.CompletedTask;
         }
 
-        public void Dispose()
-        {
-            _timer?.Dispose();
-        }
     }
 }

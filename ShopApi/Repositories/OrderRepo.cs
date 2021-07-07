@@ -27,11 +27,10 @@ namespace ShopApi.Repositories
 
         public async Task<List<Order>> GetOrdersCurrentUser(string userId)
         {
-            return await _dataContext.Orders
-                                                           .Include(x => x.Payment)
-                                                           .Include(x=>x.OrderedProducts)
-                                                           .Where(x => x.User.Id.Equals(userId))
-                                                           .ToListAsync();
+            return await _dataContext.Orders.Include(x => x.Payment)
+                                            .Include(x => x.OrderedProducts)
+                                            .Where(x => x.User.Id.Equals(userId))
+                                            .ToListAsync();
         }
 
         public async Task<Order> GetOrderById(int orderId, string userId)
@@ -39,7 +38,7 @@ namespace ShopApi.Repositories
             return await _dataContext.Orders
                 .Include(x => x.User)
                 .Include(x => x.Payment)
-                .Include(x=>x.OrderedProducts)
+                .Include(x => x.OrderedProducts)
                 .SingleOrDefaultAsync(x => x.Id == orderId && x.User.Id.Equals(userId));
         }
 

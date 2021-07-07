@@ -56,7 +56,7 @@ namespace ShopApi.Core.Email
         }
 
 
-        public async Task<IdentityResult> SendOrderNotPaidMailAsync(string userFullName, string sendToUsername, string sendToEmail, string orderDate)
+        public async Task<IdentityResult> SendOrderNotPaidMailAsync(string userFullName, string sendToUsername, string sendToEmail, string orderDate, string orderId)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace ShopApi.Core.Email
 
                 var webUrl = _configuration.GetSection("WebUrl").Value;
 
-                builder.HtmlBody = String.Format(EmailTemplates.UnpaidOrder, userFullName, webUrl, orderDate);
+                builder.HtmlBody = String.Format(EmailTemplates.UnpaidOrder, userFullName, webUrl + "/orders-history/" + orderId, orderDate);
 
                 var emailInfo = new MimeMessage { Subject = "Order not Paid", Body = builder.ToMessageBody() };
 

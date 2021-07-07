@@ -50,7 +50,7 @@ namespace ShopApi.Extensions
                     0 : DateTime.Now.Subtract(pp.DueDate).Days * 0.5))
                 .ForMember(p => p.ProductsCost,
                     o => o.MapFrom(pp =>
-                        pp.OrderedProducts.Sum(x => x.PricePerProduct * x.Quantity)));
+                        Math.Round(pp.OrderedProducts.Sum(x => x.PricePerProduct * x.Quantity),2)));
 
             CreateMap<OrderedProduct, ProductShoppingList>()
                 .ForMember(p => p.OldPrice, o => o.MapFrom(pp => pp.Product.BasePrice))
