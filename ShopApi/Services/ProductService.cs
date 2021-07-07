@@ -39,11 +39,3 @@ namespace ShopApi.Services
 
     }
 }
-
-//var res = await _asyncRetryPolicy.ExecuteAndCaptureAsync(async () =>
-//  {
-//      var products = await _productRepo.GetAll();
-//      return _mapper.Map<List<ProductsSearch>>(products);
-//  });
-
-//if(res.Outcome == OutcomeType.Failure)

@@ -28,7 +28,6 @@ namespace ShopApi.Database.Seed
 
             var logger = services.GetRequiredService<ILogger<DataContext>>();
 
-            /* ###############################   BRANDS  ############################### */
             if (!dataContext.Products.Any())
             {
                 await AddDefaultUser(userManager, roleManager, logger);
@@ -692,7 +691,7 @@ namespace ShopApi.Database.Seed
                 {
                     Title = "Croissant 7 Days with cocoa filling 65g",
                     ShortTitle = "Croissant 7 Days cacao",
-                    Barcode = "5201360521230",
+                    Barcode = "5201360521210",
                     Brand = sevenDays,
                     Category = croissant,
                     PathToImage = "https://i.ibb.co/kJHg4J4/Seven-Days.png",

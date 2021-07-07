@@ -153,7 +153,7 @@ namespace ShopApi
                 options.AddPolicy("CorsPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200", "http://40.68.136.232:4200")
+                        builder.WithOrigins("http://localhost:4200", "http://40.68.136.232:4200", "http://20.52.155.197")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();
